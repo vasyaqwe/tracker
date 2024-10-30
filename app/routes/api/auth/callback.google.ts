@@ -73,7 +73,6 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
                .values({
                   email: googleUserProfile.email,
                   name: googleUserProfile.name,
-                  avatarUrl: googleUserProfile.picture,
                })
                .returning({
                   id: user.id,

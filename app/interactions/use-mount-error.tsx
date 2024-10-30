@@ -7,7 +7,6 @@ let mounted = false
 export function useMountError(errorMessage = "Error, please try again") {
    const search = useSearch({ strict: false })
 
-   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
    useEffect(() => {
       if (mounted || !("error" in search) || !search.error) return
 

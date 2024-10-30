@@ -15,7 +15,6 @@ export function useCountdownTimer({
    const [isRunning, setIsRunning] = useState(autoStart)
    const timer = useTimer({ delay: 100 })
 
-   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
    const updateTimer = useCallback(() => {
       const newTime = initialTime * 1000 - timer.getElapsedRunningTime()
       setTimeLeft(newTime > 0 ? newTime : 0)
