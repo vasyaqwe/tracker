@@ -71,9 +71,9 @@ function Component() {
    }, [])
 
    return (
-      <>
+      <div className="mx-auto max-w-5xl px-4 pt-28">
          <Sidebar />
          <Outlet />
-      </>
+      </div>
    )
 }

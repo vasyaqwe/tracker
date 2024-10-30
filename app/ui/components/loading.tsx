@@ -1,27 +1,93 @@
 import { cn } from "@/ui/utils"
+import { type VariantProps, cva } from "class-variance-authority"
 import type * as React from "react"
 
-export function Loading({ className, ...props }: React.ComponentProps<"svg">) {
+const loadingVariants = cva("relative block opacity-75", {
+   variants: {
+      size: {
+         sm: "size-6",
+         md: "size-7",
+         lg: "size-8",
+      },
+   },
+   defaultVariants: {
+      size: "md",
+   },
+})
+
+export function Loading({
+   className,
+   size,
+   ...props
+}: React.HTMLAttributes<HTMLOrSVGElement> &
+   VariantProps<typeof loadingVariants>) {
    return (
       <svg
-         xmlns="http://www.w3.org/2000/svg"
-         fill="none"
+         className={cn(
+            loadingVariants({ size, className }),
+            "animate-spin",
+            className,
+         )}
          viewBox="0 0 24 24"
-         className={cn("size-[17px] animate-spin", className)}
+         fill="none"
+         xmlns="http://www.w3.org/2000/svg"
          {...props}
       >
-         <circle
-            className="opacity-30"
-            cx="12"
-            cy="12"
-            r="10"
+         <path
+            d="M12 4.75V6.25"
             stroke="currentColor"
-            strokeWidth="4"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
          />
          <path
-            className="opacity-80"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            d="M17.1475 6.8525L16.0625 7.9375"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+         <path
+            d="M19.25 12H17.75"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+         <path
+            d="M17.1475 17.1475L16.0625 16.0625"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+         <path
+            d="M12 17.75V19.25"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+         <path
+            d="M6.8525 17.1475L7.9375 16.0625"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+         <path
+            d="M4.75 12H6.25"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+         <path
+            d="M6.8525 6.8525L7.9375 7.9375"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
          />
       </svg>
    )

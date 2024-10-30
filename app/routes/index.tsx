@@ -1,3 +1,4 @@
+import { CreateProject } from "@/project/components/create-project"
 import { projectListQuery } from "@/project/queries"
 import { LoginComponent } from "@/routes/login"
 import { createFileRoute, redirect } from "@tanstack/react-router"
@@ -18,5 +19,5 @@ export const Route = createFileRoute("/")({
 })
 
 function Component() {
-   return null
+   return <CreateProject />
 }

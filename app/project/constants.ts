@@ -1,1 +1,1 @@
-export const RESERVED_SLUGS = ["login", "/"]
+export const RESERVED_SLUGS = ["/", "new", "login", "login/", "new/"]

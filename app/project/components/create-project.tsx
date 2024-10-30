@@ -76,12 +76,19 @@ export function CreateProject({
                onSubmit={(e) => {
                   e.preventDefault()
 
+                  const formData = Object.fromEntries(
+                     new FormData(e.target as HTMLFormElement),
+                  ) as {
+                     rate: string
+                  }
+
                   match(RESERVED_SLUGS.includes(name.trim().toLowerCase()))
                      .with(true, () => toast.error("This name is reserved"))
                      .otherwise(() =>
                         insert.mutate({
                            name,
                            slug: makeSlug(name),
+                           rate: +formData.rate,
                         }),
                      )
                }}
@@ -95,7 +102,7 @@ export function CreateProject({
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Required"
+                  placeholder="Enter a name"
                   required
                   maxLength={32}
                />
@@ -104,10 +111,23 @@ export function CreateProject({
                      {env.VITE_BASE_URL}/{makeSlug(name)}
                   </u>
                </p>
+               <Label
+                  htmlFor="rate"
+                  className="mt-3"
+               >
+                  Hourly rate
+               </Label>
+               <Input
+                  autoComplete="off"
+                  name="rate"
+                  id="rate"
+                  placeholder="Enter a number"
+                  required
+               />
                <Button
-                  size={"lg"}
+                  type="submit"
                   className="mt-5 w-full"
-                  disabled={insert.isPending || insert.isSuccess}
+                  isDisabled={insert.isPending || insert.isSuccess}
                >
                   {insert.isPending || insert.isSuccess ? (
                      <Loading />

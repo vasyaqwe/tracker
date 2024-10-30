@@ -52,7 +52,10 @@ export const insert = createServerFn(
             throw new TRPCError({ code: "CONFLICT" })
 
          const existingProject = await ctx.db.query.project.findFirst({
-            where: eq(project.slug, input.slug),
+            where: and(
+               eq(project.slug, input.slug),
+               eq(project.ownerId, ctx.user.id),
+            ),
          })
 
          if (existingProject) throw new TRPCError({ code: "CONFLICT" })

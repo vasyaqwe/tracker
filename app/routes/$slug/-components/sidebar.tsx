@@ -1,14 +1,4 @@
 import { Route as homeRoute } from "@/routes/$slug/_layout/index"
-// import {
-//    DropdownMenu,
-//    DropdownMenuContent,
-//    DropdownMenuGroup,
-//    DropdownMenuItem,
-//    DropdownMenuLabel,
-//    DropdownMenuSeparator,
-//    DropdownMenuTrigger,
-// } from "@/ui/components/dropdown-menu"
-import { Icons } from "@/ui/components/icons"
 import { cn } from "@/ui/utils"
 import { Link, useParams } from "@tanstack/react-router"
 
@@ -28,9 +18,8 @@ export function Sidebar() {
    // const projects = useSuspenseQuery(projectListQuery())
 
    return (
-      <aside className="z-[10] h-svh w-[15.5rem] max-md:hidden">
-         <div className="fixed flex h-full w-[15.5rem] flex-col border-border/60 border-r p-4 shadow-sm">
-            {/* <div className="mb-3 flex items-center gap-px">
+      <aside className="w-40 max-md:hidden">
+         {/* <div className="mb-3 flex items-center gap-px">
                <DropdownMenu>
                   <DropdownMenuTrigger
                      className={cn(
@@ -78,29 +67,27 @@ export function Sidebar() {
                   </DropdownMenuContent>
                </DropdownMenu>
             </div> */}
-            <nav className="my-4 overflow-y-auto">
-               <ul className="space-y-1">
-                  <li>
-                     <Link
-                        params={{ slug }}
-                        activeProps={{
-                           className:
-                              "!border-border/80 bg-elevated opacity-100",
-                           "aria-current": "page",
-                        }}
-                        to={homeRoute.to}
-                        className={cn(
-                           "group flex h-10 items-center gap-2 rounded-[14px] border border-transparent px-2 font-semibold text-[0.95rem] leading-none opacity-75 transition-all hover:opacity-100",
-                        )}
-                     >
-                        <Icons.inbox className="size-6" />
-                        <span className="nav-link-text">Inbox</span>
-                     </Link>
-                  </li>
-               </ul>
-            </nav>
-            <div className="mt-auto">
-               {/* <svg
+         <nav className="overflow-y-auto">
+            <ul className="space-y-1">
+               <li>
+                  <Link
+                     params={{ slug }}
+                     activeProps={{
+                        className: "font-medium opacity-100",
+                        "aria-current": "page",
+                     }}
+                     to={homeRoute.to}
+                     className={cn(
+                        "group flex h-9 items-center gap-2 px-2 opacity-75 hover:opacity-100",
+                     )}
+                  >
+                     <span className="nav-link-text">Inbox</span>
+                  </Link>
+               </li>
+            </ul>
+         </nav>
+         <div className="mt-auto">
+            {/* <svg
                            viewBox="0 0 24 24"
                            fill="none"
                            xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +102,6 @@ export function Sidebar() {
                            />
                         </svg>
                         Log out */}
-            </div>
          </div>
       </aside>
    )

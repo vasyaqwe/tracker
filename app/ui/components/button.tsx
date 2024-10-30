@@ -1,4 +1,4 @@
-import { cr } from "@/ui/primitive"
+import { cr } from "@/ui/utils"
 import { type VariantProps, cva } from "class-variance-authority"
 import * as React from "react"
 import {
@@ -16,12 +16,11 @@ const buttonVariants = cva(
       variants: {
          intent: {
             primary: ["bg-primary text-primary-foreground hover:bg-primary/90"],
-         },
-         appearance: {
-            solid: ["border-transparent"],
+            ghost: ["bg-transparent hover:bg-border/30"],
          },
          size: {
             md: "h-9 rounded-[11px] px-2 text-base",
+            icon: "size-9 rounded-[11px]",
          },
          isDisabled: {
             false: "",
@@ -37,7 +36,6 @@ const buttonVariants = cva(
       },
       defaultVariants: {
          intent: "primary",
-         appearance: "solid",
          size: "md",
       },
    },
@@ -50,7 +48,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       {
          className,
          intent,
-         appearance,
          size,
          isDisabled,
          isPending,
@@ -67,7 +64,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                buttonVariants({
                   ...renderProps,
                   intent,
-                  appearance,
                   size,
                   className,
                }),
