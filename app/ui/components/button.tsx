@@ -8,7 +8,7 @@ import {
 
 const buttonVariants = cva(
    [
-      "inline-flex items-center justify-center gap-1.5 whitespace-nowrap outline-none",
+      "inline-flex items-center justify-center gap-2 whitespace-nowrap outline-none",
    ],
    {
       variants: {
@@ -17,7 +17,9 @@ const buttonVariants = cva(
             creative: [
                "bg-popover-elevated text-background hover:bg-emerald-400/20 hover:text-emerald-400",
             ],
-            ghost: ["bg-transparent hover:bg-border/60"],
+            ghost: [
+               "bg-transparent aria-expanded:bg-border/60 hover:bg-border/60",
+            ],
             destructive: [
                "bg-popover-elevated text-background hover:bg-red-500/20 hover:text-red-500",
             ],
