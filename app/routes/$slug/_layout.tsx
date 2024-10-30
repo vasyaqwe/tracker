@@ -1,3 +1,4 @@
+import logo from "@/assets/icon.png"
 import { projectBySlugQuery, projectListQuery } from "@/project/queries"
 import { MOBILE_BREAKPOINT } from "@/ui/constants"
 import { useUIStore } from "@/ui/store"
@@ -42,7 +43,11 @@ export const Route = createFileRoute("/$slug/_layout")({
    },
    pendingComponent: () => (
       <div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-full">
-         {/* <Logo className="mx-auto animate-fade-in opacity-0 [--animation-delay:100ms]" /> */}
+         <img
+            src={logo}
+            className="mx-auto size-9 animate-fade-in opacity-0 [--animation-delay:100ms]"
+            alt="Tracker"
+         />
          <h1 className="mt-4 animate-fade-in text-center font-medium text-foreground/80 opacity-0 duration-500 [--animation-delay:600ms]">
             Workspace is loading...
          </h1>
@@ -71,7 +76,7 @@ function Component() {
    }, [])
 
    return (
-      <div className="mx-auto max-w-5xl px-4 pt-28">
+      <div className="mx-auto max-w-4xl px-4 pt-28">
          <Sidebar />
          <Outlet />
       </div>

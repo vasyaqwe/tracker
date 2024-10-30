@@ -1,6 +1,6 @@
+import logo from "@/assets/icon.png"
 import { Route as homeRoute } from "@/routes/$slug/_layout/index"
 import { Route as settingsRoute } from "@/routes/$slug/_layout/settings"
-import { Route as summariesRoute } from "@/routes/$slug/_layout/summaries"
 import { cn } from "@/ui/utils"
 import { Link, useParams } from "@tanstack/react-router"
 
@@ -70,6 +70,11 @@ export function Sidebar() {
                </DropdownMenu>
             </div> */}
          <nav>
+            <img
+               src={logo}
+               className="-ml-0.5 mb-6 size-8"
+               alt="Tracker"
+            />
             <ul className="before:-left-[2px] before:-top-[var(--block)] relative space-y-1 pl-1 [--block:2px] before:absolute before:h-[calc(100%+calc(var(--block)*2))] before:w-[2px] before:bg-border">
                <li>
                   <Link
@@ -91,25 +96,6 @@ export function Sidebar() {
                      )}
                   >
                      Home
-                  </Link>
-               </li>
-               <li>
-                  <Link
-                     params={{ slug }}
-                     activeProps={{
-                        className:
-                           "opacity-100 before:block before:top-1/2 before:-translate-y-1/2",
-                        "aria-current": "page",
-                     }}
-                     inactiveProps={{
-                        className: "opacity-60 before:hidden",
-                     }}
-                     to={summariesRoute.to}
-                     className={cn(
-                        "group before:-left-[6px] relative flex items-center gap-2 px-2 py-2 font-medium leading-none before:absolute before:h-5 before:w-[2px] before:rounded-sm before:bg-foreground hover:opacity-100",
-                     )}
-                  >
-                     Summaries
                   </Link>
                </li>
                <li>

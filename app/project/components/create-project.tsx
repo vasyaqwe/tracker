@@ -1,3 +1,4 @@
+import logo from "@/assets/icon.png"
 import { env } from "@/env"
 import { RESERVED_SLUGS } from "@/project/constants"
 import { Button } from "@/ui/components/button"
@@ -56,17 +57,25 @@ export function CreateProject({
          <div className="-mt-8 mx-auto w-full max-w-[23rem] px-4">
             {isFirstProject ? (
                <div className="flex items-center gap-2.5">
-                  {/* <Logo className="size-11" />{" "} */}
+                  <img
+                     src={logo}
+                     className="size-9"
+                     alt="Tracker"
+                  />
                   <h1 className="font-semibold text-2xl">
                      Welcome to Tracker,
                   </h1>
                </div>
             ) : (
-               <div className="size-11" />
+               <img
+                  src={logo}
+                  className="size-9"
+                  alt="Tracker"
+               />
             )}
             <h2
                className={cn(
-                  "my-5 font-semibold text-foreground/90",
+                  "my-4 font-semibold text-foreground/90",
                   "text-2xl",
                )}
             >

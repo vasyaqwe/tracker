@@ -18,7 +18,6 @@ import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
 import { Route as SlugLayoutImport } from './routes/$slug/_layout'
 import { Route as SlugLayoutIndexImport } from './routes/$slug/_layout/index'
-import { Route as SlugLayoutSummariesImport } from './routes/$slug/_layout/summaries'
 import { Route as SlugLayoutSettingsImport } from './routes/$slug/_layout/settings'
 
 // Create Virtual Routes
@@ -59,12 +58,6 @@ const SlugLayoutRoute = SlugLayoutImport.update({
 const SlugLayoutIndexRoute = SlugLayoutIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => SlugLayoutRoute,
-} as any)
-
-const SlugLayoutSummariesRoute = SlugLayoutSummariesImport.update({
-  id: '/summaries',
-  path: '/summaries',
   getParentRoute: () => SlugLayoutRoute,
 } as any)
 
@@ -120,13 +113,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SlugLayoutSettingsImport
       parentRoute: typeof SlugLayoutImport
     }
-    '/$slug/_layout/summaries': {
-      id: '/$slug/_layout/summaries'
-      path: '/summaries'
-      fullPath: '/$slug/summaries'
-      preLoaderRoute: typeof SlugLayoutSummariesImport
-      parentRoute: typeof SlugLayoutImport
-    }
     '/$slug/_layout/': {
       id: '/$slug/_layout/'
       path: '/'
@@ -141,13 +127,11 @@ declare module '@tanstack/react-router' {
 
 interface SlugLayoutRouteChildren {
   SlugLayoutSettingsRoute: typeof SlugLayoutSettingsRoute
-  SlugLayoutSummariesRoute: typeof SlugLayoutSummariesRoute
   SlugLayoutIndexRoute: typeof SlugLayoutIndexRoute
 }
 
 const SlugLayoutRouteChildren: SlugLayoutRouteChildren = {
   SlugLayoutSettingsRoute: SlugLayoutSettingsRoute,
-  SlugLayoutSummariesRoute: SlugLayoutSummariesRoute,
   SlugLayoutIndexRoute: SlugLayoutIndexRoute,
 }
 
@@ -171,7 +155,6 @@ export interface FileRoutesByFullPath {
   '/new': typeof NewRoute
   '/$slug': typeof SlugLayoutRouteWithChildren
   '/$slug/settings': typeof SlugLayoutSettingsRoute
-  '/$slug/summaries': typeof SlugLayoutSummariesRoute
   '/$slug/': typeof SlugLayoutIndexRoute
 }
 
@@ -181,7 +164,6 @@ export interface FileRoutesByTo {
   '/new': typeof NewRoute
   '/$slug': typeof SlugLayoutIndexRoute
   '/$slug/settings': typeof SlugLayoutSettingsRoute
-  '/$slug/summaries': typeof SlugLayoutSummariesRoute
 }
 
 export interface FileRoutesById {
@@ -192,28 +174,14 @@ export interface FileRoutesById {
   '/$slug': typeof SlugRouteWithChildren
   '/$slug/_layout': typeof SlugLayoutRouteWithChildren
   '/$slug/_layout/settings': typeof SlugLayoutSettingsRoute
-  '/$slug/_layout/summaries': typeof SlugLayoutSummariesRoute
   '/$slug/_layout/': typeof SlugLayoutIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/login'
-    | '/new'
-    | '/$slug'
-    | '/$slug/settings'
-    | '/$slug/summaries'
-    | '/$slug/'
+  fullPaths: '/' | '/login' | '/new' | '/$slug' | '/$slug/settings' | '/$slug/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/login'
-    | '/new'
-    | '/$slug'
-    | '/$slug/settings'
-    | '/$slug/summaries'
+  to: '/' | '/login' | '/new' | '/$slug' | '/$slug/settings'
   id:
     | '__root__'
     | '/'
@@ -222,7 +190,6 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/$slug/_layout'
     | '/$slug/_layout/settings'
-    | '/$slug/_layout/summaries'
     | '/$slug/_layout/'
   fileRoutesById: FileRoutesById
 }
@@ -279,16 +246,11 @@ export const routeTree = rootRoute
       "parent": "/$slug",
       "children": [
         "/$slug/_layout/settings",
-        "/$slug/_layout/summaries",
         "/$slug/_layout/"
       ]
     },
     "/$slug/_layout/settings": {
       "filePath": "$slug/_layout/settings.tsx",
-      "parent": "/$slug/_layout"
-    },
-    "/$slug/_layout/summaries": {
-      "filePath": "$slug/_layout/summaries.tsx",
       "parent": "/$slug/_layout"
     },
     "/$slug/_layout/": {

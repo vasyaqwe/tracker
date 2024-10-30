@@ -39,6 +39,7 @@
     "react-aria-components": "^1.4.1",
     "react-dom": "^18.3.1",
     "react-hotkeys-hook": "^4.5.1",
+    "react-use-precision-timer": "^3.5.5",
     "remeda": "^2.14.0",
     "sonner": "^1.5.0",
     "superjson": "^2.2.1",
