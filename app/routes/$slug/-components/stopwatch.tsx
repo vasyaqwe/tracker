@@ -5,8 +5,6 @@ import { useInsertSummary } from "@/summary/hooks/use-insert-summary"
 import { summaryListQuery } from "@/summary/queries"
 import { TimerRenderer } from "@/timer"
 import { Button } from "@/ui/components/button"
-import { Icons } from "@/ui/components/icons"
-import { Kbd } from "@/ui/components/kbd"
 import { useIsClient } from "@/ui/hooks/use-is-client"
 import { useAuth } from "@/user/hooks"
 import { calculateAmountEarned, millisToMinutes } from "@/utils/format"
@@ -92,32 +90,37 @@ export function Stopwatch() {
    if (!isClient) return null
 
    return (
-      <div className="-translate-x-1/2 fixed bottom-5 left-1/2 flex w-[163px] animate-slide-up items-center rounded-full bg-popover text-popover-foreground">
+      <div className="-translate-x-1/2 fixed bottom-5 left-1/2 flex h-[46px] w-[201px] animate-slide-up items-center items-center rounded-full bg-popover pr-1.5 pl-5 text-popover-foreground">
          {timer.isRunning() ? (
-            <div className="flex h-11 w-full items-center pr-1.5 pl-5">
+            <>
                <TimerRenderer
                   timer={timer}
-                  className="mx-auto text-lg"
+                  className="mr-4 text-xl"
                />
                <Button
-                  className={"ml-auto rounded-full"}
+                  className={"min-w-[60px] rounded-full"}
                   intent={"destructive"}
-                  size={"icon"}
                   aria-label="Stop session"
                   onPress={stop}
                >
-                  <Icons.xMark className="size-5" />
+                  Stop
                </Button>
-            </div>
+            </>
          ) : (
-            <button
-               className="h-11 px-5"
-               onClick={start}
-            >
-               <span>
-                  Start session <Kbd className="ml-1">C</Kbd>
-               </span>
-            </button>
+            <>
+               <TimerRenderer
+                  timer={timer}
+                  className="mr-4 text-xl"
+               />
+               <Button
+                  className={"min-w-[60px] rounded-full"}
+                  intent={"creative"}
+                  aria-label="Start session"
+                  onPress={start}
+               >
+                  Start
+               </Button>
+            </>
          )}
       </div>
    )

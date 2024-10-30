@@ -64,10 +64,10 @@
 
 @font-face {
    font-family: "geist_mono";
-   src: url("/font/geist_mono_bold.ttf") format("woff2-variations");
+   src: url("/font/geist_mono.woff2") format("woff2-variations");
    font-display: swap;
    font-style: normal;
-   font-weight: 700;
+   font-weight: 500;
 }
 
 html {

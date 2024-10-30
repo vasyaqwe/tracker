@@ -33,7 +33,7 @@ const row = cn(
    "max-md:flex before:border-border before:border-t-2 before:border-dotted first:before:border-none",
    "md:[&:first-child>td]:mt-1 md:[&:last-child>td]:mb-1 max-md:flex-col max-md:gap-3 max-md:px-6 max-md:py-5",
    "tr group relative cursor-default outline-none focus-visible:after:block",
-   "after:-inset-y-0 after:absolute after:inset-x-1 last:after:bottom-1 after:z-[-1] data-[selected=true]:after:block after:hidden first:after:rounded-t-[calc(14px-1px)] last:after:rounded-b-[calc(14px-1px)] after:bg-border/40",
+   "after:-inset-y-0 after:absolute after:inset-x-1 last:after:bottom-1 after:z-[-1] data-[selected=true]:after:block after:hidden first:after:rounded-t-[calc(15px-1px)] last:after:rounded-b-[calc(15px-1px)] after:bg-border/40",
 )
 
 type TableProps = TablePrimitiveProps & {
@@ -49,7 +49,7 @@ const useTableContext = () => React.useContext(TableContext)
 
 const Table = ({ children, className, ...props }: TableProps) => (
    <TableContext.Provider value={props}>
-      <div className="relative w-full overflow-auto rounded-[calc(14px)] border border-border/40 bg-elevated">
+      <div className="relative w-full overflow-auto rounded-[calc(15px)] border border-border/40 bg-elevated">
          {props.allowResize ? (
             <ResizableTableContainer className="overflow-auto">
                <TablePrimitive
@@ -75,7 +75,7 @@ const Body = <T extends object>(props: TableBodyProps<T>) => (
    <TableBody
       {...props}
       className={cn(
-         "isolate before:absolute before:inset-1 md:before:top-12 before:z-[-1] before:rounded-[calc(14px-4px)] before:border before:border-border before:bg-background before:shadow-sm",
+         "isolate before:absolute before:inset-1 md:before:top-12 before:z-[-1] before:rounded-[calc(15px-4px)] before:border before:border-border before:bg-background before:shadow-sm",
       )}
    />
 )

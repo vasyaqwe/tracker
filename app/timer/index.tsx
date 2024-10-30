@@ -46,7 +46,7 @@ export function TimerRenderer({
 
    return (
       <span
-         className={cn("inline-block font-mono", className)}
+         className={cn("inline-block font-mono tabular-nums", className)}
          {...props}
       >
          {formatTime(timer.getElapsedRunningTime())}
