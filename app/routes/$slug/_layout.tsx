@@ -1,5 +1,6 @@
 import logo from "@/assets/icon.png"
 import { projectBySlugQuery, projectListQuery } from "@/project/queries"
+import { Stopwatch } from "@/routes/$slug/-components/stopwatch"
 import { MOBILE_BREAKPOINT } from "@/ui/constants"
 import { useUIStore } from "@/ui/store"
 import { userMeQuery } from "@/user/queries"
@@ -79,6 +80,7 @@ function Component() {
       <div className="mx-auto max-w-4xl px-4 pt-28">
          <Sidebar />
          <Outlet />
+         <Stopwatch />
       </div>
    )
 }

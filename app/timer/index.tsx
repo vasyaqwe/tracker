@@ -1,25 +1,43 @@
 import { cn } from "@/ui/utils"
-import type { HTMLAttributes } from "react"
+import { useAuth } from "@/user/hooks"
+import { type HTMLAttributes, useEffect, useState } from "react"
+import { Subs } from "react-sub-unsub"
+import type { Timer } from "react-use-precision-timer"
+
+const RENDER_INTERVAL = 1000
 
 export function TimerRenderer({
-   time,
+   timer,
    className,
-   richColors = true,
    ...props
 }: {
-   time: number
-   richColors?: boolean
+   timer: Timer
 } & HTMLAttributes<HTMLSpanElement>) {
-   const formatTime = (time: number) => {
-      const seconds = Math.floor(time % 60)
-      const minutes = Math.floor((time / 60) % 60)
-      const hours = Math.floor(time / 3600)
+   const [, setRenderTime] = useState(Date.now())
+   const { projectId } = useAuth()
 
-      if (hours === 0)
-         return `${minutes < 10 ? `0${minutes}` : minutes}:${
-            seconds < 10 ? `0${seconds}` : seconds
-         }
-      `
+   useEffect(() => {
+      return () => {
+         localStorage.setItem(
+            `${projectId}_start_time`,
+            timer.getElapsedRunningTime().toString(),
+         )
+      }
+   }, [timer.getElapsedRunningTime()])
+
+   useEffect(() => {
+      const subs = new Subs()
+      subs.setInterval(
+         () => setRenderTime(new Date().getTime()),
+         RENDER_INTERVAL,
+      )
+      return subs.createCleanup()
+   }, [RENDER_INTERVAL])
+
+   const formatTime = (time: number) => {
+      const seconds = Math.floor((time / 1000) % 60)
+      const minutes = Math.floor((time / 1000 / 60) % 60)
+      const hours = Math.floor((time / 1000 / 60 / 60) % 24)
 
       return `${hours < 10 ? `0${hours}` : hours}:${
          minutes < 10 ? `0${minutes}` : minutes
@@ -28,20 +46,10 @@ export function TimerRenderer({
 
    return (
       <span
-         className={cn(
-            "inline-block font-mono",
-            className,
-            richColors
-               ? time < 10
-                  ? "from-destructive to-destructive/60"
-                  : time < 20
-                    ? "from-yellow-500 to-yellow-500/60"
-                    : ""
-               : "text-green-500",
-         )}
+         className={cn("inline-block font-mono", className)}
          {...props}
       >
-         {formatTime(time)}
+         {formatTime(timer.getElapsedRunningTime())}
       </span>
    )
 }

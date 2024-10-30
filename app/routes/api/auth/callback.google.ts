@@ -62,7 +62,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
             return new Response(null, {
                status: 302,
                headers: {
-                  Location:  "/"
+                  Location: "/",
                },
             })
          }
@@ -97,7 +97,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
          return new Response(null, {
             status: 302,
             headers: {
-               Location:  "/"
+               Location: "/",
             },
          })
       } catch (error) {

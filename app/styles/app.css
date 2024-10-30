@@ -5,7 +5,8 @@
    --color-background: #fff;
    --color-foreground: #18181b;
    --color-popover: #1c2024;
-   --color-icon: #a1a1aa;
+   --color-popover-icon: #a1a1aa;
+   --color-popover-elevated: #3d4046;
    --color-popover-foreground: #fff;
    --color-primary: #18181b;
    --color-primary-foreground: #fff;
@@ -21,8 +22,7 @@
 
    --animate-fade-in: fade-in var(--animation-duration, 500ms)
       var(--animation-delay) ease forwards;
-   --animate-accordion-down: accordion-down 0.15s var(--ease-vaul);
-   --animate-accordion-up: accordion-up 0.15s var(--ease-vaul);
+   --animate-slide-up: slide-up 0.5s var(--ease-vaul);
 
    --font-size-xs: 0.825rem;
    --font-size-sm: 0.895rem;
@@ -40,20 +40,16 @@
          opacity: 1;
       }
    }
-   @keyframes accordion-down {
+   @keyframes slide-up {
       from {
          opacity: 0;
+         scale: 75%;
+         transform: translateY(100%);
       }
       to {
          opacity: 1;
-      }
-   }
-   @keyframes accordion-up {
-      from {
-         opacity: 1;
-      }
-      to {
-         opacity: 0;
+         scale: 100%;
+         transform: translateY(0);
       }
    }
 }
@@ -68,7 +64,7 @@
 
 @font-face {
    font-family: "geist_mono";
-   src: url("/fonts/geist_mono_bold.ttf") format("woff2-variations");
+   src: url("/font/geist_mono_bold.ttf") format("woff2-variations");
    font-display: swap;
    font-style: normal;
    font-weight: 700;

@@ -46,6 +46,7 @@
          },
          "correctness": {
             "noUnusedVariables": "error",
+            "useExhaustiveDependencies": "off",
             "noUnusedImports": "error"
          },
          "a11y": {

@@ -9,18 +9,17 @@ import {
 const buttonVariants = cva(
    [
       "inline-flex items-center justify-center gap-1.5 whitespace-nowrap outline-none",
-      "[--btn-icon:var(--color-icon)]",
-      "[&>[data-slot=icon]]:size-4 [&>[data-slot=icon]]:shrink-0 [&>[data-slot=icon]]:text-[--btn-icon]",
    ],
    {
       variants: {
          intent: {
             primary: ["bg-primary text-primary-foreground hover:bg-primary/90"],
             ghost: ["bg-transparent hover:bg-border/60"],
+            destructive: ["bg-popover-elevated hover:bg-destructive"],
          },
          size: {
-            md: "h-9 rounded-[11px] px-2 text-base",
-            icon: "size-9 rounded-[11px]",
+            md: "h-9 rounded-[11px] px-3 text-base",
+            icon: "size-8 rounded-[11px]",
          },
          isDisabled: {
             false: "",

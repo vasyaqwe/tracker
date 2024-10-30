@@ -61,6 +61,35 @@ export const formatDate = (
       ...options,
    }).format(new Date(date))
 
+export const millisToMinutes = (millis: number) => {
+   const minutes = Math.floor(millis / 60000)
+
+   return minutes
+}
+
+export const millisToTime = (millis: number) => {
+   let minutes = Math.floor(millis / 60000)
+   const hours = Math.floor(minutes / 60)
+   minutes = minutes % 60
+
+   return `${hours}:${minutes < 10 ? "0" : ""}${minutes}`
+}
+
+export const minutesToTime = (minutes: number) => {
+   const hours = Math.floor(minutes / 60)
+   const remainingMinutes = minutes % 60
+
+   return `${hours}:${remainingMinutes < 10 ? "0" : ""}${remainingMinutes}`
+}
+
+export const calculateAmountEarned = (
+   durationMs: number,
+   hourlyRate: number,
+) => {
+   const hours = durationMs / 3600000
+   return hours * hourlyRate
+}
+
 export const remainingTimeUntil = (expiresAt: Date) => {
    const currentTime = Date.now()
    const remainingTime = expiresAt.getTime() - currentTime

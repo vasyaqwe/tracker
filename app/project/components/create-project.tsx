@@ -1,12 +1,13 @@
 import logo from "@/assets/icon.png"
 import { env } from "@/env"
 import { RESERVED_SLUGS } from "@/project/constants"
+import { projectListQuery } from "@/project/queries"
 import { Button } from "@/ui/components/button"
 import { Input } from "@/ui/components/input"
 import { Label } from "@/ui/components/label"
 import { Loading } from "@/ui/components/loading"
 import { cn } from "@/ui/utils"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
 import type { TRPCError } from "@trpc/server"
@@ -34,13 +35,13 @@ export function CreateProject({
 }: { isFirstProject?: boolean }) {
    const [name, setName] = useState("")
    const navigate = useNavigate()
-   // const queryClient = useQueryClient()
+   const queryClient = useQueryClient()
 
    const insertFn = useServerFn(project.insert)
    const insert = useMutation({
       mutationFn: insertFn,
       onSuccess: () => {
-         // queryClient.invalidateQueries(projectMembershipsQuery())
+         queryClient.invalidateQueries(projectListQuery())
          navigate({ to: `/${makeSlug(name)}` })
       },
       onError: (error) => {

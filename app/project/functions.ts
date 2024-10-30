@@ -34,6 +34,7 @@ export const bySlug = createServerFn(
                id: true,
                slug: true,
                name: true,
+               rate: true,
             },
          })
 
