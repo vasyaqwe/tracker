@@ -57,7 +57,7 @@ export function CreateProject({
             {isFirstProject ? (
                <div className="flex items-center gap-2.5">
                   {/* <Logo className="size-11" />{" "} */}
-                  <h1 className="font-extrabold text-2xl">
+                  <h1 className="font-semibold text-2xl">
                      Welcome to Tracker,
                   </h1>
                </div>
@@ -66,8 +66,8 @@ export function CreateProject({
             )}
             <h2
                className={cn(
-                  "my-5 font-bold text-foreground/90",
-                  isFirstProject ? "text-xl" : "font-extrabold text-2xl",
+                  "my-5 font-semibold text-foreground/90",
+                  "text-2xl",
                )}
             >
                Create {isFirstProject ? "your first" : "a new"} project

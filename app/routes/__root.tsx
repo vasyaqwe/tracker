@@ -63,7 +63,14 @@ export const Route = createRootRouteWithContext<{
       { rel: "manifest", href: "/site.webmanifest" },
       {
          rel: "preload",
-         href: "/font/alpha.woff2",
+         href: "/font/geist.woff2",
+         as: "font",
+         type: "font/woff2",
+         crossOrigin: "anonymous",
+      },
+      {
+         rel: "preload",
+         href: "/font/geist_mono.woff2",
          as: "font",
          type: "font/woff2",
          crossOrigin: "anonymous",

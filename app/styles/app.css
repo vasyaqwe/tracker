@@ -9,13 +9,13 @@
    --color-popover-foreground: #fff;
    --color-primary: #18181b;
    --color-primary-foreground: #fff;
-   --color-border: #ccc;
+   --color-border: #ececec;
    --color-destructive: #ef4444;
    --color-destructive-foreground: #fff;
    --color-elevated: #f8f6f6;
 
-   --font-family-primary: "alpha", sans-serif;
-   /* --font-family-secondary: "garamond", sans-serif; */
+   --font-family-primary: "geist", sans-serif;
+   --font-family-mono: "geist_mono", monospace;
 
    --ease-vaul: cubic-bezier(0.32, 0.72, 0, 1);
 
@@ -59,20 +59,20 @@
 }
 
 @font-face {
-   font-family: "alpha";
-   src: url("/font/alpha.woff2") format("woff2-variations");
+   font-family: "geist";
+   src: url("/font/geist.woff2") format("woff2-variations");
    font-display: swap;
    font-style: normal;
-   font-weight: 500 800;
+   font-weight: 400 700;
 }
-/* 
+
 @font-face {
-   font-family: "garamond";
-   src: url("/fonts/garamond.ttf") format("truetype");
+   font-family: "geist_mono";
+   src: url("/fonts/geist_mono_bold.ttf") format("woff2-variations");
    font-display: swap;
    font-style: normal;
-   font-weight: 400;
-} */
+   font-weight: 700;
+}
 
 html {
    font-family: var(--font-family-primary);

@@ -1,4 +1,6 @@
 import { Route as homeRoute } from "@/routes/$slug/_layout/index"
+import { Route as settingsRoute } from "@/routes/$slug/_layout/settings"
+import { Route as summariesRoute } from "@/routes/$slug/_layout/summaries"
 import { cn } from "@/ui/utils"
 import { Link, useParams } from "@tanstack/react-router"
 
@@ -67,21 +69,66 @@ export function Sidebar() {
                   </DropdownMenuContent>
                </DropdownMenu>
             </div> */}
-         <nav className="overflow-y-auto">
-            <ul className="space-y-1">
+         <nav>
+            <ul className="before:-left-[2px] before:-top-[var(--block)] relative space-y-1 pl-1 [--block:2px] before:absolute before:h-[calc(100%+calc(var(--block)*2))] before:w-[2px] before:bg-border">
                <li>
                   <Link
                      params={{ slug }}
                      activeProps={{
-                        className: "font-medium opacity-100",
+                        className:
+                           "opacity-100 before:block before:-top-[var(--block)]",
                         "aria-current": "page",
+                     }}
+                     activeOptions={{
+                        exact: true,
+                     }}
+                     inactiveProps={{
+                        className: "opacity-60 before:hidden",
                      }}
                      to={homeRoute.to}
                      className={cn(
-                        "group flex h-9 items-center gap-2 px-2 opacity-75 hover:opacity-100",
+                        "group before:-left-[6px] relative flex items-center gap-2 px-2 pb-2 font-medium leading-none before:absolute before:h-5 before:w-[2px] before:rounded-sm before:bg-foreground hover:opacity-100",
                      )}
                   >
-                     <span className="nav-link-text">Inbox</span>
+                     Home
+                  </Link>
+               </li>
+               <li>
+                  <Link
+                     params={{ slug }}
+                     activeProps={{
+                        className:
+                           "opacity-100 before:block before:top-1/2 before:-translate-y-1/2",
+                        "aria-current": "page",
+                     }}
+                     inactiveProps={{
+                        className: "opacity-60 before:hidden",
+                     }}
+                     to={summariesRoute.to}
+                     className={cn(
+                        "group before:-left-[6px] relative flex items-center gap-2 px-2 py-2 font-medium leading-none before:absolute before:h-5 before:w-[2px] before:rounded-sm before:bg-foreground hover:opacity-100",
+                     )}
+                  >
+                     Summaries
+                  </Link>
+               </li>
+               <li>
+                  <Link
+                     params={{ slug }}
+                     activeProps={{
+                        className:
+                           "opacity-100 before:block before:-bottom-[var(--block)]",
+                        "aria-current": "page",
+                     }}
+                     inactiveProps={{
+                        className: "opacity-60 before:hidden",
+                     }}
+                     to={settingsRoute.to}
+                     className={cn(
+                        "group before:-left-[6px] relative flex items-center gap-2 px-2 pt-2 font-medium leading-none before:absolute before:h-5 before:w-[2px] before:rounded-sm before:bg-foreground hover:opacity-100",
+                     )}
+                  >
+                     Settings
                   </Link>
                </li>
             </ul>
