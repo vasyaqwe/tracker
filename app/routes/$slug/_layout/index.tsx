@@ -69,33 +69,33 @@ function Component() {
    return (
       <Main>
          <main>
-            <div className="rounded-[11px] border border-border">
-               <Table
-                  aria-label="Books"
-                  selectionMode="multiple"
-                  selectedKeys={selectedKeys}
-                  onSelectionChange={setSelectedKeys}
-               >
-                  <Table.Header>
-                     <Table.Column>#</Table.Column>
-                     <Table.Column isRowHeader>Title</Table.Column>
-                     <Table.Column>Author</Table.Column>
-                     <Table.Column>Genre</Table.Column>
-                     <Table.Column>Published</Table.Column>
-                  </Table.Header>
-                  <Table.Body items={books}>
-                     {(item) => (
-                        <Table.Row>
-                           <Table.Cell>{item.id}</Table.Cell>
-                           <Table.Cell>{item.title}</Table.Cell>
-                           <Table.Cell>{item.author}</Table.Cell>
-                           <Table.Cell>{item.genre}</Table.Cell>
-                           <Table.Cell>{item.publishedYear}</Table.Cell>
-                        </Table.Row>
-                     )}
-                  </Table.Body>
-               </Table>
-            </div>
+            <Table
+               aria-label="Books"
+               selectionMode="multiple"
+               selectedKeys={selectedKeys}
+               onSelectionChange={setSelectedKeys}
+            >
+               <Table.Header>
+                  <Table.Column>#</Table.Column>
+                  <Table.Column isRowHeader>Title</Table.Column>
+                  <Table.Column>Author</Table.Column>
+                  <Table.Column>Genre</Table.Column>
+                  <Table.Column>Published</Table.Column>
+               </Table.Header>
+               <Table.Body items={books}>
+                  {(item) => (
+                     <Table.Row>
+                        <Table.Cell>{item.id}</Table.Cell>
+                        <Table.Cell>{item.title}</Table.Cell>
+                        <Table.Cell data-thead="Author">
+                           {item.author}
+                        </Table.Cell>
+                        <Table.Cell data-thead="Genre">{item.genre}</Table.Cell>
+                        <Table.Cell>{item.publishedYear}</Table.Cell>
+                     </Table.Row>
+                  )}
+               </Table.Body>
+            </Table>
          </main>
       </Main>
    )

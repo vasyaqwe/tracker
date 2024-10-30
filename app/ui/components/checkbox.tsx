@@ -42,11 +42,11 @@ const checkboxVariants = cva(
 )
 
 const boxVariants = cva(
-   "flex size-4 shrink-0 items-center justify-center rounded-[5px] border [&>[data-slot=icon]]:size-3",
+   "flex size-4 shrink-0 items-center justify-center rounded-[5px] border border-foreground/20 [&>[data-slot=icon]]:size-3",
    {
       variants: {
          isSelected: {
-            false: "",
+            false: "bg-elevated",
             true: ["border-primary/70 bg-primary text-primary-foreground", ""],
          },
          isFocused: {

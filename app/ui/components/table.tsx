@@ -23,11 +23,17 @@ import {
 import { Checkbox } from "./checkbox"
 
 const root = cn(
-   "table w-full border-spacing-0 text-sm outline-none [&_[data-drop-target]]:border [&_[data-drop-target]]:border-primary",
+   "table w-full caption-bottom border-spacing-0 text-sm outline-none",
 )
-const header = cn("border-border border-b")
+const header = cn(
+   "[&>tr]:!border-0 [&>tr]:bottom-0 [&>tr]:mt-1 max-md:hidden [&>tr]:before:border-none [&>tr]:bg-transparent",
+)
 const row = cn(
-   "tr group relative cursor-default border-border border-b outline-none ring-primary data-[selected=true]:bg-elevated/60 focus-visible:ring-1",
+   "relative transition-colors before:absolute before:inset-0 before:bottom-0 before:z-[1] before:mx-auto before:h-px before:w-[calc(100%-0.75rem)]",
+   "max-md:flex before:border-border before:border-t-2 before:border-dotted first:before:border-none",
+   "md:[&:first-child>td]:mt-1 md:[&:last-child>td]:mb-1 max-md:flex-col max-md:gap-3 max-md:px-6 max-md:py-5",
+   "tr group relative cursor-default outline-none focus-visible:after:block",
+   "after:-inset-y-0 after:absolute after:inset-x-1 last:after:bottom-1 after:z-[-1] data-[selected=true]:after:block after:hidden first:after:rounded-t-[calc(14px-1px)] last:after:rounded-b-[calc(14px-1px)] after:bg-border/40",
 )
 
 type TableProps = TablePrimitiveProps & {
@@ -43,7 +49,7 @@ const useTableContext = () => React.useContext(TableContext)
 
 const Table = ({ children, className, ...props }: TableProps) => (
    <TableContext.Provider value={props}>
-      <div className="relative w-full overflow-auto">
+      <div className="relative w-full overflow-auto rounded-[calc(14px)] border border-border/40 bg-elevated">
          {props.allowResize ? (
             <ResizableTableContainer className="overflow-auto">
                <TablePrimitive
@@ -68,7 +74,9 @@ const Table = ({ children, className, ...props }: TableProps) => (
 const Body = <T extends object>(props: TableBodyProps<T>) => (
    <TableBody
       {...props}
-      className={cn("[&_.tr:last-child]:border-0")}
+      className={cn(
+         "isolate before:absolute before:inset-1 md:before:top-12 before:z-[-1] before:rounded-[calc(14px-4px)] before:border before:border-border before:bg-background before:shadow-sm",
+      )}
    />
 )
 
@@ -76,13 +84,16 @@ type TableCellProps = CellProps & {
    className?: string
 }
 
-const cellVariants = cva("group whitespace-nowrap px-3 py-3 outline-none", {
-   variants: {
-      allowResize: {
-         true: "overflow-hidden truncate",
+const cellVariants = cva(
+   "grid-cols-[90px_1fr] items-center align-middle max-md:grid md:before:hidden max-md:w-full md:px-5 md:py-4 [&:has([role=checkbox])]:pr-0 before:font-medium before:font-primary before:text-foreground/60 before:text-sm",
+   {
+      variants: {
+         allowResize: {
+            true: "overflow-hidden truncate",
+         },
       },
    },
-})
+)
 const TableCell = ({ children, className, ...props }: TableCellProps) => {
    const { allowResize } = useTableContext()
    return (
@@ -96,7 +107,7 @@ const TableCell = ({ children, className, ...props }: TableCellProps) => {
 }
 
 const columnVariants = cva(
-   "relative whitespace-nowrap px-3 py-3 text-left font-medium outline-none allows-sorting:cursor-pointer dragging:cursor-grabbing [&:has([slot=selection])]:pr-0",
+   "h-12 px-5 text-left align-middle font-medium text-foreground/60 text-sm leading-none [&>[role=checkbox]]:translate-y-[2px] [&:has([role=checkbox])]:pr-0 [&:has([slot=selection])]:pr-0 first:pl-[26px] md:text-base",
    {
       variants: {
          isResizable: {
@@ -131,9 +142,7 @@ const TableColumn = ({
                   {children}
                   {allowsSorting && (
                      <>
-                        <span
-                           className={cn(isHovered ? "bg-secondary-fg/10" : "")}
-                        >
+                        <span className={cn(isHovered ? "" : "")}>
                            {/* <IconChevronLgDown
                               className={
                                  sortDirection === "ascending"
@@ -197,13 +206,11 @@ const TableRow = <T extends object>({
          {...props}
          className={cn(
             row,
-            "href" in props
-               ? cn("cursor-pointer hover:bg-secondary/50", className)
-               : "",
+            "href" in props ? cn("cursor-pointer", className) : "",
          )}
       >
          {selectionBehavior === "toggle" && (
-            <Cell className="pl-4">
+            <Cell className="md:pl-4">
                <span
                   aria-hidden
                   className="absolute inset-y-0 left-0 hidden h-full w-0.5 bg-primary group-selected:block"
