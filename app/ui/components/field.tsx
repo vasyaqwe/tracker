@@ -1,10 +1,11 @@
-import { cr, ctr } from "@/ui/utils"
+import { cn, cr, ctr } from "@/ui/utils"
 import { cva } from "class-variance-authority"
 import * as React from "react"
 import type {
    FieldErrorProps,
    GroupProps,
    InputProps,
+   LabelProps,
    TextFieldProps as TextFieldPrimitiveProps,
    ValidationResult,
 } from "react-aria-components"
@@ -12,9 +13,10 @@ import {
    FieldError as FieldErrorPrimitive,
    Group,
    Input as InputPrimitive,
+   Label as LabelPrimitive,
 } from "react-aria-components"
 
-interface FieldProps {
+type FieldProps = {
    label?: string
    placeholder?: string
    description?: string
@@ -91,7 +93,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       )
    },
 )
-Input.displayName = "Input"
+
+const Label = ({ className, ...props }: LabelProps) => {
+   return (
+      <LabelPrimitive
+         {...props}
+         className={cn(
+            "w-fit cursor-default font-medium text-secondary-fg text-sm",
+            className,
+         )}
+      />
+   )
+}
 
 export {
    fieldBorderStyles,
@@ -102,4 +115,5 @@ export {
    InputPrimitive,
    type FieldProps,
    FieldError,
+   Label,
 }

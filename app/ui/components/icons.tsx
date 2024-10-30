@@ -27,6 +27,22 @@ export const Icons = {
          />
       </svg>
    ),
+   minus: (props: IconProps) => (
+      <svg
+         xmlns="http://www.w3.org/2000/svg"
+         fill="none"
+         viewBox="0 0 24 24"
+         strokeWidth="2"
+         stroke="currentColor"
+         {...props}
+      >
+         <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M5 12h14"
+         />
+      </svg>
+   ),
    plus: (props: IconProps) => (
       <svg
          width="24"
