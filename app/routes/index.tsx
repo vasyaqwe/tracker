@@ -1,4 +1,5 @@
 import { projectListQuery } from "@/project/queries"
+import { LoginComponent } from "@/routes/login"
 import { createFileRoute, redirect } from "@tanstack/react-router"
 import { P, match } from "ts-pattern"
 
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/")({
          throw redirect({ to: "/$slug", params: { slug } })
       })
    },
+   errorComponent: LoginComponent,
 })
 
 function Component() {

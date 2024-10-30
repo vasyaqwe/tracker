@@ -641,6 +641,7 @@ export const Icons = {
    ),
    github: (props: IconProps) => (
       <svg
+         data-slot="icon"
          viewBox="0 0 256 250"
          width="256"
          height="250"

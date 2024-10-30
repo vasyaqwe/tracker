@@ -16,7 +16,6 @@ export const user = createTable(
       id: tableId("user"),
       email: text().notNull().unique(),
       name: text().notNull().default("No name"),
-      avatarUrl: text(),
       ...lifecycleDates,
    },
    (table) => {
@@ -80,10 +79,6 @@ export const emailVerificationCode = createTable(
    },
 )
 
-const organizationMembershipsSchema = z.array(
-   z.object({ organizationId: z.string() }),
-)
-
 export const session = createTable("session", {
    id: text().primaryKey(),
    expiresAt: integer({
@@ -92,18 +87,10 @@ export const session = createTable("session", {
    userId: text()
       .references(() => user.id, { onDelete: "cascade" })
       .notNull(),
-   organizationMemberships: text({
-      mode: "json",
-   })
-      .$type<z.infer<typeof organizationMembershipsSchema>>()
-      .notNull()
-      .default([]),
 })
 
 export const selectUserParams = createSelectSchema(user)
-export const selectSessionParams = createSelectSchema(session, {
-   organizationMemberships: organizationMembershipsSchema,
-})
+export const selectSessionParams = createSelectSchema(session)
 export const insertUserParams = z
    .object({
       email: z.string().email(),

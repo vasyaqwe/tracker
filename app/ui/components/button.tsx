@@ -1,50 +1,88 @@
-import { cn } from "@/ui/utils"
+import { cr } from "@/ui/primitive"
 import { type VariantProps, cva } from "class-variance-authority"
-import { type ComponentProps, forwardRef } from "react"
+import * as React from "react"
+import {
+   Button as ButtonPrimitive,
+   type ButtonProps as ButtonPrimitiveProps,
+} from "react-aria-components"
 
 const buttonVariants = cva(
-   `inline-flex items-center cursor-pointer justify-center whitespace-nowrap leading-none gap-1.5 font-medium
-    focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary/30 focus-visible:outline-primary/80 shadow-sm
-    outline outline-transparent outline-offset-1 disabled:opacity-70 disabled:cursor-not-allowed border transition-all`,
+   [
+      "inline-flex items-center justify-center gap-1.5 whitespace-nowrap outline-none",
+      "[--btn-icon:var(--color-icon)]",
+      "[&>[data-slot=icon]]:size-4 [&>[data-slot=icon]]:shrink-0 [&>[data-slot=icon]]:text-[--btn-icon]",
+   ],
    {
       variants: {
-         variant: {
-            default: `active:enabled:scale-[98%] bg-primary/90 hover:enabled:shadow-md border-transparent focus-visible:ring-foreground/30 focus-visible:outline-foreground/80 
-                      text-background/95 hover:enabled:bg-primary disabled:bg-background disabled:text-foreground disabled:border-foreground/20 
-                      active:enabled:shadow-sm hover:enabled:text-primary-foreground disabled:!text-foreground/70`,
-            secondary: `active:enabled:scale-[98%] bg-border/75 border-transparent hover:bg-border`,
-            outline: `active:enabled:scale-[98%] bg-popover !shadow-button border border-transparent text-foreground disabled:!text-foreground/70 data-[state=open]:bg-elevated/75 hover:enabled:bg-elevated/75`,
-            ghost: "!shadow-none disabled:!text-foreground/70 border border-transparent active:enabled:scale-[98%] data-[state=open]:bg-muted hover:enabled:bg-border/50",
-            destructive: `active:enabled:scale-[98%] bg-destructive border-destructive hover:enabled:bg-destructive/90 text-destructive-foreground`,
-            link: "!h-auto !p-0 !shadow-none inline-block border-transparent text-base text-foreground/70 underline transition-none hover:enabled:text-foreground",
+         intent: {
+            primary: ["bg-primary text-primary-foreground hover:bg-primary/90"],
+         },
+         appearance: {
+            solid: ["border-transparent"],
          },
          size: {
-            default: "h-8 rounded-full px-3 text-[0.94rem]",
-            sm: "h-7 rounded-full px-2.5",
-            lg: "h-9 gap-2 rounded-full px-3.5 text-[1rem]",
-            xl: "h-10 gap-2 rounded-full px-3.5 text-[1.0325rem]",
-            icon: "size-8 gap-0 rounded-full",
-            "icon-sm": "size-[30px] gap-0 rounded-full",
+            md: "h-9 rounded-[11px] px-2 text-base",
+         },
+         isDisabled: {
+            false: "",
+            true: "cursor-not-allowed opacity-70",
+         },
+         isPending: {
+            true: "cursor-not-allowed",
+         },
+         isFocusVisible: {
+            false: "",
+            true: "ring-3 ring-primary ring-offset-1",
          },
       },
       defaultVariants: {
-         variant: "default",
-         size: "default",
+         intent: "primary",
+         appearance: "solid",
+         size: "md",
       },
    },
 )
 
-const Button = forwardRef<
-   HTMLButtonElement,
-   ComponentProps<"button"> & VariantProps<typeof buttonVariants>
->(({ className, variant, size, ...props }, ref) => {
-   return (
-      <button
-         ref={ref}
-         className={cn(buttonVariants({ variant, size, className }))}
-         {...props}
-      />
-   )
-})
+type ButtonProps = ButtonPrimitiveProps & VariantProps<typeof buttonVariants>
 
-export { Button, buttonVariants }
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+   (
+      {
+         className,
+         intent,
+         appearance,
+         size,
+         isDisabled,
+         isPending,
+         isFocusVisible,
+         ...props
+      },
+      ref,
+   ) => {
+      return (
+         <ButtonPrimitive
+            ref={ref}
+            {...props}
+            className={cr(className, (className, renderProps) =>
+               buttonVariants({
+                  ...renderProps,
+                  intent,
+                  appearance,
+                  size,
+                  className,
+               }),
+            )}
+         >
+            {(values) => (
+               <>
+                  {typeof props.children === "function"
+                     ? props.children(values)
+                     : props.children}
+               </>
+            )}
+         </ButtonPrimitive>
+      )
+   },
+)
+
+export { Button, ButtonPrimitive, buttonVariants, type ButtonProps }

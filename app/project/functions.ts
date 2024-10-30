@@ -58,16 +58,18 @@ export const insert = createServerFn(
          if (existingProject) throw new TRPCError({ code: "CONFLICT" })
 
          const createdProject = await ctx.db.transaction(async (tx) => {
-            const [createdProject] = await tx
+            const createdProject = await tx
                .insert(project)
                .values({
                   name: input.name,
                   slug: input.slug,
+                  rate: input.rate,
                   ownerId: ctx.user.id,
                })
                .returning({
                   id: project.id,
                })
+               .get()
 
             if (!createdProject) throw new Error("Error")
             return createdProject

@@ -4,8 +4,9 @@ const b58 = baseX("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
 
 const prefixes = {
    user: "user",
-   project: "proj",
    verification_code: "code",
+   project: "proj",
+   summary: "sum",
 } as const
 
 const generateId = (prefix: keyof typeof prefixes) => {

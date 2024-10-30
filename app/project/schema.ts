@@ -1,6 +1,6 @@
 import { createTable, lifecycleDates, tableId } from "@/db/utils"
 import { user } from "@/user/schema"
-import { text, uniqueIndex } from "drizzle-orm/sqlite-core"
+import { integer, text, uniqueIndex } from "drizzle-orm/sqlite-core"
 import { createInsertSchema } from "drizzle-zod"
 import { z } from "zod"
 
@@ -10,6 +10,7 @@ export const project = createTable(
       id: tableId("project"),
       name: text().notNull(),
       slug: text().notNull(),
+      rate: integer().notNull(),
       ownerId: text()
          .notNull()
          .references(() => user.id),

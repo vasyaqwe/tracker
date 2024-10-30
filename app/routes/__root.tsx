@@ -37,7 +37,7 @@ export const Route = createRootRouteWithContext<{
             content:
                "viewport-fit=cover, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0",
          },
-         { name: "theme-color", content: "#fefcfb" },
+         { name: "theme-color", content: "#fff" },
          { title },
          {
             name: "description",
@@ -63,16 +63,9 @@ export const Route = createRootRouteWithContext<{
       { rel: "manifest", href: "/site.webmanifest" },
       {
          rel: "preload",
-         href: "/fonts/satoshi.woff2",
+         href: "/font/alpha.woff2",
          as: "font",
          type: "font/woff2",
-         crossOrigin: "anonymous",
-      },
-      {
-         rel: "preload",
-         href: "/fonts/serif_bold.otf",
-         as: "font",
-         type: "font/otf",
          crossOrigin: "anonymous",
       },
    ],
@@ -96,11 +89,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
          <Body suppressHydrationWarning>
             <div
                className={cn(
-                  "flex-1 flex-row bg-background text-foreground tracking-[0.02em] antialiased md:flex selection:bg-primary selection:text-background",
+                  "bg-background text-foreground antialiased selection:bg-primary selection:text-background",
                )}
             >
-                  {children}
-                     <Toaster />
+               {children}
+               <Toaster />
             </div>
             <ScrollRestoration />
             {/* <ReactQueryDevtools buttonPosition="bottom-left" /> */}

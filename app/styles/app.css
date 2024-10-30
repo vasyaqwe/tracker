@@ -1,40 +1,21 @@
-@import "../ui/components/editor/style.css";
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
-@plugin "@tailwindcss/typography";
 
 @theme default {
-   --header-height: 50px;
-   --bottom-menu-height: calc(54px + max(env(safe-area-inset-bottom), 0px));
-
-   --color-background: #fefcfb;
-   --color-foreground: #140d30;
-   --color-brand: #52409c;
-   --color-popover: #fff;
-   --color-primary: #7760d2;
-   --color-secondary: #f9f8f9;
-   --color-muted: #f3f2f3;
-   --color-muted-foreground: #6c656c;
-   --color-border: #e6e5e6;
+   --color-background: #fff;
+   --color-foreground: #18181b;
+   --color-popover: #1c2024;
+   --color-icon: #a1a1aa;
+   --color-popover-foreground: #fff;
+   --color-primary: #18181b;
+   --color-primary-foreground: #fff;
+   --color-border: #ccc;
    --color-destructive: #ef4444;
    --color-destructive-foreground: #fff;
    --color-elevated: #f8f6f6;
-   --color-highlight: rgba(230, 157, 11, 0.175);
-   --color-highlight-foreground: #764d08;
 
-   --shadow-button: 0px 3px 3px -1px rgba(24, 24, 24, 0.09), 0px 0px 0px 1px
-      rgba(24, 24, 24, 0.09);
-
-   --font-family-primary: "satoshi", sans-serif;
-   --font-family-secondary: "garamond", sans-serif;
-
-   --font-size-xs: 0.825rem;
-   --font-size-sm: 0.895rem;
-   --font-size-sm--line-height: 1.2rem;
-   --font-size-base: 0.9525rem;
-   --font-size-base--line-height: 1.4rem;
-   --font-size-lg: 1.05rem;
-   --font-size-xl: 1.3rem;
+   --font-family-primary: "alpha", sans-serif;
+   /* --font-family-secondary: "garamond", sans-serif; */
 
    --ease-vaul: cubic-bezier(0.32, 0.72, 0, 1);
 
@@ -70,27 +51,20 @@
 }
 
 @font-face {
-   font-family: "satoshi";
-   src: url("/fonts/satoshi.woff2") format("woff2-variations");
+   font-family: "alpha";
+   src: url("/font/alpha.woff2") format("woff2-variations");
    font-display: swap;
    font-style: normal;
    font-weight: 500 800;
 }
-
+/* 
 @font-face {
    font-family: "garamond";
    src: url("/fonts/garamond.ttf") format("truetype");
    font-display: swap;
    font-style: normal;
    font-weight: 400;
-}
-@font-face {
-   font-family: "garamond";
-   src: url("/fonts/garamond_italic.ttf") format("truetype");
-   font-display: swap;
-   font-style: italic;
-   font-weight: 400;
-}
+} */
 
 html {
    font-family: var(--font-family-primary);
@@ -100,7 +74,7 @@ body {
 }
 * {
    scrollbar-width: thin;
-   scrollbar-color: #a3a3a3 transparent;
+   scrollbar-color: #a1a1aa transparent;
 }
 @layer components {
    .squircle {

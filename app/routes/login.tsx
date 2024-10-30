@@ -1,7 +1,5 @@
 import { useMountError } from "@/interactions/use-mount-error"
 import { Button } from "@/ui/components/button"
-import { cardVariants } from "@/ui/components/card"
-import { Icons } from "@/ui/components/icons"
 import { Loading } from "@/ui/components/loading"
 import { cn } from "@/ui/utils"
 import * as userFns from "@/user/functions"
@@ -11,7 +9,7 @@ import { useServerFn } from "@tanstack/start"
 import { useState } from "react"
 
 export const Route = createFileRoute("/login")({
-   component: Component,
+   component: LoginComponent,
    meta: () => [{ title: "Log in" }],
    validateSearch: (
       search: Record<string, unknown>,
@@ -24,14 +22,14 @@ export const Route = createFileRoute("/login")({
    },
 })
 
-function Component() {
+export function LoginComponent() {
    useMountError("Login failed, please try again")
    const _search = Route.useSearch()
 
    const [isCodeSent, _setIsCodeSent] = useState(false)
 
    const loginWithGithubFn = useServerFn(userFns.logInWithGithub)
-   const loginWithGithub = useMutation({
+   const _loginWithGithub = useMutation({
       mutationFn: loginWithGithubFn,
       onSuccess: (url) => {
          window.location.href = url
@@ -48,28 +46,19 @@ function Component() {
 
    return (
       <main className="isolate grid h-svh w-full place-items-center px-4">
-         <div className="-mt-8 flex w-full max-w-[320px] flex-col">
+         <div className="-mt-8 flex w-full max-w-[260px] flex-col">
             {/* <Logo className="mx-auto mb-6" /> */}
-            <h1 className="mb-6 gap-6 pb-2 text-center font-bold text-[1.5rem] leading-none">
-               Log in to Cue
-            </h1>
-            <div
-               className={cn(
-                  cardVariants(),
-                  "pattern relative mx-auto flex w-full flex-col overflow-hidden rounded-2xl p-0",
-               )}
-            >
-               <>
-                  {isCodeSent ? (
-                     <div
-                        className="flex h-full flex-col p-6 md:p-9"
-                        key={isCodeSent.toString()}
-                     >
-                        <p className="text-foreground/75 md:text-[1rem]">
-                           Enter the 6-digit code we sent to your email.
-                        </p>
-                        <div className="mt-6 flex flex-grow flex-col">
-                           {/* <InputOTP
+            <div className={cn("relative mx-auto flex w-full flex-col")}>
+               {isCodeSent ? (
+                  <div
+                     className="flex h-full flex-col p-6 md:p-9"
+                     key={isCodeSent.toString()}
+                  >
+                     <p className="text-foreground/75 md:text-[1rem]">
+                        Enter the 6-digit code we sent to your email.
+                     </p>
+                     <div className="mt-6 flex flex-grow flex-col">
+                        {/* <InputOTP
                               ref={otpInputRef}
                               autoFocus
                               onComplete={(code) => {
@@ -121,11 +110,11 @@ function Component() {
                               </Button>
                               .
                            </p> */}
-                        </div>
                      </div>
-                  ) : (
-                     <div>
-                        {/* <form
+                  </div>
+               ) : (
+                  <>
+                     {/* <form
                                  onSubmit={(e) => {
                                     e.preventDefault()
                                     sendLoginCode({
@@ -159,83 +148,77 @@ function Component() {
                                  </Button>
                               </form> */}
 
-                        {/* <div className="relative my-8 w-full">
+                     {/* <div className="relative my-8 w-full">
                                  <hr className="w-full border-border" />
                                  <span className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 bg-muted p-2.5 font-medium text-foreground/50 dark:bg-popover">
                                     OR
                                  </span>
                               </div> */}
-                        <div className="p-6 md:p-9">
-                           <Button
-                              size={"lg"}
-                              variant={"outline"}
-                              className="w-full"
-                              disabled={
-                                 loginWithGithub.isPending ||
-                                 loginWithGithub.isSuccess
-                              }
-                              onClick={() => loginWithGithub.mutate()}
-                           >
-                              {loginWithGithub.isPending ||
-                              loginWithGithub.isSuccess ? (
-                                 <Loading />
-                              ) : (
-                                 <>
-                                    <Icons.github className="-mt-px size-[18px]" />
-                                    Continue with Github
-                                 </>
-                              )}
-                           </Button>
-                           <Button
-                              size={"lg"}
-                              variant={"outline"}
-                              className="mt-3 w-full"
-                              disabled={
-                                 loginWithGoogle.isPending ||
-                                 loginWithGoogle.isSuccess
-                              }
-                              onClick={() => loginWithGoogle.mutate()}
-                           >
-                              {loginWithGoogle.isPending ||
-                              loginWithGoogle.isSuccess ? (
-                                 <Loading />
-                              ) : (
-                                 <>
-                                    <svg
-                                       className="size-[18px]"
-                                       width="256"
-                                       height="262"
-                                       viewBox="0 0 256 262"
-                                       xmlns="http://www.w3.org/2000/svg"
-                                       preserveAspectRatio="xMidYMid"
-                                    >
-                                       <path
-                                          d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
-                                          fill="currentColor"
-                                       />
-                                       <path
-                                          d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"
-                                          fill="currentColor"
-                                          fillOpacity={0.6}
-                                       />
-                                       <path
-                                          d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"
-                                          fill="currentColor"
-                                       />
-                                       <path
-                                          d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
-                                          fill="currentColor"
-                                          fillOpacity={0.6}
-                                       />
-                                    </svg>
-                                    Continue with Google
-                                 </>
-                              )}
-                           </Button>
-                        </div>
-                     </div>
-                  )}
-               </>
+                     {/* <Button
+                        className="w-full"
+                        isDisabled={
+                           loginWithGithub.isPending ||
+                           loginWithGithub.isSuccess
+                        }
+                        onPress={() => loginWithGithub.mutate()}
+                     >
+                        {loginWithGithub.isPending ||
+                        loginWithGithub.isSuccess ? (
+                           <Loading />
+                        ) : (
+                           <>
+                              <Icons.github className="-mt-px size-[18px]" />
+                              Log in with Github
+                           </>
+                        )}
+                     </Button> */}
+                     <Button
+                        className="mt-3 w-full"
+                        isDisabled={
+                           loginWithGoogle.isPending ||
+                           loginWithGoogle.isSuccess
+                        }
+                        onPress={() => loginWithGoogle.mutate()}
+                     >
+                        {loginWithGoogle.isPending ||
+                        loginWithGoogle.isSuccess ? (
+                           <Loading />
+                        ) : (
+                           <>
+                              <svg
+                                 data-slot="icon"
+                                 className="size-[18px]"
+                                 width="256"
+                                 height="262"
+                                 viewBox="0 0 256 262"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 preserveAspectRatio="xMidYMid"
+                              >
+                                 <path
+                                    d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
+                                    fill="currentColor"
+                                 />
+                                 <path
+                                    d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"
+                                    fill="currentColor"
+                                    fillOpacity={0.6}
+                                 />
+                                 <path
+                                    d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"
+                                    fill="currentColor"
+                                 />
+                                 <path
+                                    d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
+                                    fill="currentColor"
+                                    fillOpacity={0.6}
+                                 />
+                              </svg>
+                              Log in with Google
+                           </>
+                        )}
+                     </Button>
+                  </>
+               )}
             </div>
          </div>
       </main>
