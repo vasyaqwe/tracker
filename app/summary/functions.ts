@@ -1,7 +1,7 @@
 import { protectedProcedure } from "@/lib/trpc"
 import { insertSummaryParams, summary } from "@/summary/schema"
 import { createServerFn } from "@tanstack/start"
-import { eq } from "drizzle-orm"
+import { and, eq, gte, lt } from "drizzle-orm"
 import { z } from "zod"
 
 export const list = createServerFn(
@@ -13,6 +13,9 @@ export const list = createServerFn(
             where: eq(summary.projectId, input.projectId),
             columns: {
                id: true,
+               amountEarned: true,
+               durationMinutes: true,
+               createdAt: true,
             },
          })
       }),
@@ -23,19 +26,40 @@ export const insert = createServerFn(
    protectedProcedure
       .input(insertSummaryParams)
       .mutation(async ({ ctx, input }) => {
-         const createdSummary = await ctx.db
-            .insert(summary)
-            .values({
-               projectId: input.projectId,
-               amountEarned: input.amountEarned,
-               durationMinutes: input.durationMinutes,
-            })
-            .returning({
-               id: summary.id,
-            })
+         const existingSummary = await ctx.db
+            .select({ id: summary.id })
+            .from(summary)
+            .where(
+               and(
+                  eq(summary.projectId, input.projectId),
+                  gte(
+                     summary.createdAt,
+                     new Date(new Date().setUTCHours(0, 0, 0, 0)).getTime(),
+                  ),
+                  lt(
+                     summary.createdAt,
+                     new Date(
+                        new Date().setUTCHours(23, 59, 59, 999),
+                     ).getTime(),
+                  ),
+               ),
+            )
             .get()
 
-         return createdSummary.id
+         if (existingSummary)
+            return await ctx.db
+               .update(summary)
+               .set({
+                  amountEarned: input.amountEarned,
+                  durationMinutes: input.durationMinutes,
+               })
+               .where(eq(summary.id, existingSummary.id))
+
+         return await ctx.db.insert(summary).values({
+            projectId: input.projectId,
+            amountEarned: input.amountEarned,
+            durationMinutes: input.durationMinutes,
+         })
       }),
 )
 

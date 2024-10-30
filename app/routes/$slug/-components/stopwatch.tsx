@@ -1,7 +1,7 @@
 import { useBlocker } from "@/interactions/use-blocker"
 import { useLocalStorage } from "@/interactions/use-local-storage"
 import * as summary from "@/summary/functions"
-import { useInsertSummary } from "@/summary/hooks/use-insert-issue"
+import { useInsertSummary } from "@/summary/hooks/use-insert-summary"
 import { summaryListQuery } from "@/summary/queries"
 import { TimerRenderer } from "@/timer"
 import { Button } from "@/ui/components/button"
@@ -48,7 +48,9 @@ export function Stopwatch() {
             summaryListQuery({ projectId }).queryKey,
          )
 
-         insertSummaryToQueryData({ input })
+         insertSummaryToQueryData({
+            input: { ...input, id: crypto.randomUUID(), createdAt: Date.now() },
+         })
 
          return { data }
       },

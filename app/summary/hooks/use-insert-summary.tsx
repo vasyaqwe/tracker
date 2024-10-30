@@ -11,22 +11,14 @@ export function useInsertSummary() {
    const insertSummaryToQueryData = ({
       input,
    }: {
-      input: Omit<Awaited<ReturnType<typeof summary.list>>[number], "id">
+      input: Awaited<ReturnType<typeof summary.list>>[number]
    }) => {
       queryClient.setQueryData(
          summaryListQuery({ projectId }).queryKey,
          (oldData) =>
             match(oldData)
                .with(undefined, (data) => data)
-               .otherwise((data) => [
-                  {
-                     ...input,
-                     id: crypto.randomUUID(),
-                     createdAt: Date.now(),
-                     updatedAt: Date.now(),
-                  },
-                  ...data,
-               ]),
+               .otherwise((data) => [input, ...data]),
       )
    }
 

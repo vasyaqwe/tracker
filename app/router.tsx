@@ -144,7 +144,7 @@ function CatchBoundary({ error }: ErrorComponentProps) {
             </p>
             <div className="flex items-center justify-center gap-2.5">
                <Button
-                  onClick={() => {
+                  onPress={() => {
                      router.invalidate()
                   }}
                >
@@ -153,14 +153,14 @@ function CatchBoundary({ error }: ErrorComponentProps) {
                {isRoot ? (
                   <Link
                      to="/"
-                     className={buttonVariants({ variant: "outline" })}
+                     className={buttonVariants()}
                   >
                      Back home
                   </Link>
                ) : (
                   <Link
                      to="/"
-                     className={buttonVariants({ variant: "outline" })}
+                     className={buttonVariants()}
                      onClick={(e) => {
                         e.preventDefault()
                         window.history.back()
