@@ -14,6 +14,7 @@ import { useServerFn } from "@tanstack/start"
 import { useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useTimer } from "react-use-precision-timer"
+import { toast } from "sonner"
 import { match } from "ts-pattern"
 
 export function Stopwatch() {
@@ -24,6 +25,7 @@ export function Stopwatch() {
       `${projectId}_start_time`,
       null,
    )
+
    const timer = useTimer({
       delay: 0,
    })
@@ -37,11 +39,17 @@ export function Stopwatch() {
    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
    useBlocker(hasUnsavedChanges)
 
+   const sound = useSound("/sound/tap.wav")
+
    const { insertSummaryToQueryData } = useInsertSummary()
    const insertFn = useServerFn(summary.insert)
    const insert = useMutation({
       mutationFn: insertFn,
       onMutate: async (input) => {
+         setStartTime(null)
+         timer.stop()
+         sound.play()
+
          await queryClient.cancelQueries(summaryListQuery({ projectId }))
 
          const data = queryClient.getQueryData(
@@ -54,15 +62,18 @@ export function Stopwatch() {
 
          return { data }
       },
-      onSuccess: () => {
-         setStartTime(null)
-         timer.stop()
+      onError: (_err, _data, context) => {
+         queryClient.setQueryData(
+            summaryListQuery({ projectId }).queryKey,
+            context?.data,
+         )
+         toast.error("Failed to create summary")
+      },
+      onSettled: () => {
          setHasUnsavedChanges(false)
          queryClient.invalidateQueries(summaryListQuery({ projectId }))
       },
    })
-
-   const sound = useSound("/sound/tap.wav")
 
    const start = () => {
       timer.start()
@@ -89,7 +100,6 @@ export function Stopwatch() {
                projectId,
                durationMinutes,
             })
-            sound.play()
          })
    }
 

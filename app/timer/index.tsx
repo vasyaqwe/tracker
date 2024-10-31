@@ -34,14 +34,15 @@ export function TimerRenderer({
       return subs.createCleanup()
    }, [RENDER_INTERVAL])
 
-   const formatTime = (time: number) => {
-      const seconds = Math.floor((time / 1000) % 60)
-      const minutes = Math.floor((time / 1000 / 60) % 60)
-      const hours = Math.floor((time / 1000 / 60 / 60) % 24)
+   function formatTime(ms: number): string {
+      const seconds = Math.floor(ms / 1000)
+      const hours = Math.floor(seconds / 3600)
+      const minutes = Math.floor((seconds % 3600) / 60)
+      const remainingSeconds = seconds % 60
 
-      return `${hours < 10 ? `0${hours}` : hours}:${
-         minutes < 10 ? `0${minutes}` : minutes
-      }:${seconds < 10 ? `0${seconds}` : seconds}`
+      const pad = (num: number): string => num.toString().padStart(2, "0")
+
+      return `${pad(hours)}:${pad(minutes)}:${pad(remainingSeconds)}`
    }
 
    return (

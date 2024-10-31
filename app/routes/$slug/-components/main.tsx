@@ -11,7 +11,10 @@ export function Main({
 
    return (
       <Comp
-         className={cn("relative flex flex-1 flex-col", className)}
+         className={cn(
+            "relative flex min-h-[var(--sidebar-height)] flex-1 flex-col md:pb-20",
+            className,
+         )}
          {...props}
       >
          {children}

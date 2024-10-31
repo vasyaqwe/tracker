@@ -49,17 +49,37 @@ export const formatDateRelative = (
    return rtf.format(-Math.floor(deltaSeconds / divisor), unit) // Added negative sign here
 }
 
-export const formatDate = (
+export const formatDateIntl = (
    date: Date | string | number,
    options: Intl.DateTimeFormatOptions = {
-      month: "long",
+      month: "short",
       day: "numeric",
-      year: "numeric",
    },
 ) =>
    new Intl.DateTimeFormat("en-US", {
       ...options,
    }).format(new Date(date))
+
+export const formatDate = (input: number) => {
+   const date = new Date(input)
+
+   const now = new Date()
+   const yesterday = new Date(now)
+
+   yesterday.setDate(now.getDate() - 1)
+
+   const beforeYesterday = new Date(now)
+   beforeYesterday.setDate(now.getDate() - 2)
+
+   if (date.toDateString() === now.toDateString()) {
+      return "Today"
+   }
+   if (date.toDateString() === yesterday.toDateString()) {
+      return "Yesterday"
+   }
+
+   return formatDateIntl(input)
+}
 
 export const millisToMinutes = (millis: number) => {
    const minutes = Math.floor(millis / 60000)

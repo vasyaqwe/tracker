@@ -18,7 +18,33 @@ export function useInsertSummary() {
          (oldData) =>
             match(oldData)
                .with(undefined, (data) => data)
-               .otherwise((data) => [input, ...data]),
+               .otherwise((data) => {
+                  // check if there's a summary for today
+                  const today = new Date()
+                  const todaySummaryIndex = data.findIndex(
+                     (summary) =>
+                        new Date(summary.createdAt).setHours(0, 0, 0, 0) ===
+                        today.setHours(0, 0, 0, 0),
+                  )
+
+                  if (todaySummaryIndex !== -1) {
+                     const newData = [...data]
+                     const oldSummary = newData[todaySummaryIndex]
+
+                     if (!oldSummary) return data
+
+                     newData[todaySummaryIndex] = {
+                        ...oldSummary,
+                        amountEarned: (
+                           +oldSummary.amountEarned + +input.amountEarned
+                        ).toString(),
+                        durationMinutes:
+                           oldSummary.durationMinutes + input.durationMinutes,
+                     }
+                     return newData
+                  }
+                  return [input, ...data]
+               }),
       )
    }
 

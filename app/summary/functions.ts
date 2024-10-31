@@ -1,7 +1,7 @@
 import { protectedProcedure } from "@/lib/trpc"
 import { insertSummaryParams, summary } from "@/summary/schema"
 import { createServerFn } from "@tanstack/start"
-import { and, eq, gte, lt } from "drizzle-orm"
+import { and, eq, gte, lt, sql } from "drizzle-orm"
 import { z } from "zod"
 
 export const list = createServerFn(
@@ -50,8 +50,8 @@ export const insert = createServerFn(
             return await ctx.db
                .update(summary)
                .set({
-                  amountEarned: input.amountEarned,
-                  durationMinutes: input.durationMinutes,
+                  amountEarned: sql`${summary.amountEarned} + ${input.amountEarned}`,
+                  durationMinutes: sql`${summary.durationMinutes} + ${input.durationMinutes}`,
                })
                .where(eq(summary.id, existingSummary.id))
 
