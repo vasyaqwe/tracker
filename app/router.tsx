@@ -127,7 +127,7 @@ function CatchBoundary({ error }: ErrorComponentProps) {
    })
 
    return (
-      <div className="grid h-svh w-full place-items-center text-center">
+      <div className="grid w-full place-items-center pt-9 text-center">
          {import.meta.env.DEV && (
             <div className="absolute top-0">
                <ErrorComponent error={error} />{" "}
@@ -140,7 +140,7 @@ function CatchBoundary({ error }: ErrorComponentProps) {
             </h1>
             <p className="mb-5 text-lg leading-snug opacity-70">
                A technical error has occurred. <br className="sm:hidden" />{" "}
-               Please try again.
+               Please try again, or reload the page.
             </p>
             <div className="flex items-center justify-center gap-2.5">
                <Button
