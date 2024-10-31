@@ -42,7 +42,7 @@ function Component() {
       <Main>
          <main>
             {summaries.data.length === 0 ? (
-               <p className="mx-auto mt-6 flex max-w-[40ch] flex-col items-center gap-3 text-balance text-center font-medium text-foreground/70 md:mt-1">
+               <p className="mx-auto mt-6 flex max-w-[30ch] flex-col items-center gap-3 text-balance text-center font-medium text-foreground/70 md:mt-1">
                   <svg
                      className="size-7"
                      viewBox="0 0 20 20"

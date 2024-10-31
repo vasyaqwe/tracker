@@ -56,18 +56,7 @@ const buttonVariants = cva(
 type ButtonProps = ButtonPrimitiveProps & VariantProps<typeof buttonVariants>
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-   (
-      {
-         className,
-         intent,
-         size,
-         isDisabled,
-         isPending,
-         isFocusVisible,
-         ...props
-      },
-      ref,
-   ) => {
+   ({ className, intent, size, ...props }, ref) => {
       return (
          <ButtonPrimitive
             ref={ref}

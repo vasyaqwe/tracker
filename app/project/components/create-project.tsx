@@ -98,7 +98,7 @@ export function CreateProject({
                         }),
                      )
                }}
-               className="w-full"
+               className="flex w-full flex-col"
             >
                <Label htmlFor="name">Name</Label>
                <Input

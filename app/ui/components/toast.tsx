@@ -85,7 +85,7 @@ function Toaster(props: ComponentProps<typeof Sonner>) {
                ),
             },
             className:
-               "!mx-auto !border-border !shadow-lg !font-primary !py-3.5 !select-none !w-max !max-w-[--width] !left-1/2 max-md:mb-[calc(env(safe-area-inset-bottom)+1.75rem)] !bg-popover !right-auto !text-base !text-primary-foreground !justify-center !pointer-events-auto !rounded-full",
+               "!mx-auto !border-transparent !shadow-lg !font-primary !py-3.5 !select-none !w-max !max-w-[--width] !left-1/2 max-md:mb-[calc(env(safe-area-inset-bottom)+1.75rem)] !bg-popover !right-auto !text-base !text-primary-foreground !justify-center !pointer-events-auto !rounded-full",
          }}
          expand
          position="top-center"
