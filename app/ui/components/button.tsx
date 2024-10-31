@@ -26,12 +26,15 @@ const buttonVariants = cva(
                "border-transparent bg-transparent aria-expanded:bg-border/60 hover:bg-border/60",
             ],
             destructive: [
+               "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/90",
+            ],
+            "destructive-secondary": [
                "border-transparent bg-popover-elevated text-background hover:bg-red-400/20 hover:text-red-400",
             ],
          },
          size: {
-            sm: "h-8 rounded-[11px] px-3 text-base",
-            md: "h-9 rounded-[11px] px-3 text-base",
+            sm: "h-8 rounded-[11px] px-3 text-sm",
+            md: "h-9 rounded-[11px] px-3 text-[0.925rem]",
             icon: "size-8 rounded-[11px]",
          },
          isDisabled: {

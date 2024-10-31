@@ -43,10 +43,11 @@ CREATE TABLE `project` (
 	`owner_id` text NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
-	FOREIGN KEY (`owner_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`owner_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `project_slug_idx` ON `project` (`slug`);--> statement-breakpoint
+CREATE UNIQUE INDEX `project_owner_id_idx` ON `project` (`owner_id`);--> statement-breakpoint
 CREATE TABLE `summary` (
 	`id` text(256) PRIMARY KEY NOT NULL,
 	`project_id` text NOT NULL,
@@ -54,5 +55,7 @@ CREATE TABLE `summary` (
 	`duration_minutes` integer NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
-	FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON UPDATE no action ON DELETE cascade
 );
+--> statement-breakpoint
+CREATE INDEX `summary_project_id_idx` ON `summary` (`project_id`);

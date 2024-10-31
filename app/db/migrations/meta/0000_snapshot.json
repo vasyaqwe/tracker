@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "da3d6a7a-c5d2-4686-9d51-4fc5124c0c88",
+  "id": "d6184c8c-a133-4dd7-8686-1fdbab1b8372",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "email_verification_code": {
@@ -305,6 +305,13 @@
             "slug"
           ],
           "isUnique": true
+        },
+        "project_owner_id_idx": {
+          "name": "project_owner_id_idx",
+          "columns": [
+            "owner_id"
+          ],
+          "isUnique": true
         }
       },
       "foreignKeys": {
@@ -318,7 +325,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -372,7 +379,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "summary_project_id_idx": {
+          "name": "summary_project_id_idx",
+          "columns": [
+            "project_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "summary_project_id_project_id_fk": {
           "name": "summary_project_id_project_id_fk",
@@ -384,7 +399,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

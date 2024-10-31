@@ -10,7 +10,7 @@ function Toaster(props: ComponentProps<typeof Sonner>) {
                <svg
                   viewBox="0 0 14 14"
                   fill="none"
-                  className="size-5 text-brand"
+                  className="size-[18px] text-emerald-500"
                >
                   <circle
                      cx="7"
@@ -47,7 +47,7 @@ function Toaster(props: ComponentProps<typeof Sonner>) {
                   viewBox="0 0 18 18"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="-mt-px size-5 text-red-400"
+                  className="-mt-px size-[18px] text-red-400"
                >
                   <path
                      fillRule="evenodd"
@@ -64,7 +64,7 @@ function Toaster(props: ComponentProps<typeof Sonner>) {
                   fill="currentColor"
                   height="20"
                   width="20"
-                  className="-mt-px size-5"
+                  className="-mt-px size-[18px]"
                >
                   <path
                      fillRule="evenodd"

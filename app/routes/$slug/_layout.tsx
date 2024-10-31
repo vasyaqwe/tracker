@@ -77,7 +77,7 @@ function Component() {
    }, [])
 
    return (
-      <div className="mx-auto max-w-4xl items-start gap-9 px-4 pt-4 [--sidebar-height:240px] md:flex md:pt-28 max-md:pb-8">
+      <div className="mx-auto max-w-4xl items-start gap-9 px-4 pt-4 [--sidebar-height:275px] md:flex md:pt-28 max-md:pb-8">
          <Navigation />
          <Outlet />
          <Stopwatch />

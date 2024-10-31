@@ -1,6 +1,6 @@
 import { createTable, lifecycleDates, tableId } from "@/db/utils"
 import { project } from "@/project/schema"
-import { integer, numeric, text } from "drizzle-orm/sqlite-core"
+import { index, integer, numeric, text } from "drizzle-orm/sqlite-core"
 import { createInsertSchema } from "drizzle-zod"
 
 export const summary = createTable(
@@ -8,15 +8,17 @@ export const summary = createTable(
    {
       id: tableId("summary"),
       projectId: text()
-         .notNull()
-         .references(() => project.id),
+         .references(() => project.id, { onDelete: "cascade" })
+         .notNull(),
       amountEarned: numeric().notNull(),
       durationMinutes: integer().notNull(),
       ...lifecycleDates,
    },
-   () => {
+   (table) => {
       return {
-         //
+         summaryProjectIdIdx: index("summary_project_id_idx").on(
+            table.projectId,
+         ),
       }
    },
 )

@@ -42,12 +42,7 @@ const DropdownSection = <T extends object>({
    ...props
 }: DropdownSectionProps<T>) => {
    return (
-      <Section
-         className={cn(
-            "first:-mt-[5px] flex flex-col gap-y-0.5 after:block after:h-[5px]",
-            className,
-         )}
-      >
+      <Section className={cn("flex flex-col gap-y-0.5", className)}>
          {"title" in props && (
             <Header
                className={cn(

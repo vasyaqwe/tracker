@@ -133,7 +133,7 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                   viewBox="0 0 24 24"
                   strokeWidth="2"
                   stroke="currentColor"
-                  className="size-4 opacity-80"
+                  className="size-4 shrink-0 opacity-80"
                >
                   <path
                      strokeLinecap="round"
@@ -146,29 +146,34 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                placement={!isMobile ? "bottom left" : "bottom right"}
             >
                <Menu.Header>Projects</Menu.Header>
-               {projects.data.map((project) => (
-                  <Menu.Checkbox
-                     isDisabled={isRunning}
-                     onAction={() =>
-                        navigate({
-                           to: "/$slug",
-                           params: { slug: project.slug },
-                        })
-                     }
-                     key={project.id}
-                     isSelected={slug === project.slug}
-                  >
-                     {isClient ? (
-                        <Avatar
-                           name={project.id}
-                           className="size-6 shrink-0"
-                        />
-                     ) : (
-                        <div className="size-6 shrink-0" />
-                     )}
-                     {project.name}
-                  </Menu.Checkbox>
-               ))}
+               <Menu.Section className="max-h-[188px] overflow-y-auto">
+                  {projects.data.map((project) => (
+                     <Menu.Checkbox
+                        isDisabled={isRunning}
+                        onAction={() =>
+                           navigate({
+                              to: "/$slug",
+                              params: { slug: project.slug },
+                           })
+                        }
+                        key={project.id}
+                        isSelected={slug === project.slug}
+                     >
+                        {isClient ? (
+                           <Avatar
+                              name={project.id}
+                              className="size-6 shrink-0"
+                           />
+                        ) : (
+                           <div className="size-6 shrink-0" />
+                        )}
+                        <span className="line-clamp-1 break-all">
+                           {" "}
+                           {project.name}
+                        </span>
+                     </Menu.Checkbox>
+                  ))}
+               </Menu.Section>
                <Menu.Separator />
                <Menu.Item
                   isDisabled={isRunning}
@@ -191,7 +196,9 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
             <Menu.Content
                placement={!isMobile ? "bottom left" : "bottom right"}
             >
-               <Menu.Header>{user.name}</Menu.Header>
+               <Menu.Header>
+                  <span className="line-clamp-1 break-all">{user.name}</span>
+               </Menu.Header>
                <Menu.Item
                   isDisabled={isRunning}
                   isDanger

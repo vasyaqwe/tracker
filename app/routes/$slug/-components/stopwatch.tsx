@@ -120,7 +120,7 @@ export function Stopwatch() {
                />
                <Button
                   className={"min-w-[60px] rounded-full"}
-                  intent={"destructive"}
+                  intent={"destructive-secondary"}
                   aria-label="Stop session"
                   onPress={stop}
                >

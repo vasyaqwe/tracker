@@ -1,7 +1,7 @@
 import { createTable, lifecycleDates, tableId } from "@/db/utils"
 import { user } from "@/user/schema"
 import { integer, text, uniqueIndex } from "drizzle-orm/sqlite-core"
-import { createInsertSchema } from "drizzle-zod"
+import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
 
 export const project = createTable(
@@ -12,13 +12,16 @@ export const project = createTable(
       slug: text().notNull(),
       rate: integer().notNull(),
       ownerId: text()
-         .notNull()
-         .references(() => user.id),
+         .references(() => user.id, { onDelete: "cascade" })
+         .notNull(),
       ...lifecycleDates,
    },
    (table) => {
       return {
          projectSlugIdx: uniqueIndex("project_slug_idx").on(table.slug),
+         projectOwnerIdIdx: uniqueIndex("project_owner_id_idx").on(
+            table.ownerId,
+         ),
       }
    },
 )
@@ -31,3 +34,14 @@ export const insertProjectParams = createInsertSchema(project, {
    updatedAt: true,
    ownerId: true,
 })
+
+export const updateProjectParams = createSelectSchema(project, {
+   name: z.string().min(1).max(32),
+})
+   .omit({
+      slug: true,
+   })
+   .partial()
+   .extend({
+      id: z.string(),
+   })

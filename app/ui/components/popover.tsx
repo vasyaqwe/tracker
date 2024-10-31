@@ -65,7 +65,7 @@ const Body = ({
 )
 
 const popoverContentVariants = cva(
-   "min-w-40 max-w-xs rounded-xl bg-popover bg-clip-padding shadow-sm sm:max-w-3xl",
+   "w-48 max-w-xs rounded-xl bg-popover bg-clip-padding shadow-sm sm:max-w-3xl",
    {
       variants: {
          isMenu: {

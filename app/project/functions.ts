@@ -1,6 +1,10 @@
 import { protectedProcedure } from "@/lib/trpc"
 import { RESERVED_SLUGS } from "@/project/constants"
-import { insertProjectParams, project } from "@/project/schema"
+import {
+   insertProjectParams,
+   project,
+   updateProjectParams,
+} from "@/project/schema"
 import { createServerFn } from "@tanstack/start"
 import { TRPCError } from "@trpc/server"
 import { and, eq } from "drizzle-orm"
@@ -83,17 +87,31 @@ export const insert = createServerFn(
       }),
 )
 
+export const update = createServerFn(
+   "POST",
+   protectedProcedure
+      .input(updateProjectParams)
+      .mutation(async ({ ctx, input }) => {
+         return await ctx.db
+            .update(project)
+            .set(input)
+            .where(
+               and(eq(project.id, input.id), eq(project.ownerId, ctx.user.id)),
+            )
+      }),
+)
+
 export const deleteFn = createServerFn(
    "POST",
    protectedProcedure
-      .input(z.object({ slug: z.string() }))
+      .input(z.object({ id: z.string() }))
       .mutation(async ({ ctx, input }) => {
          return await ctx.db.transaction(async (tx) => {
             await tx
                .delete(project)
                .where(
                   and(
-                     eq(project.id, input.slug),
+                     eq(project.id, input.id),
                      eq(project.ownerId, ctx.user.id),
                   ),
                )

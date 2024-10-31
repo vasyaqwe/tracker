@@ -5,16 +5,17 @@ import { cva } from "class-variance-authority"
 import * as React from "react"
 import type {
    ButtonProps as ButtonPrimitiveProps,
+   ButtonProps,
    DialogProps,
    HeadingProps,
 } from "react-aria-components"
 import {
+   Button,
    Button as ButtonPrimitive,
    Dialog as DialogPrimitive,
    Heading,
    OverlayTriggerStateContext,
 } from "react-aria-components"
-import { Button, type ButtonProps } from "./button"
 
 const Dialog = ({ role, className, ...props }: DialogProps) => {
    return (
@@ -23,7 +24,7 @@ const Dialog = ({ role, className, ...props }: DialogProps) => {
          role={role ?? "dialog"}
          className={cn([
             "dlc relative flex max-h-[inherit] flex-col overflow-hidden outline-none [scrollbar-width:thin] [&::-webkit-scrollbar]:size-0.5",
-            "sm:[&:has([data-slot=dialog-body])_[data-slot=dialog-footer]]:px-6 sm:[&:has([data-slot=dialog-body])_[data-slot=dialog-header]]:px-6 sm:[&:not(:has([data-slot=dialog-body]))]:px-6",
+            "sm:[&:has([data-slot=dialog-body])_[data-slot=dialog-footer]]:px-4 sm:[&:has([data-slot=dialog-body])_[data-slot=dialog-header]]:px-4 sm:[&:not(:has([data-slot=dialog-body]))]:px-4",
             "[&:has([data-slot=dialog-body])_[data-slot=dialog-footer]]:px-4 [&:has([data-slot=dialog-body])_[data-slot=dialog-header]]:px-4 [&:not(:has([data-slot=dialog-body]))]:px-4",
             className,
          ])}
@@ -74,7 +75,7 @@ const Header = ({ className, ...props }: DialogHeaderProps) => {
       <div
          data-slot="dialog-header"
          ref={headerRef}
-         className={cn("relative flex flex-col pt-4 pb-3 sm:pt-6", className)}
+         className={cn("relative flex flex-col pt-3 pb-4", className)}
       >
          {props.title && <Title>{props.title}</Title>}
          {props.description && <Description>{props.description}</Description>}
@@ -87,13 +88,13 @@ const Header = ({ className, ...props }: DialogHeaderProps) => {
    )
 }
 
-const titleStyles = cva("flex flex-1 items-center text-fg", {
+const titleVariants = cva("flex flex-1 items-center", {
    variants: {
       level: {
-         1: "font-semibold text-lg sm:text-xl",
-         2: "font-semibold text-lg sm:text-xl",
-         3: "font-semibold text-base sm:text-lg",
-         4: "font-semibold text-base",
+         1: "font-medium text-lg sm:text-lg",
+         2: "font-medium text-lg",
+         3: "font-medium text-base",
+         4: "font-medium text-base",
       },
    },
 })
@@ -106,7 +107,7 @@ const Title = ({ level = 2, className, ...props }: TitleProps) => (
    <Heading
       slot="title"
       level={level}
-      className={titleStyles({ level, className })}
+      className={titleVariants({ level, className })}
       {...props}
    />
 )
@@ -116,7 +117,10 @@ const Description = ({
    ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
    <div
-      className={cn("mt-0.5 block text-muted-fg text-sm sm:mt-1", className)}
+      className={cn(
+         "mt-0.5 block text-foreground/70 text-sm sm:mt-1",
+         className,
+      )}
       {...props}
    />
 )
@@ -128,7 +132,7 @@ const Body = ({
    <div
       data-slot="dialog-body"
       className={cn([
-         "flex flex-1 flex-col gap-2 overflow-auto px-4 py-1 sm:px-6",
+         "flex flex-1 flex-col gap-2 overflow-auto px-4",
          "max-h-[calc(var(--visual-viewport-height)-var(--visual-viewport-vertical-padding)-var(--dialog-header-height,0px)-var(--dialog-footer-height,0px))]",
          className,
       ])}
@@ -163,14 +167,12 @@ const Footer = ({
          observer.unobserve(footer)
       }
    }, [])
+
    return (
       <div
          ref={footerRef}
          data-slot="dialog-footer"
-         className={cn(
-            "mt-auto flex flex-col-reverse justify-between gap-3 pt-4 pb-4 sm:flex-row sm:pb-6",
-            className,
-         )}
+         className={cn("mt-auto flex justify-between gap-2 py-4", className)}
          {...props}
       />
    )
