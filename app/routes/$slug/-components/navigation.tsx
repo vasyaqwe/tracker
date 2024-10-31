@@ -109,7 +109,7 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
             <Menu.Trigger
                className={cn(
                   buttonVariants({ intent: "ghost" }),
-                  "justify-start gap-1.5 pl-1.5 text-left font-medium",
+                  "justify-start gap-1.5 pr-1 pl-1.5 text-left font-medium",
                )}
             >
                <Avatar
@@ -117,6 +117,20 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                   className="size-6 shrink-0"
                />
                <span className="line-clamp-1 break-all">{project.name}</span>
+               <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="size-4 opacity-80"
+               >
+                  <path
+                     strokeLinecap="round"
+                     strokeLinejoin="round"
+                     d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                  />
+               </svg>
             </Menu.Trigger>
             <Menu.Content
                placement={!isMobile ? "bottom left" : "bottom right"}

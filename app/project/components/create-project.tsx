@@ -6,6 +6,7 @@ import { Button } from "@/ui/components/button"
 import { Input } from "@/ui/components/input"
 import { Label } from "@/ui/components/label"
 import { Loading } from "@/ui/components/loading"
+import { NumberField } from "@/ui/components/number-field"
 import { cn } from "@/ui/utils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
@@ -74,12 +75,7 @@ export function CreateProject({
                   alt="Tracker"
                />
             )}
-            <h2
-               className={cn(
-                  "my-4 font-semibold text-foreground/90",
-                  "text-2xl",
-               )}
-            >
+            <h2 className={cn("my-4 font-semibold text-foreground/90 text-xl")}>
                Create {isFirstProject ? "your first" : "a new"} project
             </h2>
             <form
@@ -127,12 +123,13 @@ export function CreateProject({
                >
                   Hourly rate
                </Label>
-               <Input
-                  autoComplete="off"
+               <NumberField
+                  minValue={1}
+                  maxValue={1000}
                   name="rate"
                   id="rate"
-                  placeholder="Enter a number"
-                  required
+                  placeholder="$"
+                  isRequired
                />
                <Button
                   type="submit"

@@ -97,6 +97,24 @@ export const Icons = {
          />
       </svg>
    ),
+   chevronUp: (props: IconProps) => (
+      <svg
+         width="10"
+         height="7"
+         viewBox="0 0 14 8"
+         fill="none"
+         xmlns="http://www.w3.org/2000/svg"
+         {...props}
+      >
+         <path
+            d="M1 7C2.57701 4.81921 4.42293 2.86359 6.48988 1.18284C6.78967 0.939055 7.21033 0.939055 7.51012 1.18284C9.57706 2.86359 11.423 4.81921 13 7"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+      </svg>
+   ),
    chevronDown: (props: IconProps) => (
       <svg
          width="10"

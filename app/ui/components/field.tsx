@@ -25,18 +25,15 @@ type FieldProps = {
    "aria-labelledby"?: TextFieldPrimitiveProps["aria-labelledby"]
 }
 
-const fieldBorderStyles = cva(
-   "forced-colors:border-[Highlight] group-focus-within:border-ring/85",
-   {
-      variants: {
-         isInvalid: {
-            true: "border-danger/70 forced-colors:border-[Mark] group-focus-within:border-danger/70",
-         },
+const fieldBorderVariants = cva("group-focus-within:border-ring/85", {
+   variants: {
+      isInvalid: {
+         true: "",
       },
    },
-)
+})
 
-const fieldGroupPrefixStyles = cva([
+const fieldGroupPrefixVariants = cva([
    "flex items-center group-invalid:border-danger group-disabled:bg-secondary group-disabled:opacity-50 group-invalid:focus-within:ring-danger/20",
    "has-[[data-slot=prefix]]:-mx-0.5 has-[[data-slot=suffix]]:-mx-0.5",
    "[&_button]:h-8 [&_button]:after:rounded-[calc(theme(borderRadius.md)-1px)] [&_button]:before:rounded-[calc(theme(borderRadius.md)-1px)] [&_button]:rounded-md dark:[&_button]:after:rounded-md [&_button]:px-2.5",
@@ -44,17 +41,15 @@ const fieldGroupPrefixStyles = cva([
    "[&>[data-slot=suffix]>button]:mr-[-7px] [&>[data-slot=suffix]]:mr-2.5 [&>[data-slot=suffix]]:text-muted-fg",
 ])
 
-const fieldGroupStyles = cva({
-   base: [
-      "group flex h-10 items-center overflow-hidden rounded-lg border border-input bg-bg transition [&>[data-slot=icon]]:shrink-0 forced-colors:bg-[Field]",
-   ],
+const fieldGroupVariants = cva({
+   base: ["group flex h-10 items-center"],
    variants: {
       isDisabled: {
          true: "bg-secondary opacity-50",
       },
       isInvalid: {
-         false: "focus-within:border-ring/85 focus-within:ring-4 focus-within:ring-ring/20",
-         true: "border-danger focus-within:border-danger focus-within:ring-4 focus-within:ring-danger/20",
+         false: "",
+         true: "",
       },
    },
 })
@@ -73,7 +68,7 @@ const FieldGroup = ({ className, ...props }: GroupProps) => {
       <Group
          {...props}
          className={cr(className, (className, renderProps) =>
-            fieldGroupStyles({ ...renderProps, className }),
+            fieldGroupVariants({ ...renderProps, className }),
          )}
       />
    )
@@ -107,10 +102,10 @@ const Label = ({ className, ...props }: LabelProps) => {
 }
 
 export {
-   fieldBorderStyles,
+   fieldBorderVariants,
    FieldGroup,
-   fieldGroupPrefixStyles,
-   fieldGroupStyles,
+   fieldGroupPrefixVariants,
+   fieldGroupVariants,
    Input,
    InputPrimitive,
    type FieldProps,
