@@ -13,7 +13,7 @@ import {
 import { createServerFn } from "@tanstack/start"
 import { useEffect } from "react"
 import { getRequestHeader } from "vinxi/http"
-import { Sidebar } from "./-components/sidebar"
+import { Navigation } from "./-components/navigation"
 
 export const getDevice = createServerFn("GET", () => {
    const userAgent = getRequestHeader("user-agent") ?? ""
@@ -78,8 +78,10 @@ function Component() {
 
    return (
       <div className="mx-auto max-w-4xl items-start gap-12 px-4 pt-4 md:flex md:pt-28 max-md:pb-8">
-         <Sidebar />
-         <Outlet />
+         <Navigation />
+         <div className="md:pb-20">
+            <Outlet />
+         </div>
          <Stopwatch />
       </div>
    )

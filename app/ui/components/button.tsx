@@ -8,12 +8,15 @@ import {
 
 const buttonVariants = cva(
    [
-      "inline-flex items-center justify-center gap-2 whitespace-nowrap outline-none transition-colors duration-100",
+      "inline-flex items-center justify-center gap-2 whitespace-nowrap border border-transparent outline-none transition-colors duration-100",
    ],
    {
       variants: {
          intent: {
             primary: ["bg-primary text-primary-foreground hover:bg-primary/90"],
+            outline: [
+               "border-border bg-elevated aria-expanded:bg-background hover:bg-background",
+            ],
             creative: [
                "bg-popover-elevated text-background hover:bg-emerald-400/20 hover:text-emerald-400",
             ],
