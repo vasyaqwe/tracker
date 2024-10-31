@@ -5,6 +5,7 @@ import { Route as settingsRoute } from "@/routes/$slug/_layout/settings"
 import { buttonVariants } from "@/ui/components/button"
 import { Icons } from "@/ui/components/icons"
 import { Menu } from "@/ui/components/menu"
+import { useIsClient } from "@/ui/hooks/use-is-client"
 import { useUIStore } from "@/ui/store"
 import { cn } from "@/ui/utils"
 import * as userFns from "@/user/functions"
@@ -100,6 +101,8 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
 
    const isMobile = useUIStore().isMobile
 
+   const { isClient } = useIsClient()
+
    return (
       <div
          className={cn("mt-auto flex items-center gap-3", className)}
@@ -112,10 +115,14 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                   "justify-start gap-1.5 pr-1 pl-1.5 text-left font-medium",
                )}
             >
-               <Avatar
-                  name={project.id}
-                  className="size-6 shrink-0"
-               />
+               {isClient ? (
+                  <Avatar
+                     name={project.id}
+                     className="size-6 shrink-0 animate-fade-in opacity-0 [--animation-delay:0ms]"
+                  />
+               ) : (
+                  <div className="size-6 shrink-0" />
+               )}
                <span className="line-clamp-1 break-all">{project.name}</span>
                <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -147,10 +154,14 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                      key={project.id}
                      isSelected={slug === project.slug}
                   >
-                     <Avatar
-                        name={project.id}
-                        className="size-6 shrink-0"
-                     />
+                     {isClient ? (
+                        <Avatar
+                           name={project.id}
+                           className="size-6 shrink-0"
+                        />
+                     ) : (
+                        <div className="size-6 shrink-0" />
+                     )}
                      {project.name}
                   </Menu.Checkbox>
                ))}

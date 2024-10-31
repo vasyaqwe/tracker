@@ -59,8 +59,8 @@ export const Route = createRootRouteWithContext<{
    links: () => [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
-      { rel: "manifest", href: "/site.webmanifest" },
+      // { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      // { rel: "manifest", href: "/site.webmanifest" },
       {
          rel: "preload",
          href: "/font/geist.woff2",

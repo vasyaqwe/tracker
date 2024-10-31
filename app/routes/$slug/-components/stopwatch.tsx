@@ -30,14 +30,16 @@ export function Stopwatch() {
       delay: 0,
    })
 
+   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+   useBlocker(hasUnsavedChanges)
+
    useEffect(() => {
       if (startTime) {
          timer.start(Date.now() - +startTime)
+         setHasUnsavedChanges(true)
       }
    }, [])
-
-   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
-   useBlocker(hasUnsavedChanges)
+   console.log(hasUnsavedChanges)
 
    const sound = useSound("/sound/tap.wav")
 
