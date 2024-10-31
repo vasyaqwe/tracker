@@ -1,6 +1,8 @@
+import { useDelayedValue } from "@/interactions/use-delayed-value"
 import { Main } from "@/routes/$slug/-components/main"
 import { summaryListQuery } from "@/summary/queries"
 import { Table } from "@/ui/components/table"
+import { TransitionHeight } from "@/ui/components/transition-height"
 import { useAuth } from "@/user/hooks"
 import { formatCurrency, formatDate, minutesToTime } from "@/utils/format"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -20,6 +22,19 @@ function Component() {
    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set())
 
    const summaries = useSuspenseQuery(summaryListQuery({ projectId }))
+
+   const selectedIds = Array.from(selectedKeys)
+   const selectedItems = summaries.data.filter((item) =>
+      selectedIds.includes(item.id),
+   )
+   const selectedEarnings = useDelayedValue(
+      selectedItems.reduce((acc, curr) => acc + +curr.amountEarned, 0),
+      500,
+   )
+   const selectedDuration = useDelayedValue(
+      selectedItems.reduce((acc, curr) => acc + curr.durationMinutes, 0),
+      500,
+   )
 
    return (
       <Main>
@@ -47,33 +62,43 @@ function Component() {
                   appear here.
                </p>
             ) : (
-               <Table
-                  aria-label="Summaries"
-                  selectionMode="multiple"
-                  selectedKeys={selectedKeys}
-                  onSelectionChange={setSelectedKeys}
-               >
-                  <Table.Header>
-                     <Table.Column isRowHeader>Date</Table.Column>
-                     <Table.Column>Duration</Table.Column>
-                     <Table.Column>Earnings</Table.Column>
-                  </Table.Header>
-                  <Table.Body items={summaries.data}>
-                     {(item) => (
-                        <Table.Row>
-                           <Table.Cell data-thead="Date">
-                              {formatDate(item.createdAt)}
-                           </Table.Cell>
-                           <Table.Cell data-thead="Duration">
-                              {minutesToTime(item.durationMinutes)}
-                           </Table.Cell>
-                           <Table.Cell data-thead="Earnings">
-                              {formatCurrency(+item.amountEarned)}
-                           </Table.Cell>
-                        </Table.Row>
-                     )}
-                  </Table.Body>
-               </Table>
+               <>
+                  <TransitionHeight
+                     data-expanded={Array.from(selectedKeys).length > 0}
+                  >
+                     <div className="mb-2 flex items-center justify-between rounded-[15px] border border-border/40 bg-elevated px-3 py-2 font-medium">
+                        <p>{formatCurrency(selectedEarnings)}</p>
+                        <p>{minutesToTime(selectedDuration)}</p>
+                     </div>
+                  </TransitionHeight>
+                  <Table
+                     aria-label="Summaries"
+                     selectionMode="multiple"
+                     selectedKeys={selectedKeys}
+                     onSelectionChange={setSelectedKeys}
+                  >
+                     <Table.Header>
+                        <Table.Column isRowHeader>Date</Table.Column>
+                        <Table.Column>Duration</Table.Column>
+                        <Table.Column>Earnings</Table.Column>
+                     </Table.Header>
+                     <Table.Body items={summaries.data}>
+                        {(item) => (
+                           <Table.Row>
+                              <Table.Cell data-thead="Date">
+                                 {formatDate(item.createdAt)}
+                              </Table.Cell>
+                              <Table.Cell data-thead="Duration">
+                                 {minutesToTime(item.durationMinutes)}
+                              </Table.Cell>
+                              <Table.Cell data-thead="Earnings">
+                                 {formatCurrency(+item.amountEarned)}
+                              </Table.Cell>
+                           </Table.Row>
+                        )}
+                     </Table.Body>
+                  </Table>
+               </>
             )}
          </main>
       </Main>

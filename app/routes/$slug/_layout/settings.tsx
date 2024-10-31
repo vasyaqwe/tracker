@@ -13,7 +13,9 @@ function Component() {
 
    return (
       <Main>
-         <main className="overflow-y-auto p-4">{/*  */}</main>
+         <main>
+            <p>Coming soon</p>
+         </main>
       </Main>
    )
 }
