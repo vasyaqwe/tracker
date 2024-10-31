@@ -188,7 +188,7 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
             <Menu.Trigger
                className={cn(
                   buttonVariants({ intent: "outline", size: "icon" }),
-                  "shrink-0 font-medium",
+                  "shrink-0 font-medium uppercase",
                )}
             >
                {Array.from(user.name)[0]}

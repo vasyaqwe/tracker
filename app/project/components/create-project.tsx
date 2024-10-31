@@ -68,9 +68,7 @@ export function CreateProject({
                      className="size-9"
                      alt="Tracker"
                   />
-                  <h1 className="font-semibold text-2xl">
-                     Welcome to Tracker,
-                  </h1>
+                  <h1 className="font-medium text-2xl">Welcome to Tracker,</h1>
                </div>
             ) : (
                <img
@@ -79,7 +77,7 @@ export function CreateProject({
                   alt="Tracker"
                />
             )}
-            <h2 className={cn("my-4 font-semibold text-foreground/90 text-xl")}>
+            <h2 className={cn("my-4 text-foreground/90 text-xl")}>
                Create {isFirstProject ? "your first" : "a new"} project
             </h2>
             <form

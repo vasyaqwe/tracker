@@ -1,6 +1,6 @@
 import { createTable, lifecycleDates, tableId } from "@/db/utils"
 import { user } from "@/user/schema"
-import { integer, text, uniqueIndex } from "drizzle-orm/sqlite-core"
+import { index, integer, text } from "drizzle-orm/sqlite-core"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
 
@@ -18,10 +18,8 @@ export const project = createTable(
    },
    (table) => {
       return {
-         projectSlugIdx: uniqueIndex("project_slug_idx").on(table.slug),
-         projectOwnerIdIdx: uniqueIndex("project_owner_id_idx").on(
-            table.ownerId,
-         ),
+         projectSlugIdx: index("project_slug_idx").on(table.slug),
+         projectOwnerIdIdx: index("project_owner_id_idx").on(table.ownerId),
       }
    },
 )
