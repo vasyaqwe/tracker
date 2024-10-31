@@ -20,7 +20,7 @@ const dropdownItemVariants = cva(
       variants: {
          isDisabled: {
             false: "",
-            true: "opacity-70",
+            true: "cursor-not-allowed opacity-70",
          },
          isFocused: {
             false: "",

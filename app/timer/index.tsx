@@ -18,12 +18,13 @@ export function TimerRenderer({
 
    useEffect(() => {
       return () => {
+         const startTime = timer.getElapsedRunningTime().toString()
          localStorage.setItem(
             `${projectId}_start_time`,
-            timer.getElapsedRunningTime().toString(),
+            startTime === "0" ? "null" : startTime,
          )
       }
-   }, [timer.getElapsedRunningTime()])
+   }, [timer.getElapsedRunningTime(), projectId])
 
    useEffect(() => {
       const subs = new Subs()

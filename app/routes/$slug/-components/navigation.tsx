@@ -2,6 +2,7 @@ import logo from "@/assets/icon.png"
 import { projectListQuery } from "@/project/queries"
 import { Route as homeRoute } from "@/routes/$slug/_layout/index"
 import { Route as settingsRoute } from "@/routes/$slug/_layout/settings"
+import { useTimerStore } from "@/timer/store"
 import { buttonVariants } from "@/ui/components/button"
 import { Icons } from "@/ui/components/icons"
 import { Menu } from "@/ui/components/menu"
@@ -103,6 +104,8 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
 
    const { isClient } = useIsClient()
 
+   const isRunning = useTimerStore().isRunning
+
    return (
       <div
          className={cn("mt-auto flex items-center gap-3", className)}
@@ -145,6 +148,7 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                <Menu.Header>Projects</Menu.Header>
                {projects.data.map((project) => (
                   <Menu.Checkbox
+                     isDisabled={isRunning}
                      onAction={() =>
                         navigate({
                            to: "/$slug",
