@@ -12,7 +12,11 @@ import type { Selection } from "react-aria-components"
 
 export const Route = createFileRoute("/$slug/_layout/")({
    component: Component,
-   loader: async () => {},
+   loader: async ({ context }) => {
+      context.queryClient.prefetchQuery(
+         summaryListQuery({ projectId: context.projectId }),
+      )
+   },
    meta: () => [{ title: "Home" }],
    // pendingComponent: PendingComponent,
 })
@@ -74,6 +78,7 @@ function Component() {
                      </div>
                   </TransitionHeight>
                   <Table
+                     key={projectId}
                      aria-label="Summaries"
                      selectionMode="multiple"
                      selectedKeys={selectedKeys}
