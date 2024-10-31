@@ -1,12 +1,13 @@
 import * as projectFns from "@/project/functions"
 import { projectBySlugQuery, projectListQuery } from "@/project/queries"
 import { Main } from "@/routes/$slug/-components/main"
+import { useTimerStore } from "@/timer/store"
 import { Button, buttonVariants } from "@/ui/components/button"
-import { Icons } from "@/ui/components/icons"
-import { Input } from "@/ui/components/input"
+import { Input } from "@/ui/components/field"
 import { Label } from "@/ui/components/label"
 import { Loading } from "@/ui/components/loading"
 import { Modal } from "@/ui/components/modal"
+import { NumberField } from "@/ui/components/number-field"
 import { useUIStore } from "@/ui/store"
 import { cn } from "@/ui/utils"
 import { useAuth } from "@/user/hooks"
@@ -72,10 +73,12 @@ function Component() {
       },
    })
 
+   const isRunning = useTimerStore().isRunning
+
    return (
       <Main>
          <main>
-            <div className="rounded-[15px] border border-border/40 bg-elevated p-4">
+            <div className="rounded-[15px] border border-border/40 bg-elevated p-4 pt-3">
                <form
                   onSubmit={(e) => {
                      e.preventDefault()
@@ -84,17 +87,19 @@ function Component() {
                         new FormData(e.target as HTMLFormElement).entries(),
                      ) as {
                         name: string
+                        rate: string
                      }
 
-                     if (!formData.name || formData.name.trim().length < 1)
-                        return toast.error("Name is required")
+                     if (!formData.name || !formData.rate)
+                        return toast.error("Name & rate are required")
 
                      if (formData.name === user.name)
                         return toast.success("Saved")
 
                      updateProject.mutate({
-                        name: formData.name,
                         id: project.id,
+                        name: formData.name,
+                        rate: +formData.rate,
                      })
                   }}
                >
@@ -104,9 +109,25 @@ function Component() {
                      name="name"
                      id="name"
                      className="max-w-[300px]"
-                     placeholder="Your name"
+                     placeholder="Project name"
                      maxLength={32}
                      required
+                  />
+                  <Label
+                     htmlFor="rate"
+                     className="mt-3"
+                  >
+                     Hourly rate
+                  </Label>
+                  <NumberField
+                     isDisabled={isRunning}
+                     minValue={1}
+                     maxValue={1000}
+                     name="rate"
+                     id="rate"
+                     placeholder="$"
+                     isRequired
+                     defaultValue={project.rate}
                   />
                   <Button
                      type="submit"
@@ -119,16 +140,11 @@ function Component() {
             </div>
 
             <div className="mt-3 rounded-[15px] border border-border/40 bg-elevated p-4">
-               <div className="flex items-center gap-3">
-                  <div className="grid size-10 shrink-0 place-content-center rounded-full border border-destructive/10 bg-destructive/15">
-                     <Icons.trash className="size-5 text-destructive" />
-                  </div>
-                  <div>
-                     <p>Delete project</p>
-                     <p className="text-foreground/75 text-sm">
-                        This is permanent. Project will be fully deleted.
-                     </p>
-                  </div>
+               <div>
+                  <p>Delete project</p>
+                  <p className="mt-1 text-foreground/75 text-sm">
+                     This is permanent. Project will be fully deleted.
+                  </p>
                </div>
                <Modal>
                   <Modal.Trigger
@@ -162,7 +178,10 @@ function Component() {
                            }}
                            id={"delete_project"}
                         >
-                           <Label htmlFor="confirmation">
+                           <Label
+                              className="text-sm"
+                              htmlFor="confirmation"
+                           >
                               To confirm, enter <strong>{project.name}</strong>{" "}
                               below
                            </Label>

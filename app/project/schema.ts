@@ -28,6 +28,7 @@ export const project = createTable(
 
 export const insertProjectParams = createInsertSchema(project, {
    name: z.string().min(1).max(32),
+   rate: z.number().min(1).max(1000),
 }).omit({
    id: true,
    createdAt: true,
@@ -37,6 +38,7 @@ export const insertProjectParams = createInsertSchema(project, {
 
 export const updateProjectParams = createSelectSchema(project, {
    name: z.string().min(1).max(32),
+   rate: z.number().min(1).max(1000),
 })
    .omit({
       slug: true,

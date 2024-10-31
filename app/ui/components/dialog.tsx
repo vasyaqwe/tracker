@@ -75,7 +75,7 @@ const Header = ({ className, ...props }: DialogHeaderProps) => {
       <div
          data-slot="dialog-header"
          ref={headerRef}
-         className={cn("relative flex flex-col pt-3 pb-4", className)}
+         className={cn("relative flex flex-col pt-3 pb-2", className)}
       >
          {props.title && <Title>{props.title}</Title>}
          {props.description && <Description>{props.description}</Description>}
