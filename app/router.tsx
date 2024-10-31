@@ -121,7 +121,7 @@ function NotFound() {
 
 function CatchBoundary({ error }: ErrorComponentProps) {
    const router = useRouter()
-   const isRoot = useMatch({
+   const _isRoot = useMatch({
       strict: false,
       select: (state) => state.id === rootRouteId,
    })
@@ -144,31 +144,13 @@ function CatchBoundary({ error }: ErrorComponentProps) {
             </p>
             <div className="flex items-center justify-center gap-2.5">
                <Button
+                  intent={"outline"}
                   onPress={() => {
                      router.invalidate()
                   }}
                >
                   Try Again
                </Button>
-               {isRoot ? (
-                  <Link
-                     to="/"
-                     className={buttonVariants()}
-                  >
-                     Back home
-                  </Link>
-               ) : (
-                  <Link
-                     to="/"
-                     className={buttonVariants()}
-                     onClick={(e) => {
-                        e.preventDefault()
-                        window.history.back()
-                     }}
-                  >
-                     Go back
-                  </Link>
-               )}
             </div>
          </div>
       </div>

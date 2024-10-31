@@ -12,13 +12,14 @@ import { useAuth } from "@/user/hooks"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { Link, useNavigate, useParams } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
+import Avatar from "boring-avatars"
 import type { ComponentProps } from "react"
 
 export function Navigation() {
    const { slug } = useParams({ from: "/$slug/_layout" })
 
    return (
-      <div className="flex shrink-0 flex-col md:sticky md:top-9 md:h-[var(--sidebar-height)] md:w-48">
+      <div className="flex shrink-0 flex-col md:sticky md:top-9 md:h-[var(--sidebar-height)] md:w-52">
          <div className="mb-6 flex items-center justify-between md:hidden">
             <img
                src={logo}
@@ -108,10 +109,14 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
             <Menu.Trigger
                className={cn(
                   buttonVariants({ intent: "ghost" }),
-                  "block justify-start truncate break-all text-left font-medium",
+                  "justify-start gap-1.5 pl-1.5 text-left font-medium",
                )}
             >
-               {project.name}
+               <Avatar
+                  name={project.id}
+                  className="size-6 shrink-0"
+               />
+               <span className="line-clamp-1 break-all">{project.name}</span>
             </Menu.Trigger>
             <Menu.Content
                placement={!isMobile ? "bottom left" : "bottom right"}
@@ -128,6 +133,10 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                      key={project.id}
                      isSelected={slug === project.slug}
                   >
+                     <Avatar
+                        name={project.id}
+                        className="size-6 shrink-0"
+                     />
                      {project.name}
                   </Menu.Checkbox>
                ))}

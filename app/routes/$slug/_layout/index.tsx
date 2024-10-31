@@ -24,9 +24,11 @@ function Component() {
    const summaries = useSuspenseQuery(summaryListQuery({ projectId }))
 
    const selectedIds = Array.from(selectedKeys)
-   const selectedItems = summaries.data.filter((item) =>
-      selectedIds.includes(item.id),
-   )
+   const selectedItems =
+      selectedKeys === "all"
+         ? summaries.data
+         : summaries.data.filter((item) => selectedIds.includes(item.id))
+
    const selectedEarnings = useDelayedValue(
       selectedItems.reduce((acc, curr) => acc + +curr.amountEarned, 0),
       500,
