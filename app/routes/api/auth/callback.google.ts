@@ -1,5 +1,6 @@
 import { db } from "@/db"
 import { handleAuthError } from "@/error/utils"
+import { project } from "@/project/schema"
 import { createSession, google } from "@/user/auth"
 import { oauthAccount, user } from "@/user/schema"
 import { createAPIFileRoute } from "@tanstack/start/api"
@@ -58,11 +59,17 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
 
          if (existingAccount) {
             await createSession(existingAccount.userId)
-
+            const projects = await db.query.project.findMany({
+               where: eq(project.ownerId, existingAccount.userId),
+               columns: {
+                  slug: true,
+               },
+            })
             return new Response(null, {
                status: 302,
                headers: {
-                  Location: "/",
+                  Location:
+                     projects.length === 0 ? "/new" : `/${projects[0]?.slug}`,
                },
             })
          }
@@ -92,11 +99,18 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
          if (!result.newUser) throw new Error("Failed to create user")
 
          await createSession(result.newUser.id)
+         const projects = await db.query.project.findMany({
+            where: eq(project.ownerId, result.newUser.id),
+            columns: {
+               slug: true,
+            },
+         })
 
          return new Response(null, {
             status: 302,
             headers: {
-               Location: "/",
+               Location:
+                  projects.length === 0 ? "/new" : `/${projects[0]?.slug}`,
             },
          })
       } catch (error) {

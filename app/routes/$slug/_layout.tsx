@@ -49,7 +49,7 @@ export const Route = createFileRoute("/$slug/_layout")({
             className="mx-auto size-9 animate-fade-in opacity-0 [--animation-delay:100ms]"
             alt="Tracker"
          />
-         <h1 className="mt-4 animate-fade-in text-center font-medium text-foreground/75 opacity-0 duration-500 [--animation-delay:600ms]">
+         <h1 className="mt-4 animate-fade-in text-center text-foreground/75 opacity-0 duration-500 [--animation-delay:600ms]">
             Workspace is loading...
          </h1>
       </div>

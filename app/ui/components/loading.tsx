@@ -5,9 +5,9 @@ import type * as React from "react"
 const loadingVariants = cva("relative block opacity-75", {
    variants: {
       size: {
-         sm: "size-6",
-         md: "size-7",
-         lg: "size-8",
+         sm: "size-5",
+         md: "size-6",
+         lg: "size-7",
       },
    },
    defaultVariants: {

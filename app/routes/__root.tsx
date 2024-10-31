@@ -26,7 +26,7 @@ export const Route = createRootRouteWithContext<{
 }>()({
    meta: () => {
       const title = "Tracker"
-      const description = "A tiny work hours tracker."
+      const description = "A tiny time tracker."
 
       return [
          {
