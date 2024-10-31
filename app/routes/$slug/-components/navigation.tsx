@@ -33,13 +33,13 @@ export function Navigation() {
                className="-ml-[3px] mb-6 size-8 max-md:hidden"
                alt="Tracker"
             />
-            <ul className="md:before:-left-[2px] max-md:before:-ml-5 md:before:-top-[var(--block)] before:-bottom-[2px] relative items-center gap-3 pl-1 [--block:2px] before:absolute max-md:flex before:h-[2px] md:before:h-[calc(100%+calc(var(--block)*2))] before:w-[calc(100%+2rem)] md:before:w-[2px] md:space-y-1 before:bg-border">
+            <ul className="md:before:-left-[2px] max-md:before:-ml-5 before:-bottom-[1px] relative items-center gap-3 pl-1 [--padding-block:4px] before:absolute md:before:top-[2px] max-md:flex before:h-[2px] md:before:h-[calc(100%-var(--padding-block))] before:w-[calc(100%+2rem)] md:before:w-[2px] md:space-y-2.5 before:rounded-sm before:bg-border">
                <li>
                   <Link
                      params={{ slug }}
                      activeProps={{
                         className:
-                           "opacity-100 before:block md:before:-top-[var(--block)] before:-bottom-[var(--block)]",
+                           "opacity-100 before:block md:before:top-[calc(var(--padding-block)/2)] before:-bottom-[1px]",
                         "aria-current": "page",
                      }}
                      activeOptions={{
@@ -50,7 +50,7 @@ export function Navigation() {
                      }}
                      to={homeRoute.to}
                      className={cn(
-                        "group md:before:-left-[6px] before:-bottom-[6px] relative flex items-center gap-2 px-1 font-medium leading-none transition-opacity duration-100 before:absolute before:left-0 before:h-[2px] md:before:h-5 before:w-full md:before:w-[2px] before:rounded-sm before:bg-foreground md:px-2 max-md:pb-3 md:pb-2 hover:opacity-100",
+                        "group md:before:-left-[6px] relative flex items-center gap-2 px-1 font-medium leading-none transition-opacity duration-100 before:absolute before:left-0 before:h-[3px] md:before:h-[calc(100%-var(--padding-block))] before:w-full md:before:w-[2px] before:rounded-sm before:bg-foreground md:px-2 md:py-1 max-md:pb-3 hover:opacity-100",
                      )}
                   >
                      Home
@@ -61,7 +61,7 @@ export function Navigation() {
                      params={{ slug }}
                      activeProps={{
                         className:
-                           "opacity-100 before:block md:before:-bottom-[var(--block)] before:-bottom-[var(--block)]",
+                           "opacity-100 before:block md:before:bottom-[calc(var(--padding-block)/2)] before:-bottom-[1px]",
                         "aria-current": "page",
                      }}
                      inactiveProps={{
@@ -69,7 +69,7 @@ export function Navigation() {
                      }}
                      to={settingsRoute.to}
                      className={cn(
-                        "group md:before:-left-[6px] before:-bottom-[6px] relative flex items-center gap-2 px-1 font-medium leading-none transition-opacity duration-100 before:absolute before:left-0 before:h-[2px] md:before:h-5 before:w-full md:before:w-[2px] before:rounded-sm before:bg-foreground md:px-2 md:pt-2 max-md:pb-3 hover:opacity-100",
+                        "group md:before:-left-[6px] relative flex items-center gap-2 px-1 font-medium leading-none transition-opacity duration-100 before:absolute before:left-0 before:h-[3px] md:before:h-[calc(100%-var(--padding-block))] before:w-full md:before:w-[2px] before:rounded-sm before:bg-foreground md:px-2 md:py-1 max-md:pb-3 hover:opacity-100",
                      )}
                   >
                      Settings
