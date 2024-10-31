@@ -4,7 +4,7 @@ import { summaryListQuery } from "@/summary/queries"
 import { Table } from "@/ui/components/table"
 import { TransitionHeight } from "@/ui/components/transition-height"
 import { useAuth } from "@/user/hooks"
-import { formatCurrency, formatDate, minutesToTime } from "@/utils/format"
+import { formatCurrency, formatDate, formatTime } from "@/utils/format"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
@@ -74,7 +74,7 @@ function Component() {
                   >
                      <div className="mb-2 flex items-center justify-between rounded-[15px] border border-border/40 bg-elevated px-3 py-2 font-medium">
                         <p>{formatCurrency(selectedEarnings)}</p>
-                        <p>{minutesToTime(selectedDuration)}</p>
+                        <p>{formatTime(selectedDuration)}</p>
                      </div>
                   </TransitionHeight>
                   <Table
@@ -96,7 +96,7 @@ function Component() {
                                  {formatDate(item.createdAt)}
                               </Table.Cell>
                               <Table.Cell data-thead="Duration">
-                                 {minutesToTime(item.durationMinutes)}
+                                 {formatTime(item.durationMinutes)}
                               </Table.Cell>
                               <Table.Cell data-thead="Earnings">
                                  {formatCurrency(+item.amountEarned)}

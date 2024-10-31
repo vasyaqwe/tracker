@@ -170,7 +170,10 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                   </Menu.Checkbox>
                ))}
                <Menu.Separator />
-               <Menu.Item onAction={() => navigate({ to: "/new" })}>
+               <Menu.Item
+                  isDisabled={isRunning}
+                  onAction={() => navigate({ to: "/new" })}
+               >
                   <Icons.plus />
                   New project
                </Menu.Item>
@@ -190,6 +193,7 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
             >
                <Menu.Header>{user.name}</Menu.Header>
                <Menu.Item
+                  isDisabled={isRunning}
                   isDanger
                   onAction={() => logout.mutate()}
                >

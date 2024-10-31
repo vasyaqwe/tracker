@@ -87,19 +87,11 @@ export const millisToMinutes = (millis: number) => {
    return minutes
 }
 
-export const millisToTime = (millis: number) => {
-   let minutes = Math.floor(millis / 60000)
-   const hours = Math.floor(minutes / 60)
-   minutes = minutes % 60
-
-   return `${hours}:${minutes < 10 ? "0" : ""}${minutes}`
-}
-
-export const minutesToTime = (minutes: number) => {
+export const formatTime = (minutes: number): string => {
    const hours = Math.floor(minutes / 60)
    const remainingMinutes = minutes % 60
 
-   return `${hours}:${remainingMinutes < 10 ? "0" : ""}${remainingMinutes}`
+   return `${hours}h ${remainingMinutes}m`
 }
 
 export const calculateAmountEarned = (
