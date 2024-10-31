@@ -8,7 +8,7 @@ import {
 
 const buttonVariants = cva(
    [
-      "inline-flex items-center justify-center gap-2 whitespace-nowrap outline-none",
+      "inline-flex items-center justify-center gap-2 whitespace-nowrap outline-none transition-colors duration-100",
    ],
    {
       variants: {
@@ -21,7 +21,7 @@ const buttonVariants = cva(
                "bg-transparent aria-expanded:bg-border/60 hover:bg-border/60",
             ],
             destructive: [
-               "bg-popover-elevated text-background hover:bg-red-500/20 hover:text-red-500",
+               "bg-popover-elevated text-background hover:bg-red-400/20 hover:text-red-400",
             ],
          },
          size: {

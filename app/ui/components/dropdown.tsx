@@ -14,7 +14,7 @@ import {
 
 const dropdownItemVariants = cva(
    [
-      "group relative flex cursor-default select-none items-center gap-x-1.5 rounded-[10px] px-2.5 py-2 text-base text-sm outline outline-0 [&_svg]:size-5 [&_svg]:text-popover-icon",
+      "group relative flex h-9 cursor-default select-none items-center gap-x-1.5 rounded-[10px] px-2.5 py-2 text-base text-sm outline outline-0 [&_svg]:size-5 [&_svg]:text-popover-icon",
    ],
    {
       variants: {
@@ -25,8 +25,8 @@ const dropdownItemVariants = cva(
          isFocused: {
             false: "",
             true: [
-               "bg-popover-highlight",
-               "data-[danger=true]:bg-destructive data-[danger=true]:text-destructive-foreground",
+               "bg-popover-highlight shadow-[0px_1px_1px_1px_black]",
+               "data-[danger=true]:bg-destructive data-[danger=true]:[&_svg]:text-destructive-foreground data-[danger=true]:text-destructive-foreground",
             ],
          },
       },

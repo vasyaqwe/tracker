@@ -115,7 +115,7 @@ export const Icons = {
          />
       </svg>
    ),
-   check: (props: IconProps) => (
+   check: ({ className, ...props }: IconProps) => (
       <svg
          viewBox="0 0 24 24"
          fill="none"

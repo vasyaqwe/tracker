@@ -29,28 +29,25 @@ const CheckboxGroup = (props: CheckboxGroupProps) => {
    )
 }
 
-const checkboxVariants = cva(
-   "group flex items-center gap-2 text-sm transition",
-   {
-      variants: {
-         isDisabled: {
-            false: "opacity-100",
-            true: "opacity-50",
-         },
+const checkboxVariants = cva("group flex items-center gap-2 text-sm", {
+   variants: {
+      isDisabled: {
+         false: "opacity-100",
+         true: "opacity-50",
       },
    },
-)
+})
 
 const boxVariants = cva(
-   "flex size-4 shrink-0 items-center justify-center rounded-[5px] border border-foreground/20 [&>[data-slot=icon]]:size-3",
+   "flex size-4 shrink-0 items-center justify-center rounded-[5px] border border-foreground/20 text-primary-foreground transition-colors [&>[data-slot=icon]]:size-3",
    {
       variants: {
          isSelected: {
             false: "bg-elevated",
-            true: ["border-primary/70 bg-primary text-primary-foreground", ""],
+            true: ["border-primary/70 bg-primary"],
          },
          isFocused: {
-            true: ["border-primary/70 ring-4 ring-primary/20", ""],
+            true: ["border-primary/70 ring-2 ring-primary/20", ""],
          },
          isInvalid: {
             true: "",

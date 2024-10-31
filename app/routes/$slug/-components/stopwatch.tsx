@@ -1,5 +1,6 @@
 import { useBlocker } from "@/interactions/use-blocker"
 import { useLocalStorage } from "@/interactions/use-local-storage"
+import { useSound } from "@/interactions/use-sound"
 import * as summary from "@/summary/functions"
 import { useInsertSummary } from "@/summary/hooks/use-insert-summary"
 import { summaryListQuery } from "@/summary/queries"
@@ -13,6 +14,7 @@ import { useServerFn } from "@tanstack/start"
 import { useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useTimer } from "react-use-precision-timer"
+import { match } from "ts-pattern"
 
 export function Stopwatch() {
    const queryClient = useQueryClient()
@@ -59,29 +61,36 @@ export function Stopwatch() {
          queryClient.invalidateQueries(summaryListQuery({ projectId }))
       },
    })
+
+   const sound = useSound("/sound/tap.wav")
+
    const start = () => {
       timer.start()
       setHasUnsavedChanges(true)
+      sound.play()
    }
 
    const stop = () => {
       const elapsedMs = timer.getElapsedRunningTime()
-
       const durationMinutes = millisToMinutes(elapsedMs)
 
-      if (durationMinutes === 0) {
-         setStartTime(null)
-         setHasUnsavedChanges(false)
-         return timer.stop()
-      }
-
-      insert.mutate({
-         amountEarned: calculateAmountEarned(elapsedMs, project.rate).toFixed(
-            2,
-         ),
-         projectId,
-         durationMinutes,
-      })
+      match(durationMinutes)
+         .with(0, () => {
+            setStartTime(null)
+            setHasUnsavedChanges(false)
+            timer.stop()
+         })
+         .otherwise(() => {
+            insert.mutate({
+               amountEarned: calculateAmountEarned(
+                  elapsedMs,
+                  project.rate,
+               ).toFixed(2),
+               projectId,
+               durationMinutes,
+            })
+            sound.play()
+         })
    }
 
    useHotkeys("c", () => (timer.isRunning() ? stop() : start()))
