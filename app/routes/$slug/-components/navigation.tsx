@@ -21,7 +21,7 @@ export function Navigation() {
    const { slug } = useParams({ from: "/$slug/_layout" })
 
    return (
-      <div className="flex shrink-0 flex-col md:sticky md:top-9 md:h-[var(--sidebar-height)] md:w-52">
+      <div className="flex shrink-0 flex-col md:sticky md:top-9 md:h-[var(--sidebar-height)] md:w-56">
          <div className="mb-6 flex items-center justify-between md:hidden">
             <Logo className="size-8" />
             <Menus className="justify-end" />

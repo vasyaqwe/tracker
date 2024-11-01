@@ -1,4 +1,5 @@
 import { useDelayedValue } from "@/interactions/use-delayed-value"
+import * as invoice from "@/invoice/pdf/functions"
 import { Main } from "@/routes/$slug/-components/main"
 import { summaryListQuery } from "@/summary/queries"
 import { Card } from "@/ui/components/card"
@@ -6,8 +7,9 @@ import { Table } from "@/ui/components/table"
 import { TransitionHeight } from "@/ui/components/transition-height"
 import { useAuth } from "@/user/hooks"
 import { formatCurrency, formatDate, formatTime } from "@/utils/format"
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/start"
 import { useState } from "react"
 import type { Selection } from "react-aria-components"
 
@@ -19,7 +21,6 @@ export const Route = createFileRoute("/$slug/_layout/")({
       )
    },
    meta: () => [{ title: "Home" }],
-   // pendingComponent: PendingComponent,
 })
 
 function Component() {
@@ -42,6 +43,22 @@ function Component() {
       selectedItems.reduce((acc, curr) => acc + curr.durationMinutes, 0),
       500,
    )
+
+   const generateInvoiceFn = useServerFn(invoice.generate)
+   const _generateInvoice = useMutation({
+      mutationFn: generateInvoiceFn,
+      onSuccess: async (response) => {
+         const blob = await response.blob()
+         const url = window.URL.createObjectURL(blob)
+         const a = document.createElement("a")
+         a.style.display = "none"
+         a.href = url
+         a.download = "invoice.pdf"
+         document.body.appendChild(a)
+         a.click()
+         window.URL.revokeObjectURL(url)
+      },
+   })
 
    return (
       <Main>
@@ -74,14 +91,21 @@ function Component() {
                      data-expanded={Array.from(selectedKeys).length > 0}
                   >
                      <Card className="mb-2 flex items-center justify-between px-3 py-2 font-medium">
-                        <p>{formatCurrency(selectedEarnings)}</p>
-                        <p>{formatTime(selectedDuration)}</p>
+                        <p>
+                           {formatCurrency(selectedEarnings)} •
+                           {formatTime(selectedDuration)}
+                        </p>
+                        {/* <Button
+                           onPress={() => generateInvoice.mutate()}
+                        >
+                           Download
+                        </Button> */}
                      </Card>
                   </TransitionHeight>
                   <Table
                      key={projectId}
                      aria-label="Summaries"
-                     selectionMode="multiple"
+                     // selectionMode="multiple"
                      selectedKeys={selectedKeys}
                      onSelectionChange={setSelectedKeys}
                   >
