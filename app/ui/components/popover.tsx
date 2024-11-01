@@ -22,14 +22,8 @@ const Popover = ({ children, ...props }: DialogTriggerProps) => {
 
 const Title = ({
    level = 2,
-   className,
    ...props
-}: React.ComponentProps<typeof Dialog.Title>) => (
-   <Dialog.Title
-      className={cn("sm:leading-none", level === 2 && "sm:text-lg", className)}
-      {...props}
-   />
-)
+}: React.ComponentProps<typeof Dialog.Title>) => <Dialog.Title {...props} />
 
 const Header = ({
    className,
@@ -46,7 +40,7 @@ const Footer = ({
    ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
    <Dialog.Footer
-      className={cn("pt-4 pb-0 sm:pb-0", className)}
+      className={cn("pt-3", className)}
       {...props}
    />
 )
@@ -62,7 +56,7 @@ const Body = ({
 )
 
 const popoverContentVariants = cva(
-   "w-48 max-w-xs rounded-xl bg-popover bg-clip-padding shadow-sm sm:max-w-3xl",
+   "w-48 rounded-xl bg-popover bg-clip-padding shadow-lg",
    {
       variants: {
          isMenu: {

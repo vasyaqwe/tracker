@@ -1,4 +1,5 @@
 import { Icons } from "@/ui/components/icons"
+import { useUIStore } from "@/ui/store"
 import { cn, ctr } from "@/ui/utils"
 import {
    Button,
@@ -24,6 +25,8 @@ const NumberField = ({
    errorMessage,
    ...props
 }: NumberFieldProps) => {
+   const isMobile = useUIStore().isMobile
+
    return (
       <NumberFieldPrimitive
          {...props}
@@ -32,13 +35,26 @@ const NumberField = ({
          <Label>{label}</Label>
          <FieldGroup
             className={
-               "flex h-9 w-full overflow-hidden rounded-[10px] border border-border bg-background pl-3 text-base outline-2 outline-transparent transition-all disabled:border-foreground/10 focus-within:border-primary/90 disabled:bg-border/40 focus-within:bg-muted/60 disabled:text-foreground/70 focus-within:outline-primary/30"
+               "flex h-9 w-full overflow-hidden rounded-[10px] border border-border bg-background text-base outline-2 outline-transparent transition-all disabled:border-foreground/10 focus-within:border-primary/90 disabled:bg-border/40 focus-within:bg-muted/60 md:pl-3 disabled:text-foreground/70 focus-within:outline-primary/30"
             }
          >
             {(renderProps) => (
                <>
+                  <div
+                     aria-hidden={!isMobile}
+                     className={fieldBorderVariants({
+                        ...renderProps,
+                        className:
+                           "grid h-9 place-content-center border-border border-e md:hidden",
+                     })}
+                  >
+                     <StepperButton
+                        className={"h-9"}
+                        slot="decrement"
+                     />
+                  </div>
                   <Input
-                     className="!outline-none !border-none bg-transparent p-0 tabular-nums"
+                     className="!outline-none !border-none bg-transparent p-0 tabular-nums max-md:pl-2"
                      placeholder={placeholder}
                   />
                   <div
@@ -48,7 +64,12 @@ const NumberField = ({
                            "grid h-9 place-content-center border-border border-s",
                      })}
                   >
-                     <div className="flex h-full flex-col">
+                     <StepperButton
+                        aria-hidden={!isMobile}
+                        slot="increment"
+                        className={"h-9 md:hidden"}
+                     />
+                     <div className="flex h-full flex-col max-md:hidden">
                         <StepperButton
                            slot="increment"
                            emblemType="default"
@@ -91,19 +112,19 @@ const StepperButton = ({
    const icon =
       emblemType === "chevron" ? (
          slot === "increment" ? (
-            <Icons.chevronUp className="size-4" />
+            <Icons.chevronUp className="size-5 md:size-4" />
          ) : (
-            <Icons.chevronDown className="size-4" />
+            <Icons.chevronDown className="size-5 md:size-4" />
          )
       ) : slot === "increment" ? (
-         <Icons.plus className="size-4" />
+         <Icons.plus className="size-5 md:size-4" />
       ) : (
-         <Icons.minus className="size-4" />
+         <Icons.minus className="size-5 md:size-4" />
       )
    return (
       <Button
          className={cn(
-            "!px-2 h-6 cursor-default text-foreground/70 transition-colors hover:bg-elevated",
+            "!px-2 md:!px-1.5 h-6 cursor-default text-foreground/70 transition-colors hover:bg-elevated",
             className,
          )}
          slot={slot}

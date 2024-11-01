@@ -81,11 +81,11 @@ function Toaster(props: ComponentProps<typeof Sonner>) {
             classNames: {
                actionButton: cn(
                   // buttonVariants({ variant: "outline" }),
-                  "!-m-2 !-mr-[9px] !ml-2.5 !h-[34px] !rounded-full !transition-all hover:!shadow-lg !bg-foreground !px-3 !text-white !text-sm !font-medium before:hidden before:border-foreground/[0.07] before:from-white/[0.1]",
+                  "!-m-2 !-mr-[9px] !ml-2.5 !h-[32px] !rounded-full !transition-all hover:!shadow-lg !bg-foreground !px-3 !text-white !text-sm !font-medium before:hidden before:border-foreground/[0.07] before:from-white/[0.1]",
                ),
             },
             className:
-               "!mx-auto !border-transparent !shadow-lg !font-primary !py-3.5 !select-none !w-max !max-w-[--width] !left-1/2 max-md:mb-[calc(env(safe-area-inset-bottom)+1.75rem)] !bg-popover !right-auto !text-base !text-primary-foreground !justify-center !pointer-events-auto !rounded-full",
+               "!mx-auto !border-transparent !shadow-lg !font-primary !py-3 !select-none !w-max !max-w-[--width] !left-1/2 max-md:mb-[calc(env(safe-area-inset-bottom)+1.75rem)] !bg-popover !right-auto !text-base !text-primary-foreground !justify-center !pointer-events-auto !rounded-full",
          }}
          expand
          position="top-center"

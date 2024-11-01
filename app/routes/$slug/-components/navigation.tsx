@@ -1,10 +1,10 @@
-import logo from "@/assets/icon.png"
 import { projectListQuery } from "@/project/queries"
 import { Route as homeRoute } from "@/routes/$slug/_layout/index"
 import { Route as settingsRoute } from "@/routes/$slug/_layout/settings"
 import { useTimerStore } from "@/timer/store"
 import { buttonVariants } from "@/ui/components/button"
 import { Icons } from "@/ui/components/icons"
+import { Logo } from "@/ui/components/logo"
 import { Menu } from "@/ui/components/menu"
 import { useIsClient } from "@/ui/hooks/use-is-client"
 import { useUIStore } from "@/ui/store"
@@ -23,19 +23,11 @@ export function Navigation() {
    return (
       <div className="flex shrink-0 flex-col md:sticky md:top-9 md:h-[var(--sidebar-height)] md:w-52">
          <div className="mb-6 flex items-center justify-between md:hidden">
-            <img
-               src={logo}
-               className="size-8"
-               alt="Tracker"
-            />
+            <Logo className="size-8" />
             <Menus className="justify-end" />
          </div>
          <nav className="max-md:mb-4">
-            <img
-               src={logo}
-               className="-ml-[3px] mb-6 size-8 max-md:hidden"
-               alt="Tracker"
-            />
+            <Logo className="-ml-[3px] mb-6 size-8 max-md:hidden" />
             <ul className="md:before:-left-[2px] max-md:before:-ml-5 before:-bottom-[1px] relative items-center gap-3 pl-1 [--padding-block:4px] before:absolute md:before:top-[2px] max-md:flex before:h-[2px] md:before:h-[calc(100%-var(--padding-block))] before:w-[calc(100%+2rem)] md:before:w-[2px] md:space-y-2.5 before:rounded-sm before:bg-border">
                <li>
                   <Link

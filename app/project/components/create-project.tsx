@@ -1,9 +1,9 @@
-import logo from "@/assets/icon.png"
 import { env } from "@/env"
 import { RESERVED_SLUGS } from "@/project/constants"
 import { projectListQuery } from "@/project/queries"
 import { Button } from "@/ui/components/button"
 import { Loading } from "@/ui/components/loading"
+import { Logo } from "@/ui/components/logo"
 import { NumberField } from "@/ui/components/number-field"
 import { TextField } from "@/ui/components/text-field"
 import { cn } from "@/ui/utils"
@@ -62,19 +62,12 @@ export function CreateProject({
          <div className="-mt-8 mx-auto w-full max-w-[23rem] px-4">
             {isFirstProject ? (
                <div className="flex items-center gap-2.5">
-                  <img
-                     src={logo}
-                     className="size-9"
-                     alt="Tracker"
-                  />
+                  <Logo className="size-9" />
+
                   <h1 className="font-medium text-2xl">Welcome to Tracker,</h1>
                </div>
             ) : (
-               <img
-                  src={logo}
-                  className="size-9"
-                  alt="Tracker"
-               />
+               <Logo className="size-9" />
             )}
             <h2 className={cn("my-4 text-foreground/90 text-xl")}>
                Create {isFirstProject ? "your first" : "a new"} project

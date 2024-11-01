@@ -91,7 +91,7 @@ const Header = ({ className, ...props }: DialogHeaderProps) => {
 const titleVariants = cva("flex flex-1 items-center", {
    variants: {
       level: {
-         1: "font-medium text-lg sm:text-lg",
+         1: "font-medium text-lg",
          2: "font-medium text-lg",
          3: "font-medium text-base",
          4: "font-medium text-base",
@@ -211,11 +211,11 @@ const CloseIndicator = ({ className, ...props }: CloseButtonIndicatorProps) => {
          aria-label="Close"
          onPress={props.close}
          className={cn(
-            "close absolute top-1 right-1 z-50 grid size-8 place-content-center rounded-xl sm:top-2 sm:right-2 sm:size-7 sm:rounded-md focus:bg-secondary hover:bg-secondary focus:outline-none focus-visible:ring-1 focus-visible:ring-primary",
+            "absolute top-2 right-2 z-50 grid size-8 place-content-center rounded-[9px] ring-offset-1 transition-colors duration-100 md:size-7 hover:bg-border/60 focus:outline-none focus-visible:ring-1 focus-visible:ring-primary",
             className,
          )}
       >
-         <Icons.xMark className="size-4" />
+         <Icons.xMark className="size-5 md:size-4" />
       </ButtonPrimitive>
    ) : null
 }

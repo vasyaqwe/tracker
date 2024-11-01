@@ -3,6 +3,7 @@ import { projectBySlugQuery, projectListQuery } from "@/project/queries"
 import { Main } from "@/routes/$slug/-components/main"
 import { useTimerStore } from "@/timer/store"
 import { Button, buttonVariants } from "@/ui/components/button"
+import { Card } from "@/ui/components/card"
 import { Label } from "@/ui/components/field"
 import { Loading } from "@/ui/components/loading"
 import { Modal } from "@/ui/components/modal"
@@ -78,7 +79,7 @@ function Component() {
    return (
       <Main>
          <main>
-            <div className="rounded-[15px] border border-border/40 bg-elevated p-4 pt-3">
+            <Card className="p-4 pt-3">
                <form
                   onSubmit={(e) => {
                      e.preventDefault()
@@ -133,9 +134,8 @@ function Component() {
                      Save
                   </Button>
                </form>
-            </div>
-
-            <div className="mt-3 rounded-[15px] border border-border/40 bg-elevated p-4">
+            </Card>
+            <Card className="mt-3 p-4">
                <div>
                   <p>Delete project</p>
                   <p className="mt-1 text-foreground/75 text-sm">
@@ -223,7 +223,7 @@ function Component() {
                      </Modal.Footer>
                   </Modal.Content>
                </Modal>
-            </div>
+            </Card>
          </main>
       </Main>
    )

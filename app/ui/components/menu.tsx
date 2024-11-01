@@ -162,7 +162,7 @@ const MenuHeader = ({
 }: MenuHeaderProps) => (
    <Header
       className={cn(
-         "p-2 text-popover-foreground/70 text-sm",
+         "p-2 pt-1 text-popover-foreground/70 text-sm",
          separator && "-mx-1 border-b border-b-black px-3 pb-[0.625rem]",
          className,
       )}

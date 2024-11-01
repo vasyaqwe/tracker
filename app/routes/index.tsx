@@ -1,9 +1,10 @@
 import app from "@/assets/app.png"
 import app_mobile from "@/assets/app_mobile.png"
-import icon from "@/assets/icon.png"
 import logo from "@/assets/logo.png"
 import { projectListQuery } from "@/project/queries"
 import { buttonVariants } from "@/ui/components/button"
+import { Card } from "@/ui/components/card"
+import { Logo } from "@/ui/components/logo"
 import { cn } from "@/ui/utils"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { Link } from "@tanstack/react-router"
@@ -39,11 +40,7 @@ function Homepage({
                to="/"
                className="flex items-center gap-3 font-medium font-secondary text-[1.725rem] tracking-tight"
             >
-               <img
-                  src={icon}
-                  className="size-8"
-                  alt="Tracker"
-               />
+               <Logo className="size-8" />
             </Link>
             {!isAuthed ? (
                <Link
@@ -82,7 +79,7 @@ function Homepage({
                </Link>
             </section>
             <section className="relative mx-auto mt-12 max-w-4xl px-4 md:mt-20">
-               <div className="rounded-t-[20px] border border-border/40 bg-elevated p-1.5 pb-0">
+               <Card className="rounded-none rounded-t-[20px] p-1.5 pb-0">
                   <picture>
                      <source
                         srcSet={app_mobile}
@@ -94,7 +91,7 @@ function Homepage({
                         alt="App screenshot"
                      />
                   </picture>
-               </div>
+               </Card>
             </section>
          </main>
          <footer className="relative z-[2] border-border/75 border-t bg-background py-8 shadow-md md:py-12">

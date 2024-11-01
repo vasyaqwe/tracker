@@ -1,6 +1,6 @@
-import logo from "@/assets/icon.png"
 import { projectBySlugQuery, projectListQuery } from "@/project/queries"
 import { Stopwatch } from "@/routes/$slug/-components/stopwatch"
+import { Logo } from "@/ui/components/logo"
 import { MOBILE_BREAKPOINT } from "@/ui/constants"
 import { useUIStore } from "@/ui/store"
 import { userMeQuery } from "@/user/queries"
@@ -37,18 +37,16 @@ export const Route = createFileRoute("/$slug/_layout")({
 
       context.queryClient.prefetchQuery(projectListQuery())
 
+      const device = await getDevice()
+
       return {
          projectId: project.id,
-         device: await getDevice(),
+         device,
       }
    },
    pendingComponent: () => (
       <div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-full">
-         <img
-            src={logo}
-            className="mx-auto size-9 animate-fade-in opacity-0 [--animation-delay:100ms]"
-            alt="Tracker"
-         />
+         <Logo className="mx-auto size-9 animate-fade-in opacity-0 [--animation-delay:100ms]" />
          <h1 className="mt-4 animate-fade-in text-center text-foreground/75 opacity-0 duration-500 [--animation-delay:600ms]">
             Workspace is loading...
          </h1>
@@ -77,7 +75,7 @@ function Component() {
    }, [])
 
    return (
-      <div className="mx-auto max-w-4xl items-start gap-9 px-4 pt-4 [--sidebar-height:275px] md:flex md:pt-28 max-md:pb-8">
+      <div className="mx-auto max-w-4xl items-start gap-9 px-4 pt-4 [--sidebar-height:360px] md:flex md:pt-28 max-md:pb-8">
          <Navigation />
          <Outlet />
          <Stopwatch />

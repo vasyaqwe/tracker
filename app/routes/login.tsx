@@ -1,7 +1,7 @@
-import logo from "@/assets/icon.png"
 import { useMountError } from "@/interactions/use-mount-error"
 import { Button } from "@/ui/components/button"
 import { Loading } from "@/ui/components/loading"
+import { Logo } from "@/ui/components/logo"
 import { cn } from "@/ui/utils"
 import * as userFns from "@/user/functions"
 import { useMutation } from "@tanstack/react-query"
@@ -48,11 +48,8 @@ export function LoginComponent() {
    return (
       <main className="isolate grid h-svh w-full place-items-center px-4">
          <div className="-mt-8 flex w-full max-w-[260px] flex-col">
-            <img
-               src={logo}
-               className="mx-auto mb-4 size-9"
-               alt="Tracker"
-            />
+            <Logo className="mx-auto mb-4 size-9" />
+
             <div className={cn("relative mx-auto flex w-full flex-col")}>
                {isCodeSent ? (
                   <div

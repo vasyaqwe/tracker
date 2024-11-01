@@ -1,3 +1,4 @@
+import { Card } from "@/ui/components/card"
 import { cn } from "@/ui/utils"
 import { cva } from "class-variance-authority"
 import * as React from "react"
@@ -49,7 +50,7 @@ const useTableContext = () => React.useContext(TableContext)
 
 const Table = ({ children, className, ...props }: TableProps) => (
    <TableContext.Provider value={props}>
-      <div className="relative w-full overflow-auto rounded-[calc(15px)] border border-border/40 bg-elevated">
+      <Card className="relative w-full overflow-auto rounded-[calc(15px)]">
          {props.allowResize ? (
             <ResizableTableContainer className="overflow-auto">
                <TablePrimitive
@@ -67,7 +68,7 @@ const Table = ({ children, className, ...props }: TableProps) => (
                {children}
             </TablePrimitive>
          )}
-      </div>
+      </Card>
    </TableContext.Provider>
 )
 

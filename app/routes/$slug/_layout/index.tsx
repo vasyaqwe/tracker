@@ -1,6 +1,7 @@
 import { useDelayedValue } from "@/interactions/use-delayed-value"
 import { Main } from "@/routes/$slug/-components/main"
 import { summaryListQuery } from "@/summary/queries"
+import { Card } from "@/ui/components/card"
 import { Table } from "@/ui/components/table"
 import { TransitionHeight } from "@/ui/components/transition-height"
 import { useAuth } from "@/user/hooks"
@@ -72,10 +73,10 @@ function Component() {
                   <TransitionHeight
                      data-expanded={Array.from(selectedKeys).length > 0}
                   >
-                     <div className="mb-2 flex items-center justify-between rounded-[15px] border border-border/40 bg-elevated px-3 py-2 font-medium">
+                     <Card className="mb-2 flex items-center justify-between px-3 py-2 font-medium">
                         <p>{formatCurrency(selectedEarnings)}</p>
                         <p>{formatTime(selectedDuration)}</p>
-                     </div>
+                     </Card>
                   </TransitionHeight>
                   <Table
                      key={projectId}
