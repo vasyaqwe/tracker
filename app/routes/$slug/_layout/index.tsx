@@ -92,7 +92,8 @@ function Component() {
                   >
                      <Card className="mb-2 flex items-center justify-between px-3 py-2 font-medium">
                         <p>
-                           {formatCurrency(selectedEarnings)} •
+                           {formatCurrency(selectedEarnings)}{" "}
+                           <span className="opacity-70">•</span>{" "}
                            {formatTime(selectedDuration)}
                         </p>
                         {/* <Button

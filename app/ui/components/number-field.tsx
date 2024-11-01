@@ -35,7 +35,7 @@ const NumberField = ({
          <Label>{label}</Label>
          <FieldGroup
             className={
-               "flex h-9 w-full overflow-hidden rounded-[10px] border border-border bg-background text-base outline-2 outline-transparent transition-all disabled:border-foreground/10 focus-within:border-primary/90 disabled:bg-border/40 focus-within:bg-muted/60 md:pl-3 disabled:text-foreground/70 focus-within:outline-primary/30"
+               "flex h-9 w-full overflow-hidden rounded-[10px] border border-border bg-background text-base outline-2 outline-transparent transition-all data-[disabled=true]:border-foreground/10 focus-within:border-primary/90 data-[disabled=true]:bg-border/40 focus-within:bg-muted/60 md:pl-3 data-[disabled=true]:text-foreground/70 focus-within:outline-primary/30"
             }
          >
             {(renderProps) => (
@@ -54,7 +54,7 @@ const NumberField = ({
                      />
                   </div>
                   <Input
-                     className="!outline-none !border-none bg-transparent p-0 tabular-nums max-md:pl-2"
+                     className="!outline-none !border-none !bg-transparent p-0 tabular-nums max-md:pl-2"
                      placeholder={placeholder}
                   />
                   <div
@@ -124,7 +124,7 @@ const StepperButton = ({
    return (
       <Button
          className={cn(
-            "!px-2 md:!px-1.5 h-6 cursor-default text-foreground/70 transition-colors hover:bg-elevated",
+            "!px-2 md:!px-1.5 data-[disabled=true]:!bg-border/40 h-6 cursor-default bg-background text-foreground/70 transition-colors data-[disabled=true]:cursor-not-allowed hover:bg-elevated",
             className,
          )}
          slot={slot}
