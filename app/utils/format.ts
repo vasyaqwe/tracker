@@ -88,12 +88,13 @@ export const millisToMinutes = (millis: number) => {
 }
 
 export const formatTime = (minutes: number): string => {
-   const hours = Math.floor(minutes / 60)
+   const remainingHours = Math.floor(minutes / 60)
    const remainingMinutes = minutes % 60
 
-   return hours === 0
-      ? `${remainingMinutes}m`
-      : `${hours}h ${remainingMinutes}m`
+   const minutesDisplay = remainingMinutes === 0 ? "" : `${remainingMinutes}m`
+   const hoursDisplay = remainingHours === 0 ? "" : `${remainingHours}h`
+
+   return `${hoursDisplay} ${minutesDisplay}`
 }
 
 export const calculateAmountEarned = (
