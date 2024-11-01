@@ -105,7 +105,7 @@ function Component() {
                   <Table
                      key={projectId}
                      aria-label="Summaries"
-                     // selectionMode="multiple"
+                     selectionMode="multiple"
                      selectedKeys={selectedKeys}
                      onSelectionChange={setSelectedKeys}
                   >
