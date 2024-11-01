@@ -1,11 +1,10 @@
 import type * as React from "react"
 
 import {
-   FieldError,
    FieldGroup,
    type FieldProps,
    Input,
-   fieldGroupPrefixStyles,
+   Label,
 } from "@/ui/components/field"
 import { cn } from "@/ui/utils"
 import type { TextInputDOMProps } from "@react-types/shared"
@@ -16,19 +15,20 @@ import {
 
 type InputType = Exclude<TextInputDOMProps["type"], "password">
 
-interface BaseTextFieldProps extends TextFieldPrimitiveProps, FieldProps {
-   prefix?: React.ReactNode
-   suffix?: React.ReactNode
-   isPending?: boolean
-   className?: string
-}
+type BaseTextFieldProps = TextFieldPrimitiveProps &
+   FieldProps & {
+      prefix?: React.ReactNode
+      suffix?: React.ReactNode
+      isPending?: boolean
+      className?: string
+   }
 
-interface RevealableTextFieldProps extends BaseTextFieldProps {
+type RevealableTextFieldProps = BaseTextFieldProps & {
    isRevealable: true
    type: "password"
 }
 
-interface NonRevealableTextFieldProps extends BaseTextFieldProps {
+type NonRevealableTextFieldProps = BaseTextFieldProps & {
    isRevealable?: never
    type?: InputType
 }
@@ -54,29 +54,16 @@ const TextField = ({
          {...props}
          className={cn(className)}
       >
+         {label && <Label>{label}</Label>}
          <FieldGroup
             data-loading={isPending ? "true" : undefined}
-            className={fieldGroupPrefixStyles({ className })}
+            className={cn({ className })}
          >
-            {prefix ? (
-               <span
-                  data-slot="prefix"
-                  className="atrs x2e2"
-               >
-                  {prefix}
-               </span>
-            ) : null}
+            {prefix ? <span data-slot="prefix">{prefix}</span> : null}
             <Input placeholder={placeholder} />
-            {suffix ? (
-               <span
-                  data-slot="suffix"
-                  className="atrs x2e2"
-               >
-                  {suffix}
-               </span>
-            ) : null}
+            {suffix ? <span data-slot="suffix">{suffix}</span> : null}
          </FieldGroup>
-         <FieldError>{errorMessage}</FieldError>
+         {/* <FieldError>{errorMessage}</FieldError> */}
       </TextFieldPrimitive>
    )
 }

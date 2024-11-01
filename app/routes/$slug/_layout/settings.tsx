@@ -3,11 +3,11 @@ import { projectBySlugQuery, projectListQuery } from "@/project/queries"
 import { Main } from "@/routes/$slug/-components/main"
 import { useTimerStore } from "@/timer/store"
 import { Button, buttonVariants } from "@/ui/components/button"
-import { Input } from "@/ui/components/field"
-import { Label } from "@/ui/components/label"
+import { Label } from "@/ui/components/field"
 import { Loading } from "@/ui/components/loading"
 import { Modal } from "@/ui/components/modal"
 import { NumberField } from "@/ui/components/number-field"
+import { TextField } from "@/ui/components/text-field"
 import { useUIStore } from "@/ui/store"
 import { cn } from "@/ui/utils"
 import { useAuth } from "@/user/hooks"
@@ -103,23 +103,19 @@ function Component() {
                      })
                   }}
                >
-                  <Label htmlFor="name">Name</Label>
-                  <Input
+                  <TextField
+                     className="mb-3 max-w-[300px]"
+                     label="Name"
                      defaultValue={project.name}
                      name="name"
                      id="name"
-                     className="max-w-[300px]"
                      placeholder="Project name"
                      maxLength={32}
-                     required
+                     isRequired
                   />
-                  <Label
-                     htmlFor="rate"
-                     className="mt-3"
-                  >
-                     Hourly rate
-                  </Label>
                   <NumberField
+                     className="max-w-[300px]"
+                     label="Hourly rate"
                      isDisabled={isRunning}
                      minValue={1}
                      maxValue={1000}
@@ -179,22 +175,19 @@ function Component() {
                            id={"delete_project"}
                         >
                            <Label
-                              className="text-sm"
                               htmlFor="confirmation"
+                              className="mb-1.5 text-sm"
                            >
-                              To confirm, enter <strong>{project.name}</strong>{" "}
-                              below
+                              To confirm, enter project name below
                            </Label>
-                           <Input
+                           <TextField
                               autoComplete="off"
                               autoFocus={!isMobile}
                               id="confirmation"
                               name="confirmation"
                               placeholder={project.name}
                               value={confirmDeletion}
-                              onChange={(e) =>
-                                 setConfirmDeletion(e.target.value)
-                              }
+                              onChange={(value) => setConfirmDeletion(value)}
                            />
                         </form>
                      </div>

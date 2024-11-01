@@ -1,4 +1,3 @@
-import { useUIStore } from "@/ui/store"
 import { cn, cr } from "@/ui/utils"
 import { cva } from "class-variance-authority"
 import type * as React from "react"
@@ -10,13 +9,11 @@ import type {
 import {
    type DialogProps,
    DialogTrigger,
-   Modal,
-   ModalOverlay,
+   type Modal,
    PopoverContext,
    Popover as PopoverPrimitive,
    useSlottedContext,
 } from "react-aria-components"
-import { twJoin } from "tailwind-merge"
 import { Dialog } from "./dialog"
 
 const Popover = ({ children, ...props }: DialogTriggerProps) => {
@@ -85,79 +82,30 @@ const popoverContentVariants = cva(
    },
 )
 
-const drawerStyles = cva(
-   "fixed top-auto bottom-0 z-50 max-h-full w-full max-w-2xl border border-b-transparent bg-overlay outline-none",
-   {
-      variants: {
-         isMenu: {
-            true: "rounded-t-xl p-0 [&_[role=dialog]]:px-0",
-            false: "rounded-t-3xl py-4",
-         },
-         isEntering: {
-            true: [
-               "[transition:transform_0.5s_cubic-bezier(0.32,_0.72,_0,_1)] [will-change:transform]",
-               "fade-in-0 slide-in-from-bottom-56 animate-in duration-200",
-               "[transition:translate3d(0,_100%,_0)]",
-               "sm:slide-in-from-bottom-auto sm:slide-in-from-top-[20%]",
-            ],
-         },
-         isExiting: {
-            true: "slide-out-to-bottom-56 animate-out duration-200 ease-in",
-         },
-      },
-   },
-)
-
-interface PopoverProps
-   extends Omit<React.ComponentProps<typeof Modal>, "children">,
-      Omit<PopoverPrimitiveProps, "children" | "className">,
-      Omit<ModalOverlayProps, "className"> {
-   children: React.ReactNode
-   showArrow?: boolean
-   style?: React.CSSProperties
-   respectScreen?: boolean
-   "aria-label"?: DialogProps["aria-label"]
-   "aria-labelledby"?: DialogProps["aria-labelledby"]
-   className?: string | ((values: { defaultClassName?: string }) => string)
-}
+type PopoverProps = Omit<React.ComponentProps<typeof Modal>, "children"> &
+   Omit<PopoverPrimitiveProps, "children"> &
+   Omit<ModalOverlayProps, "className"> & {
+      children: React.ReactNode
+      showArrow?: boolean
+      style?: React.CSSProperties
+      respectScreen?: boolean
+      "aria-label"?: DialogProps["aria-label"]
+      "aria-labelledby"?: DialogProps["aria-labelledby"]
+   }
 
 const Content = ({
-   respectScreen = true,
    children,
    showArrow = true,
    className,
    ...props
 }: PopoverProps) => {
-   const isMobile = useUIStore().isMobile
    const popoverContext = useSlottedContext(PopoverContext)
-   const isMenuTrigger = popoverContext?.trigger === "MenuTrigger"
    const isSubmenuTrigger = popoverContext?.trigger === "SubmenuTrigger"
-   const isMenu = isMenuTrigger || isSubmenuTrigger
    const offset = showArrow ? 12 : 8
+
    const effectiveOffset = isSubmenuTrigger ? offset - 5 : offset
-   return isMobile && respectScreen ? (
-      <ModalOverlay
-         className={twJoin(
-            "fixed top-0 left-0 isolate z-50 h-[--visual-viewport-height] w-full [--visual-viewport-vertical-padding:16px]",
-            isSubmenuTrigger ? "" : "",
-         )}
-         {...props}
-         isDismissable
-      >
-         <Modal
-            className={cr(className, (className, renderProps) =>
-               drawerStyles({ ...renderProps, isMenu, className }),
-            )}
-         >
-            <Dialog
-               aria-label={isMenu ? "Menu" : props["aria-label"]}
-               className="touch-none focus:outline-none"
-            >
-               {children}
-            </Dialog>
-         </Modal>
-      </ModalOverlay>
-   ) : (
+
+   return (
       <PopoverPrimitive
          offset={effectiveOffset}
          {...props}
@@ -169,17 +117,17 @@ const Content = ({
          )}
       >
          {/* {showArrow && (
-            <OverlayArrow className="group">
-               <svg
-                  width={12}
-                  height={12}
-                  viewBox="0 0 12 12"
-                  className="group-data-[placement=left]:-rotate-90 block fill-overlay stroke-border group-data-[placement=bottom]:rotate-180 group-data-[placement=right]:rotate-90 forced-colors:fill-[Canvas] forced-colors:stroke-[ButtonBorder]"
-               >
-                  <path d="M0 0 L6 6 L12 0" />
-               </svg>
-            </OverlayArrow>
-         )} */}
+         <OverlayArrow className="group">
+            <svg
+               width={12}
+               height={12}
+               viewBox="0 0 12 12"
+               className="group-data-[placement=left]:-rotate-90 block fill-overlay stroke-border group-data-[placement=bottom]:rotate-180 group-data-[placement=right]:rotate-90 forced-colors:fill-[Canvas] forced-colors:stroke-[ButtonBorder]"
+            >
+               <path d="M0 0 L6 6 L12 0" />
+            </svg>
+         </OverlayArrow>
+      )} */}
          {children}
       </PopoverPrimitive>
    )
@@ -217,4 +165,4 @@ Popover.Header = Header
 Popover.Picker = Picker
 Popover.Title = Title
 
-export { Popover, drawerStyles, popoverContentVariants }
+export { Popover, popoverContentVariants }

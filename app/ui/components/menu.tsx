@@ -26,7 +26,7 @@ import {
 } from "./dropdown"
 import { Popover } from "./popover"
 
-interface MenuContextProps {
+type MenuContextProps = {
    respectScreen: boolean
 }
 
@@ -34,7 +34,7 @@ const MenuContext = React.createContext<MenuContextProps>({
    respectScreen: true,
 })
 
-interface MenuProps extends MenuTriggerPrimitiveProps {
+type MenuProps = MenuTriggerPrimitiveProps & {
    respectScreen?: boolean
 }
 
@@ -57,7 +57,7 @@ const SubMenu = ({ delay = 0, ...props }) => (
    </SubmenuTriggerPrimitive>
 )
 
-interface MenuTriggerProps extends ButtonProps {
+type MenuTriggerProps = ButtonProps & {
    className?: string
 }
 
@@ -76,14 +76,13 @@ const Trigger = ({ className, ...props }: MenuTriggerProps) => (
    </Button>
 )
 
-interface MenuContentProps<T>
-   extends Omit<PopoverProps, "children" | "style">,
-      MenuPrimitiveProps<T> {
-   className?: string
-   popoverClassName?: string
-   showArrow?: boolean
-   respectScreen?: boolean
-}
+type MenuContentProps<T> = Omit<PopoverProps, "children" | "style"> &
+   MenuPrimitiveProps<T> & {
+      className?: string
+      popoverClassName?: string
+      showArrow?: boolean
+      respectScreen?: boolean
+   }
 
 const Content = <T extends object>({
    className,
@@ -152,7 +151,7 @@ const Item = ({
    )
 }
 
-export interface MenuHeaderProps extends React.ComponentProps<typeof Header> {
+export type MenuHeaderProps = React.ComponentProps<typeof Header> & {
    separator?: boolean
 }
 

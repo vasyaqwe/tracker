@@ -3,10 +3,9 @@ import { env } from "@/env"
 import { RESERVED_SLUGS } from "@/project/constants"
 import { projectListQuery } from "@/project/queries"
 import { Button } from "@/ui/components/button"
-import { Input } from "@/ui/components/field"
-import { Label } from "@/ui/components/label"
 import { Loading } from "@/ui/components/loading"
 import { NumberField } from "@/ui/components/number-field"
+import { TextField } from "@/ui/components/text-field"
 import { cn } from "@/ui/utils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
@@ -102,30 +101,25 @@ export function CreateProject({
                }}
                className="flex w-full flex-col"
             >
-               <Label htmlFor="name">Name</Label>
-               <Input
+               <TextField
+                  label="Name"
                   autoComplete="off"
                   autoFocus
                   name="name"
                   id="name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(value) => setName(value)}
                   placeholder="Enter a name"
-                  required
+                  isRequired
                   maxLength={32}
                />
-               <p className="mt-2 break-all text-foreground/75">
+               <p className="mt-2 mb-3 break-all text-foreground/75">
                   <u>
                      {env.VITE_BASE_URL}/{makeSlug(name)}
                   </u>
                </p>
-               <Label
-                  htmlFor="rate"
-                  className="mt-3"
-               >
-                  Hourly rate
-               </Label>
                <NumberField
+                  label="Hourly rate"
                   minValue={1}
                   maxValue={1000}
                   name="rate"

@@ -107,7 +107,7 @@ const TableCell = ({ children, className, ...props }: TableCellProps) => {
 }
 
 const columnVariants = cva(
-   "h-12 px-5 text-left align-middle font-medium text-foreground/60 text-sm leading-none [&>[role=checkbox]]:translate-y-[2px] [&:has([role=checkbox])]:pr-0 [&:has([slot=selection])]:pr-0 first:pl-[26px] md:text-base",
+   "h-12 px-5 text-left align-middle font-medium text-foreground/60 text-sm leading-none [&>[role=checkbox]]:translate-y-[2px] [&:has([role=checkbox])]:pr-0 [&:has([slot=selection])]:pr-0 first:pl-[26px] md:text-base focus-visible:outline-none",
    {
       variants: {
          isResizable: {

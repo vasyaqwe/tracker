@@ -7,7 +7,7 @@ import {
    type NumberFieldProps as NumberFieldPrimitiveProps,
    type ValidationResult,
 } from "react-aria-components"
-import { FieldGroup, Input, Label } from "./field"
+import { FieldGroup, Input, Label, fieldBorderVariants } from "./field"
 
 type NumberFieldProps = NumberFieldPrimitiveProps & {
    label?: string
@@ -30,38 +30,43 @@ const NumberField = ({
          className={ctr(className, "group flex flex-col gap-1")}
       >
          <Label>{label}</Label>
-         <FieldGroup>
-            {(_renderProps) => (
+         <FieldGroup
+            className={
+               "flex h-9 w-full overflow-hidden rounded-[10px] border border-border bg-background pl-3 text-base outline-2 outline-transparent transition-all disabled:border-foreground/10 focus-within:border-primary/90 disabled:bg-border/40 focus-within:bg-muted/60 disabled:text-foreground/70 focus-within:outline-primary/30"
+            }
+         >
+            {(renderProps) => (
                <>
                   <Input
-                     className="tabular-nums"
+                     className="!outline-none !border-none bg-transparent p-0 tabular-nums"
                      placeholder={placeholder}
                   />
-                  {/* <div
+                  <div
                      className={fieldBorderVariants({
                         ...renderProps,
-                        className: "grid h-10 place-content-center border-s",
+                        className:
+                           "grid h-9 place-content-center border-border border-s",
                      })}
                   >
                      <div className="flex h-full flex-col">
                         <StepperButton
                            slot="increment"
                            emblemType="default"
-                           className="h-5 px-1"
+                           className="h-4 px-1"
                         />
                         <div
                            className={fieldBorderVariants({
                               ...renderProps,
-                              className: "border-b",
+                              className: "border-border border-b",
                            })}
                         />
                         <StepperButton
                            slot="decrement"
                            emblemType="default"
-                           className="h-5 px-1"
+                           className="h-4 px-1"
                         />
                      </div>
-                  </div> */}
+                  </div>
                </>
             )}
          </FieldGroup>
@@ -77,7 +82,7 @@ type StepperButtonProps = ButtonProps & {
    className?: string
 }
 
-const _StepperButton = ({
+const StepperButton = ({
    slot,
    className,
    emblemType = "default",
@@ -86,18 +91,21 @@ const _StepperButton = ({
    const icon =
       emblemType === "chevron" ? (
          slot === "increment" ? (
-            <Icons.chevronUp className="size-5" />
+            <Icons.chevronUp className="size-4" />
          ) : (
-            <Icons.chevronDown className="size-5" />
+            <Icons.chevronDown className="size-4" />
          )
       ) : slot === "increment" ? (
-         <Icons.plus />
+         <Icons.plus className="size-4" />
       ) : (
-         <Icons.minus />
+         <Icons.minus className="size-4" />
       )
    return (
       <Button
-         className={cn("h-10 cursor-default px-2", className)}
+         className={cn(
+            "!px-2 h-6 cursor-default text-foreground/70 transition-colors hover:bg-elevated",
+            className,
+         )}
          slot={slot}
          {...props}
       >

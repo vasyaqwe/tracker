@@ -129,16 +129,11 @@ export function LoginComponent() {
                                  }}
                                  className="px-6"
                               >
-                                 <Label
-                                    htmlFor="email"
-                                    className={"md:text-[1rem]"}
-                                 >
-                                    We'll send you a one-time password.
-                                 </Label>
-                                 <Input
-                                    required
+                                 <TextField
+                                    isRequired
                                     id="email"
                                     type="email"
+                                    label="We'll send you a one-time password."
                                     placeholder="Email address"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}

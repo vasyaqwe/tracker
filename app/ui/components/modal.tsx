@@ -32,7 +32,7 @@ const modalOverlayVariants = cva(
 )
 const modalContentVariants = cva(
    [
-      "max-h-full w-full overflow-hidden rounded-[15px] bg-background text-left align-middle shadow-lg",
+      "max-h-full w-[90%] overflow-hidden rounded-[15px] bg-background text-left align-middle shadow-lg md:w-full",
       "-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-[50vw]",
    ],
    {

@@ -50,7 +50,7 @@ const FieldError = ({ className, ...props }: FieldErrorProps) => {
    return (
       <FieldErrorPrimitive
          {...props}
-         className={ctr(className, "text-danger text-sm")}
+         className={ctr(className, "mt-1 text-destructive text-sm")}
       />
    )
 }
@@ -74,7 +74,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
             className={ctr(
                className,
-               "block h-[35px] w-full appearance-none rounded-[11px] border border-border bg-background px-3 text-base outline-2 outline-transparent transition-all disabled:border-foreground/10 focus:border-primary/90 disabled:bg-border/40 focus:bg-muted/60 disabled:text-foreground/70 placeholder:text-foreground/40 focus:outline-primary/30",
+               "block h-9 w-full appearance-none rounded-[10px] border border-border bg-background px-3 text-base outline-2 outline-transparent transition-all disabled:border-foreground/10 focus:border-primary/90 disabled:bg-border/40 focus:bg-muted/60 disabled:text-foreground/70 placeholder:text-foreground/40 focus:outline-primary/30",
             )}
          />
       )
@@ -86,7 +86,7 @@ const Label = ({ className, ...props }: LabelProps) => {
       <LabelPrimitive
          {...props}
          className={cn(
-            "w-fit cursor-default font-medium text-secondary-fg text-sm",
+            "mb-1 inline-block w-fit cursor-default text-foreground/70 peer-disabled:opacity-75",
             className,
          )}
       />
