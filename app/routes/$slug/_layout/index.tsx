@@ -184,9 +184,6 @@ function Component() {
                                                 },
                                              )} on ${formatDateIntl(
                                                 item.createdAt,
-                                                {
-                                                   month: "long",
-                                                },
                                              )}`,
                                           }),
                                        ),

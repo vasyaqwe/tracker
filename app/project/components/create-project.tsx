@@ -106,7 +106,7 @@ export function CreateProject({
                   isRequired
                   maxLength={32}
                />
-               <p className="mt-2 mb-3 break-all text-foreground/75">
+               <p className="mt-1.5 mb-3 break-all text-foreground/75">
                   <u>
                      {env.VITE_BASE_URL}/{makeSlug(name)}
                   </u>

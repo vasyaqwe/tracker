@@ -51,12 +51,11 @@ export const formatDateRelative = (
 
 export const formatDateIntl = (
    date: Date | string | number,
-   options: Intl.DateTimeFormatOptions = {
-      month: "short",
-      day: "numeric",
-   },
+   options: Intl.DateTimeFormatOptions = {},
 ) =>
    new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
       ...options,
    }).format(new Date(date))
 
