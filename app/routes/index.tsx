@@ -61,7 +61,7 @@ function Homepage({
          <main className="mt-8 md:mt-16">
             <section className="mx-auto max-w-4xl px-4">
                <h1 className="font-medium text-4xl">A tiny time tracker</h1>
-               <p className="mt-5 font-medium text-foreground/70 text-xl">
+               <p className="mt-5 font-medium text-foreground/70 text-lg">
                   Simple & efficient time tracking app. <br /> Create projects,
                   track earnings & hours, and generate invoices.
                </p>

@@ -22,7 +22,7 @@ function Dialog({ role, className, ...props }: DialogProps) {
          {...props}
          role={role ?? "dialog"}
          className={cn([
-            "relative flex max-h-[inherit] flex-col overflow-hidden outline-none",
+            "relative flex max-h-[inherit] flex-col overflow-hidden px-4 outline-none",
             className,
          ])}
       />
