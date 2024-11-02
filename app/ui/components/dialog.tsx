@@ -101,7 +101,7 @@ function Title({ className, ...props }: HeadingProps) {
 
 function Description({ className, ...props }: React.ComponentProps<"div">) {
    return (
-      <div
+      <p
          className={cn("mt-0.5 block text-foreground/70 text-sm", className)}
          {...props}
       />

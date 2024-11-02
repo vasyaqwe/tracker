@@ -16,7 +16,7 @@
    --color-destructive-foreground: #fff;
    --color-elevated: #fbfbfb;
 
-   --font-family-primary: "geist", sans-serif;
+   --font-family-primary: "satoshi", sans-serif;
    --font-family-mono: "geist_mono", monospace;
 
    --ease-vaul: cubic-bezier(0.32, 0.72, 0, 1);
@@ -56,11 +56,11 @@
 }
 
 @font-face {
-   font-family: "geist";
-   src: url("/font/geist.woff2") format("woff2-variations");
+   font-family: "satoshi";
+   src: url("/font/satoshi.woff2") format("woff2-variations");
    font-display: swap;
    font-style: normal;
-   font-weight: 400 700;
+   font-weight: 500 700;
 }
 
 @font-face {
@@ -72,10 +72,13 @@
 }
 
 html {
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
    font-family: var(--font-family-primary);
 }
 body {
    font-size: var(--font-size-base);
+   font-weight: 500;
 }
 * {
    scrollbar-width: thin;
