@@ -1,7 +1,7 @@
 import { protectedProcedure } from "@/lib/trpc"
 import { insertSummaryParams, summary } from "@/summary/schema"
 import { createServerFn } from "@tanstack/start"
-import { and, eq, gte, lt, sql } from "drizzle-orm"
+import { and, desc, eq, gte, lt, sql } from "drizzle-orm"
 import { z } from "zod"
 
 export const list = createServerFn(
@@ -17,6 +17,7 @@ export const list = createServerFn(
                durationMinutes: true,
                createdAt: true,
             },
+            orderBy: (data) => desc(data.createdAt),
          })
       }),
 )

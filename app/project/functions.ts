@@ -7,7 +7,7 @@ import {
 } from "@/project/schema"
 import { createServerFn } from "@tanstack/start"
 import { TRPCError } from "@trpc/server"
-import { and, eq } from "drizzle-orm"
+import { and, desc, eq } from "drizzle-orm"
 import { z } from "zod"
 
 export const list = createServerFn(
@@ -20,6 +20,7 @@ export const list = createServerFn(
             slug: true,
             name: true,
          },
+         orderBy: (data) => desc(data.createdAt),
       })
    }),
 )
