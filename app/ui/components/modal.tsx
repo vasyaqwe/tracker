@@ -47,7 +47,7 @@ const modalContentVariants = cva(
             xs: "sm:max-w-xs",
             sm: "sm:max-w-sm",
             md: "sm:max-w-md",
-            lg: "sm:has-[[role=alertdialog]]:max-w-lg sm:has-[[role=dialog]]:max-w-lg sm:max-w-lg",
+            lg: "sm:max-w-lg",
             xl: "sm:max-w-xl",
             "2xl": "sm:max-w-2xl",
             "3xl": "sm:max-w-3xl",
@@ -61,8 +61,7 @@ const modalContentVariants = cva(
    },
 )
 
-type ModalProps = DialogTriggerProps
-const Modal = ({ children, ...props }: ModalProps) => {
+function Modal({ children, ...props }: DialogTriggerProps) {
    return <DialogTriggerPrimitive {...props}>{children}</DialogTriggerPrimitive>
 }
 
@@ -79,7 +78,7 @@ type ModalContentProps = Omit<React.ComponentProps<typeof Modal>, "children"> &
       }
    }
 
-const ModalContent = ({
+function ModalContent({
    classNames,
    isDismissable = true,
    children,
@@ -87,7 +86,7 @@ const ModalContent = ({
    role,
    closeButton = true,
    ...props
-}: ModalContentProps) => {
+}: ModalContentProps) {
    const _isDismissable = role === "alertdialog" ? false : isDismissable
    return (
       <ModalOverlayPrimitive

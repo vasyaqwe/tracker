@@ -48,41 +48,41 @@ const TableContext = React.createContext<TableProps>({
 
 const useTableContext = () => React.useContext(TableContext)
 
-const Table = ({ children, className, ...props }: TableProps) => (
-   <TableContext.Provider value={props}>
-      <Card className="relative w-full overflow-auto rounded-[calc(15px)]">
-         {props.allowResize ? (
-            <ResizableTableContainer className="overflow-auto">
+function Table({ children, className, ...props }: TableProps) {
+   return (
+      <TableContext.Provider value={props}>
+         <Card className="relative w-full overflow-auto rounded-[calc(15px)]">
+            {props.allowResize ? (
+               <ResizableTableContainer className="overflow-auto">
+                  <TablePrimitive
+                     {...props}
+                     className={cn(root, className)}
+                  >
+                     {children}
+                  </TablePrimitive>
+               </ResizableTableContainer>
+            ) : (
                <TablePrimitive
                   {...props}
                   className={cn(root, className)}
                >
                   {children}
                </TablePrimitive>
-            </ResizableTableContainer>
-         ) : (
-            <TablePrimitive
-               {...props}
-               className={cn(root, className)}
-            >
-               {children}
-            </TablePrimitive>
+            )}
+         </Card>
+      </TableContext.Provider>
+   )
+}
+
+function Body<T extends object>(props: TableBodyProps<T>) {
+   return (
+      <TableBody
+         {...props}
+         className={cn(
+            "isolate before:absolute before:inset-1 md:before:top-12 before:z-[-1] before:rounded-[calc(15px-4px)] before:border before:border-border before:bg-background before:shadow-sm",
          )}
-      </Card>
-   </TableContext.Provider>
-)
-
-const Body = <T extends object>(props: TableBodyProps<T>) => (
-   <TableBody
-      {...props}
-      className={cn(
-         "isolate before:absolute before:inset-1 md:before:top-12 before:z-[-1] before:rounded-[calc(15px-4px)] before:border before:border-border before:bg-background before:shadow-sm",
-      )}
-   />
-)
-
-type TableCellProps = CellProps & {
-   className?: string
+      />
+   )
 }
 
 const cellVariants = cva(
@@ -95,7 +95,14 @@ const cellVariants = cva(
       },
    },
 )
-const TableCell = ({ children, className, ...props }: TableCellProps) => {
+
+function TableCell({
+   children,
+   className,
+   ...props
+}: CellProps & {
+   className?: string
+}) {
    const { allowResize } = useTableContext()
    return (
       <Cell
@@ -118,17 +125,15 @@ const columnVariants = cva(
    },
 )
 
-type TableColumnProps = ColumnProps & {
-   className?: string
-   isResizable?: boolean
-}
-
-const TableColumn = ({
+function TableColumn({
    children,
    isResizable = false,
    className,
    ...props
-}: TableColumnProps) => {
+}: ColumnProps & {
+   className?: string
+   isResizable?: boolean
+}) {
    return (
       <Column
          {...props}
@@ -161,18 +166,17 @@ const TableColumn = ({
    )
 }
 
-type HeaderProps<T extends object> = TableHeaderProps<T> & {
-   className?: string
-}
-
-const Header = <T extends object>({
+function Header<T extends object>({
    children,
    className,
    columns,
    ...props
-}: HeaderProps<T>) => {
+}: TableHeaderProps<T> & {
+   className?: string
+}) {
    const { selectionBehavior, selectionMode, allowsDragging } =
       useTableOptions()
+
    return (
       <TableHeader
          {...props}
@@ -189,17 +193,15 @@ const Header = <T extends object>({
    )
 }
 
-type TableRowProps<T extends object> = RowProps<T> & {
-   className?: string
-}
-
-const TableRow = <T extends object>({
+function TableRow<T extends object>({
    children,
    className,
    columns,
    id,
    ...props
-}: TableRowProps<T>) => {
+}: RowProps<T> & {
+   className?: string
+}) {
    const { selectionBehavior } = useTableOptions()
    return (
       <Row

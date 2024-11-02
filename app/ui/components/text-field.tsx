@@ -13,8 +13,6 @@ import {
    type TextFieldProps as TextFieldPrimitiveProps,
 } from "react-aria-components"
 
-type InputType = Exclude<TextInputDOMProps["type"], "password">
-
 type BaseTextFieldProps = TextFieldPrimitiveProps &
    FieldProps & {
       prefix?: React.ReactNode
@@ -30,12 +28,12 @@ type RevealableTextFieldProps = BaseTextFieldProps & {
 
 type NonRevealableTextFieldProps = BaseTextFieldProps & {
    isRevealable?: never
-   type?: InputType
+   type?: Exclude<TextInputDOMProps["type"], "password">
 }
 
 type TextFieldProps = RevealableTextFieldProps | NonRevealableTextFieldProps
 
-const TextField = ({
+function TextField({
    placeholder,
    label,
    description,
@@ -47,7 +45,7 @@ const TextField = ({
    isRevealable,
    type,
    ...props
-}: TextFieldProps) => {
+}: TextFieldProps) {
    return (
       <TextFieldPrimitive
          type={"text"}

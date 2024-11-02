@@ -37,10 +37,10 @@ type DropdownSectionProps<T> = SectionProps<T> & {
    title?: string
 }
 
-const DropdownSection = <T extends object>({
+function DropdownSection<T extends object>({
    className,
    ...props
-}: DropdownSectionProps<T>) => {
+}: DropdownSectionProps<T>) {
    return (
       <Section className={cn("flex flex-col gap-y-0.5", className)}>
          {"title" in props && (
@@ -57,10 +57,11 @@ const DropdownSection = <T extends object>({
    )
 }
 
-const DropdownItem = ({ className, ...props }: ListBoxItemProps) => {
+function DropdownItem({ className, ...props }: ListBoxItemProps) {
    const textValue =
       props.textValue ||
       (typeof props.children === "string" ? props.children : undefined)
+
    return (
       <ListBoxItemPrimitive
          textValue={textValue}
@@ -95,24 +96,25 @@ type DropdownItemSlot = TextProps & {
    }
 }
 
-const DropdownItemDetails = ({
+function DropdownItemDetails({
    label,
    description,
    classNames,
+   slot,
+   children,
+   title,
    ...props
-}: DropdownItemSlot) => {
-   const { slot, children, title, ...restProps } = props
-
+}: DropdownItemSlot) {
    return (
       <div
          className="flex flex-col gap-1"
-         {...restProps}
+         {...props}
       >
          {label && (
             <Text
                slot={slot ?? "label"}
                className={cn("font-medium", classNames?.label)}
-               {...restProps}
+               {...props}
             >
                {label}
             </Text>
@@ -124,7 +126,7 @@ const DropdownItemDetails = ({
                   "text-foreground/70 text-xs",
                   classNames?.description,
                )}
-               {...restProps}
+               {...props}
             >
                {description}
             </Text>

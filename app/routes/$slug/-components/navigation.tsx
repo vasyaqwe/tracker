@@ -107,13 +107,13 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
             <Menu.Trigger
                className={cn(
                   buttonVariants({ intent: "ghost" }),
-                  "justify-start gap-1.5 pr-1 pl-1.5 text-left font-medium",
+                  "justify-start gap-1.5 pr-[2px] pl-[5px] text-left font-medium",
                )}
             >
                {isClient ? (
                   <Avatar
                      name={project.id}
-                     className="size-6 shrink-0 animate-fade-in opacity-0 [--animation-delay:0ms]"
+                     className="size-[22px] shrink-0 animate-fade-in opacity-0 [--animation-delay:0ms]"
                   />
                ) : (
                   <div className="size-6 shrink-0" />

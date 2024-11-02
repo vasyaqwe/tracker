@@ -16,44 +16,40 @@ import {
 } from "react-aria-components"
 import { Dialog } from "./dialog"
 
-const Popover = ({ children, ...props }: DialogTriggerProps) => {
+function Popover({ children, ...props }: DialogTriggerProps) {
    return <DialogTrigger {...props}>{children}</DialogTrigger>
 }
 
-const Title = ({
-   level = 2,
-   ...props
-}: React.ComponentProps<typeof Dialog.Title>) => <Dialog.Title {...props} />
+function Title({ ...props }: React.ComponentProps<typeof Dialog.Title>) {
+   return <Dialog.Title {...props} />
+}
 
-const Header = ({
-   className,
-   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-   <Dialog.Header
-      className={cn("p-0 sm:pt-0", className)}
-      {...props}
-   />
-)
+function Header({ className, ...props }: React.ComponentProps<"div">) {
+   return (
+      <Dialog.Header
+         className={cn("p-0 sm:pt-0", className)}
+         {...props}
+      />
+   )
+}
 
-const Footer = ({
-   className,
-   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-   <Dialog.Footer
-      className={cn("pt-3", className)}
-      {...props}
-   />
-)
+function Footer({ className, ...props }: React.ComponentProps<"div">) {
+   return (
+      <Dialog.Footer
+         className={cn("pt-3", className)}
+         {...props}
+      />
+   )
+}
 
-const Body = ({
-   className,
-   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-   <Dialog.Body
-      className={cn("p-0", className)}
-      {...props}
-   />
-)
+function Body({ className, ...props }: React.ComponentProps<"div">) {
+   return (
+      <Dialog.Body
+         className={cn("p-0", className)}
+         {...props}
+      />
+   )
+}
 
 const popoverContentVariants = cva(
    "w-48 rounded-xl bg-popover bg-clip-padding shadow-lg",
@@ -87,12 +83,12 @@ type PopoverProps = Omit<React.ComponentProps<typeof Modal>, "children"> &
       "aria-labelledby"?: DialogProps["aria-labelledby"]
    }
 
-const Content = ({
+function Content({
    children,
    showArrow = true,
    className,
    ...props
-}: PopoverProps) => {
+}: PopoverProps) {
    const popoverContext = useSlottedContext(PopoverContext)
    const isSubmenuTrigger = popoverContext?.trigger === "SubmenuTrigger"
    const offset = showArrow ? 12 : 8
@@ -127,7 +123,7 @@ const Content = ({
    )
 }
 
-const Picker = ({ children, className, ...props }: PopoverProps) => {
+function Picker({ children, className, ...props }: PopoverProps) {
    return (
       <PopoverPrimitive
          {...props}

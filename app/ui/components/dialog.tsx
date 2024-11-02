@@ -1,7 +1,6 @@
 import { Icons } from "@/ui/components/icons"
 import { useUIStore } from "@/ui/store"
 import { cn } from "@/ui/utils"
-import { cva } from "class-variance-authority"
 import * as React from "react"
 import type {
    ButtonProps as ButtonPrimitiveProps,
@@ -17,39 +16,40 @@ import {
    OverlayTriggerStateContext,
 } from "react-aria-components"
 
-const Dialog = ({ role, className, ...props }: DialogProps) => {
+function Dialog({ role, className, ...props }: DialogProps) {
    return (
       <DialogPrimitive
          {...props}
          role={role ?? "dialog"}
          className={cn([
-            "dlc relative flex max-h-[inherit] flex-col overflow-hidden outline-none [scrollbar-width:thin] [&::-webkit-scrollbar]:size-0.5",
-            "sm:[&:has([data-slot=dialog-body])_[data-slot=dialog-footer]]:px-4 sm:[&:has([data-slot=dialog-body])_[data-slot=dialog-header]]:px-4 sm:[&:not(:has([data-slot=dialog-body]))]:px-4",
-            "[&:has([data-slot=dialog-body])_[data-slot=dialog-footer]]:px-4 [&:has([data-slot=dialog-body])_[data-slot=dialog-header]]:px-4 [&:not(:has([data-slot=dialog-body]))]:px-4",
+            "relative flex max-h-[inherit] flex-col overflow-hidden outline-none",
             className,
          ])}
       />
    )
 }
 
-const Trigger = (props: ButtonPrimitiveProps) => (
-   <ButtonPrimitive {...props}>
-      {(values) => (
-         <>
-            {typeof props.children === "function"
-               ? props.children(values)
-               : props.children}
-         </>
-      )}
-   </ButtonPrimitive>
-)
-
-type DialogHeaderProps = React.HTMLAttributes<HTMLDivElement> & {
-   title?: string
-   description?: string
+function Trigger(props: ButtonPrimitiveProps) {
+   return (
+      <ButtonPrimitive {...props}>
+         {(values) => (
+            <>
+               {typeof props.children === "function"
+                  ? props.children(values)
+                  : props.children}
+            </>
+         )}
+      </ButtonPrimitive>
+   )
 }
 
-const Header = ({ className, ...props }: DialogHeaderProps) => {
+function Header({
+   className,
+   ...props
+}: React.ComponentProps<"div"> & {
+   title?: string
+   description?: string
+}) {
    const headerRef = React.useRef<HTMLHeadingElement>(null)
 
    React.useEffect(() => {
@@ -73,7 +73,6 @@ const Header = ({ className, ...props }: DialogHeaderProps) => {
 
    return (
       <div
-         data-slot="dialog-header"
          ref={headerRef}
          className={cn("relative flex flex-col py-3", className)}
       >
@@ -88,59 +87,41 @@ const Header = ({ className, ...props }: DialogHeaderProps) => {
    )
 }
 
-const titleVariants = cva("flex flex-1 items-center", {
-   variants: {
-      level: {
-         1: "font-medium text-lg",
-         2: "font-medium text-lg",
-         3: "font-medium text-base",
-         4: "font-medium text-base",
-      },
-   },
-})
-
-type TitleProps = Omit<HeadingProps, "level"> & {
-   level?: 1 | 2 | 3 | 4
+function Title({ className, ...props }: HeadingProps) {
+   return (
+      <Heading
+         className={cn(
+            "flex flex-1 items-center font-medium text-lg",
+            className,
+         )}
+         {...props}
+      />
+   )
 }
 
-const Title = ({ level = 2, className, ...props }: TitleProps) => (
-   <Heading
-      slot="title"
-      level={level}
-      className={titleVariants({ level, className })}
-      {...props}
-   />
-)
+function Description({ className, ...props }: React.ComponentProps<"div">) {
+   return (
+      <div
+         className={cn("mt-0.5 block text-foreground/70 text-sm", className)}
+         {...props}
+      />
+   )
+}
 
-const Description = ({
-   className,
-   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-   <div
-      className={cn("mt-0.5 block text-foreground/70 text-sm", className)}
-      {...props}
-   />
-)
+function Body({ className, ...props }: React.ComponentProps<"div">) {
+   return (
+      <div
+         className={cn([
+            "flex flex-1 flex-col gap-2 overflow-auto px-4",
+            "max-h-[calc(var(--visual-viewport-height)-var(--visual-viewport-vertical-padding)-var(--dialog-header-height,0px)-var(--dialog-footer-height,0px))]",
+            className,
+         ])}
+         {...props}
+      />
+   )
+}
 
-const Body = ({
-   className,
-   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-   <div
-      data-slot="dialog-body"
-      className={cn([
-         "flex flex-1 flex-col gap-2 overflow-auto px-4",
-         "max-h-[calc(var(--visual-viewport-height)-var(--visual-viewport-vertical-padding)-var(--dialog-header-height,0px)-var(--dialog-footer-height,0px))]",
-         className,
-      ])}
-      {...props}
-   />
-)
-
-const Footer = ({
-   className,
-   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
+function Footer({ className, ...props }: React.ComponentProps<"div">) {
    const footerRef = React.useRef<HTMLDivElement>(null)
 
    React.useEffect(() => {
@@ -168,14 +149,13 @@ const Footer = ({
    return (
       <div
          ref={footerRef}
-         data-slot="dialog-footer"
          className={cn("mt-auto flex justify-between gap-2 py-4", className)}
          {...props}
       />
    )
 }
 
-const Close = ({ className, ...props }: ButtonProps) => {
+function Close({ className, ...props }: ButtonProps) {
    const state = React.useContext(OverlayTriggerStateContext)
    return (
       <Button
@@ -192,7 +172,7 @@ type CloseButtonIndicatorProps = {
    isDismissable?: boolean | undefined
 }
 
-const CloseIndicator = ({ className, ...props }: CloseButtonIndicatorProps) => {
+function CloseIndicator({ className, ...props }: CloseButtonIndicatorProps) {
    const isMobile = useUIStore().isMobile
    const buttonRef = React.useRef<HTMLButtonElement>(null)
 
@@ -201,6 +181,7 @@ const CloseIndicator = ({ className, ...props }: CloseButtonIndicatorProps) => {
          buttonRef.current.focus()
       }
    }, [isMobile])
+
    return props.isDismissable ? (
       <ButtonPrimitive
          ref={buttonRef}

@@ -17,14 +17,14 @@ type NumberFieldProps = NumberFieldPrimitiveProps & {
    errorMessage?: string | ((validation: ValidationResult) => string)
 }
 
-const NumberField = ({
+function NumberField({
    label,
    placeholder,
    description,
    className,
    errorMessage,
    ...props
-}: NumberFieldProps) => {
+}: NumberFieldProps) {
    const isMobile = useUIStore().isMobile
 
    return (
@@ -97,18 +97,16 @@ const NumberField = ({
    )
 }
 
-type StepperButtonProps = ButtonProps & {
-   slot: "increment" | "decrement"
-   emblemType?: "chevron" | "default"
-   className?: string
-}
-
-const StepperButton = ({
+function StepperButton({
    slot,
    className,
    emblemType = "default",
    ...props
-}: StepperButtonProps) => {
+}: ButtonProps & {
+   slot: "increment" | "decrement"
+   emblemType?: "chevron" | "default"
+   className?: string
+}) {
    const icon =
       emblemType === "chevron" ? (
          slot === "increment" ? (

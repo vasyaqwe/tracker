@@ -11,14 +11,14 @@ import {
 } from "react-aria-components"
 import { Label } from "./field"
 
-type CheckboxGroupProps = Omit<CheckboxGroupPrimitiveProps, "children"> & {
-   label?: string
-   children?: React.ReactNode
-   description?: string
-   errorMessage?: string | ((validation: ValidationResult) => string)
-}
-
-const CheckboxGroup = (props: CheckboxGroupProps) => {
+function CheckboxGroup(
+   props: Omit<CheckboxGroupPrimitiveProps, "children"> & {
+      label?: string
+      children?: React.ReactNode
+      description?: string
+      errorMessage?: string | ((validation: ValidationResult) => string)
+   },
+) {
    return (
       <CheckboxGroupPrimitive
          {...props}
@@ -39,7 +39,7 @@ const checkboxVariants = cva("group flex items-center gap-2 text-sm", {
 })
 
 const boxVariants = cva(
-   "flex size-4 shrink-0 items-center justify-center rounded-[5px] border border-foreground/20 text-primary-foreground transition-colors [&>[data-slot=icon]]:size-3",
+   "flex size-4 shrink-0 items-center justify-center rounded-[5px] border border-foreground/20 text-primary-foreground transition-colors",
    {
       variants: {
          isSelected: {
@@ -56,12 +56,13 @@ const boxVariants = cva(
    },
 )
 
-type CheckboxProps = CheckboxPrimitiveProps & {
+function Checkbox({
+   className,
+   ...props
+}: CheckboxPrimitiveProps & {
    description?: string
    label?: string
-}
-
-const Checkbox = ({ className, ...props }: CheckboxProps) => {
+}) {
    return (
       <CheckboxPrimitive
          {...props}

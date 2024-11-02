@@ -26,19 +26,18 @@ import {
 } from "./dropdown"
 import { Popover } from "./popover"
 
-type MenuContextProps = {
+const MenuContext = React.createContext<{
    respectScreen: boolean
-}
-
-const MenuContext = React.createContext<MenuContextProps>({
+}>({
    respectScreen: true,
 })
 
-type MenuProps = MenuTriggerPrimitiveProps & {
+function Menu({
+   respectScreen = true,
+   ...props
+}: MenuTriggerPrimitiveProps & {
    respectScreen?: boolean
-}
-
-const Menu = ({ respectScreen = true, ...props }: MenuProps) => {
+}) {
    return (
       <MenuContext.Provider value={{ respectScreen }}>
          <MenuTriggerPrimitive {...props}>
@@ -48,33 +47,30 @@ const Menu = ({ respectScreen = true, ...props }: MenuProps) => {
    )
 }
 
-const SubMenu = ({ delay = 0, ...props }) => (
-   <SubmenuTriggerPrimitive
-      {...props}
-      delay={delay}
-   >
-      {props.children}
-   </SubmenuTriggerPrimitive>
-)
-
-type MenuTriggerProps = ButtonProps & {
-   className?: string
+function SubMenu({ delay = 0, ...props }) {
+   return (
+      <SubmenuTriggerPrimitive
+         {...props}
+         delay={delay}
+      >
+         {props.children}
+      </SubmenuTriggerPrimitive>
+   )
 }
 
-const Trigger = ({ className, ...props }: MenuTriggerProps) => (
-   <Button
-      className={cn("", className)}
-      {...props}
-   >
-      {(values) => (
-         <>
-            {typeof props.children === "function"
-               ? props.children(values)
-               : props.children}
-         </>
-      )}
-   </Button>
-)
+function Trigger({ ...props }: ButtonProps) {
+   return (
+      <Button {...props}>
+         {(values) => (
+            <>
+               {typeof props.children === "function"
+                  ? props.children(values)
+                  : props.children}
+            </>
+         )}
+      </Button>
+   )
+}
 
 type MenuContentProps<T> = Omit<PopoverProps, "children" | "style"> &
    MenuPrimitiveProps<T> & {
@@ -84,12 +80,12 @@ type MenuContentProps<T> = Omit<PopoverProps, "children" | "style"> &
       respectScreen?: boolean
    }
 
-const Content = <T extends object>({
+function Content<T extends object>({
    className,
    showArrow = false,
    popoverClassName,
    ...props
-}: MenuContentProps<T>) => {
+}: MenuContentProps<T>) {
    const { respectScreen } = React.useContext(MenuContext)
    return (
       <Popover.Content
@@ -121,12 +117,12 @@ type MenuItemProps = Omit<MenuItemPrimitiveProps, "isDanger"> &
       isDanger?: boolean
    }
 
-const Item = ({
+function Item({
    className,
    isDanger = false,
    children,
    ...props
-}: MenuItemProps) => {
+}: MenuItemProps) {
    const textValue =
       props.textValue || (typeof children === "string" ? children : undefined)
    return (
@@ -151,53 +147,57 @@ const Item = ({
    )
 }
 
-export type MenuHeaderProps = React.ComponentProps<typeof Header> & {
-   separator?: boolean
-}
-
-const MenuHeader = ({
+function MenuHeader({
    className,
    separator = false,
    ...props
-}: MenuHeaderProps) => (
-   <Header
-      className={cn(
-         "p-2 pt-1 text-popover-foreground/70 text-sm",
-         separator && "-mx-1 border-b border-b-black px-3 pb-[0.625rem]",
-         className,
-      )}
-      {...props}
-   />
-)
+}: React.ComponentProps<typeof Header> & {
+   separator?: boolean
+}) {
+   return (
+      <Header
+         className={cn(
+            "p-2 pt-1 text-popover-foreground/70 text-sm",
+            separator && "-mx-1 border-b border-b-black px-3 pb-[0.625rem]",
+            className,
+         )}
+         {...props}
+      />
+   )
+}
 
-const MenuSeparator = ({ className, ...props }: SeparatorProps) => (
-   <Separator
-      className={cn("-mx-1 ms my-1 h-px bg-black", className)}
-      {...props}
-   />
-)
+function MenuSeparator({ className, ...props }: SeparatorProps) {
+   return (
+      <Separator
+         className={cn("-mx-1 ms my-1 h-px bg-black", className)}
+         {...props}
+      />
+   )
+}
 
-const Checkbox = ({
+function Checkbox({
    className,
    children,
    ...props
-}: MenuItemProps & { isSelected?: boolean }) => (
-   <Item
-      className={cn("relative pr-8", className)}
-      {...props}
-   >
-      {(values) => (
-         <>
-            {typeof children === "function" ? children(values) : children}
-            {values.isSelected && (
-               <span className="absolute right-2 flex size-4 shrink-0 animate-in items-center justify-center">
-                  <Icons.check />
-               </span>
-            )}
-         </>
-      )}
-   </Item>
-)
+}: MenuItemProps & { isSelected?: boolean }) {
+   return (
+      <Item
+         className={cn("relative pr-8", className)}
+         {...props}
+      >
+         {(values) => (
+            <>
+               {typeof children === "function" ? children(values) : children}
+               {values.isSelected && (
+                  <span className="absolute right-2 flex size-4 shrink-0 animate-in items-center justify-center">
+                     <Icons.check />
+                  </span>
+               )}
+            </>
+         )}
+      </Item>
+   )
+}
 
 Menu.Primitive = MenuPrimitive
 Menu.Content = Content

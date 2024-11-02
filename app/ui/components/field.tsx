@@ -46,7 +46,7 @@ const fieldGroupVariants = cva({
    },
 })
 
-const FieldError = ({ className, ...props }: FieldErrorProps) => {
+function FieldError({ className, ...props }: FieldErrorProps) {
    return (
       <FieldErrorPrimitive
          {...props}
@@ -55,7 +55,7 @@ const FieldError = ({ className, ...props }: FieldErrorProps) => {
    )
 }
 
-const FieldGroup = ({ className, ...props }: GroupProps) => {
+function FieldGroup({ className, ...props }: GroupProps) {
    return (
       <Group
          {...props}
@@ -81,7 +81,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
    },
 )
 
-const Label = ({ className, ...props }: LabelProps) => {
+function Label({ className, ...props }: LabelProps) {
    return (
       <LabelPrimitive
          {...props}
