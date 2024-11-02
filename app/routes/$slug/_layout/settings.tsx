@@ -4,7 +4,6 @@ import { Main } from "@/routes/$slug/-components/main"
 import { useTimerStore } from "@/timer/store"
 import { Button, buttonVariants } from "@/ui/components/button"
 import { Card } from "@/ui/components/card"
-import { Label } from "@/ui/components/field"
 import { Loading } from "@/ui/components/loading"
 import { Modal } from "@/ui/components/modal"
 import { NumberField } from "@/ui/components/number-field"
@@ -91,9 +90,6 @@ function Component() {
                         rate: string
                      }
 
-                     if (!formData.name || !formData.rate)
-                        return toast.error("Name & rate are required")
-
                      if (formData.name === user.name)
                         return toast.success("Saved")
 
@@ -153,10 +149,7 @@ function Component() {
                   >
                      Delete project
                   </Modal.Trigger>
-                  <Modal.Content
-                     size={"md"}
-                     role="alertdialog"
-                  >
+                  <Modal.Content role="alertdialog">
                      <Modal.Header>
                         <Modal.Title>Delete this project?</Modal.Title>
                         <Modal.Description>
@@ -174,13 +167,8 @@ function Component() {
                            }}
                            id={"delete_project"}
                         >
-                           <Label
-                              htmlFor="confirmation"
-                              className="mb-1.5 text-sm"
-                           >
-                              To confirm, enter project name below
-                           </Label>
                            <TextField
+                              label="To confirm, enter project name below"
                               autoComplete="off"
                               autoFocus={!isMobile}
                               id="confirmation"

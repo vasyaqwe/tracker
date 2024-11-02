@@ -14,7 +14,7 @@ import {
 
 const dropdownItemVariants = cva(
    [
-      "group relative flex h-9 cursor-default select-none items-center gap-x-1.5 rounded-[10px] px-2.5 py-2 text-base text-sm outline outline-0 [&_svg]:size-5 [&_svg]:text-popover-icon",
+      "group relative flex h-[34px] cursor-default select-none items-center gap-x-1.5 rounded-[10px] px-2.5 py-2 text-base text-sm outline outline-0 [&_svg]:size-5 [&_svg]:text-popover-icon",
    ],
    {
       variants: {

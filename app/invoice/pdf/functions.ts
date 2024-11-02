@@ -1,104 +1,97 @@
 import { InvoicePdf } from "@/invoice/pdf"
+import { generateInvoiceNumber } from "@/invoice/utils"
+import { protectedProcedure } from "@/lib/trpc"
 import { renderToStream } from "@react-pdf/renderer"
 import { createServerFn } from "@tanstack/start"
-import { getWebRequest } from "vinxi/http"
+import { z } from "zod"
 
-export const generate = createServerFn("GET", async () => {
-   const request = getWebRequest()
-   const requestUrl = new URL(request.url)
-   const size = (requestUrl.searchParams.get("size") as "letter" | "a4") ?? "a4"
-   const preview = requestUrl.searchParams.get("preview") === "true"
+export const generate = createServerFn(
+   "GET",
+   protectedProcedure
+      .input(
+         z.object({
+            name: z.string().min(1),
+            email: z.string(),
+            amount: z.number(),
+            selectedItems: z.array(
+               z.object({ price: z.number(), description: z.string() }),
+            ),
+         }),
+      )
+      .query(async ({ ctx, input }) => {
+         const invoiceNumber = generateInvoiceNumber()
+         const stream = await renderToStream(
+            await InvoicePdf({
+               amount: input.amount,
+               dueDate: new Date().getTime(),
+               invoiceNumber,
+               issueDate: new Date().getTime(),
+               lineItems: input.selectedItems.map((item) => ({
+                  name: item.description,
+                  price: item.price,
+                  quantity: 1,
+               })),
+               fromDetails: {
+                  content: [
+                     {
+                        type: "paragraph",
+                        content: [
+                           {
+                              type: "text",
+                              text: ctx.user.name,
+                           },
+                        ],
+                     },
+                     {
+                        type: "paragraph",
+                        content: [
+                           {
+                              type: "text",
+                              text: ctx.user.email,
+                           },
+                        ],
+                     },
+                  ],
+                  type: "doc",
+               },
+               customerDetails: {
+                  content: [
+                     {
+                        type: "paragraph",
+                        content: [
+                           {
+                              type: "text",
+                              text: input.name,
+                           },
+                        ],
+                     },
+                     {
+                        type: "paragraph",
+                        content: [
+                           {
+                              type: "text",
+                              text: input.email,
+                           },
+                        ],
+                     },
+                  ],
+                  type: "doc",
+               },
 
-   // if (!data) {
-   //    return new Response("Invoice not found", { status: 404 })
-   // }
+               size: "a4",
+            }),
+         )
 
-   const stream = await renderToStream(
-      await InvoicePdf({
-         amount: 213,
-         dueDate: new Date().getTime(),
-         invoiceNumber: "123",
-         issueDate: new Date().getTime(),
-         lineItems: [{ name: "test", price: 123, quantity: 1 }],
-         customerDetails: {
-            content: [
-               {
-                  type: "paragraph",
-                  content: [
-                     {
-                        type: "text",
-                        text: "Your Company Name",
-                     },
-                  ],
-               },
-               {
-                  type: "paragraph",
-                  content: [
-                     {
-                        type: "text",
-                        text: "123 Business Street",
-                     },
-                  ],
-               },
-               {
-                  type: "paragraph",
-                  content: [
-                     {
-                        type: "text",
-                        text: "City, State ZIP",
-                     },
-                  ],
-               },
-            ],
-            type: "doc",
-         },
-         fromDetails: {
-            content: [
-               {
-                  type: "paragraph",
-                  content: [
-                     {
-                        type: "text",
-                        text: "Your Company Name",
-                     },
-                  ],
-               },
-               {
-                  type: "paragraph",
-                  content: [
-                     {
-                        type: "text",
-                        text: "123 Business Street",
-                     },
-                  ],
-               },
-               {
-                  type: "paragraph",
-                  content: [
-                     {
-                        type: "text",
-                        text: "City, State ZIP",
-                     },
-                  ],
-               },
-            ],
-            type: "doc",
-         },
-         size,
+         // @ts-expect-error ...
+         const blob = await new Response(stream).blob()
+
+         return new Response(blob, {
+            headers: {
+               "Content-Type": "application/pdf",
+               "Cache-Control": "no-store, max-age=0",
+               "Content-Disposition": `attachment; filename="invoice-${invoiceNumber}.pdf"`,
+               "X-Invoice-Number": invoiceNumber, // Add invoice number as a custom header
+            },
+         })
       }),
-   )
-
-   // @ts-expect-error ...
-   const blob = await new Response(stream).blob()
-
-   const headers: Record<string, string> = {
-      "Content-Type": "application/pdf",
-      "Cache-Control": "no-store, max-age=0",
-   }
-
-   if (!preview) {
-      headers["Content-Disposition"] = `attachment; filename="123.pdf"`
-   }
-
-   return new Response(blob, { headers })
-})
+)

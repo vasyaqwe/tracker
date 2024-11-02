@@ -30,12 +30,12 @@ const NumberField = ({
    return (
       <NumberFieldPrimitive
          {...props}
-         className={ctr(className, "group flex flex-col gap-1")}
+         className={ctr(className, "group flex flex-col")}
       >
          <Label>{label}</Label>
          <FieldGroup
             className={
-               "flex h-9 w-full overflow-hidden rounded-[10px] border border-border bg-background text-base outline-2 outline-transparent transition-all data-[disabled=true]:border-foreground/10 focus-within:border-primary/90 data-[disabled=true]:bg-border/40 focus-within:bg-muted/60 md:pl-3 data-[disabled=true]:text-foreground/70 focus-within:outline-primary/30"
+               "flex h-9 w-full overflow-hidden rounded-[11px] border border-border bg-background text-base outline-2 outline-transparent transition-all data-[disabled=true]:border-foreground/10 focus-within:border-primary/90 data-[disabled=true]:bg-border/40 focus-within:bg-muted/60 md:pl-3 data-[disabled=true]:text-foreground/70 focus-within:outline-primary/30"
             }
          >
             {(renderProps) => (

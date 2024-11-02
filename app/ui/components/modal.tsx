@@ -56,7 +56,7 @@ const modalContentVariants = cva(
          },
       },
       defaultVariants: {
-         size: "lg",
+         size: "md",
       },
    },
 )

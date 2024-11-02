@@ -1,6 +1,8 @@
 import baseX from "base-x"
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core"
-const b58 = baseX("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
+export const b58 = baseX(
+   "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz",
+)
 
 const prefixes = {
    user: "user",

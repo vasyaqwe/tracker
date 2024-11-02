@@ -87,14 +87,26 @@ export const millisToMinutes = (millis: number) => {
    return minutes
 }
 
-export const formatTime = (minutes: number): string => {
+export const formatTime = (
+   minutes: number,
+   opts: {
+      short: boolean
+   } = { short: true },
+): string => {
    const remainingHours = Math.floor(minutes / 60)
    const remainingMinutes = minutes % 60
 
-   const minutesDisplay = remainingMinutes === 0 ? "" : `${remainingMinutes}m`
-   const hoursDisplay = remainingHours === 0 ? "" : `${remainingHours}h`
+   const minutesDisplay = opts.short
+      ? `${remainingMinutes}m`
+      : `${remainingMinutes} minutes`
+   const hoursDisplay = opts.short
+      ? `${remainingHours}h`
+      : `${remainingHours} hours,`
 
-   return `${hoursDisplay} ${minutesDisplay}`
+   const minutesResult = remainingMinutes === 0 ? "" : minutesDisplay
+   const hoursResult = remainingHours === 0 ? "" : hoursDisplay
+
+   return `${hoursResult} ${minutesResult}`
 }
 
 export const calculateAmountEarned = (

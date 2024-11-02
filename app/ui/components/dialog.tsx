@@ -75,7 +75,7 @@ const Header = ({ className, ...props }: DialogHeaderProps) => {
       <div
          data-slot="dialog-header"
          ref={headerRef}
-         className={cn("relative flex flex-col pt-3 pb-2", className)}
+         className={cn("relative flex flex-col py-3", className)}
       >
          {props.title && <Title>{props.title}</Title>}
          {props.description && <Description>{props.description}</Description>}
@@ -117,10 +117,7 @@ const Description = ({
    ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
    <div
-      className={cn(
-         "mt-0.5 block text-foreground/70 text-sm sm:mt-1",
-         className,
-      )}
+      className={cn("mt-0.5 block text-foreground/70 text-sm", className)}
       {...props}
    />
 )
