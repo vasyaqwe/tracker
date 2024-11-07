@@ -16,6 +16,7 @@ export const user = createTable(
       id: tableId("user"),
       email: text().notNull().unique(),
       name: text().notNull().default("No name"),
+      avatarUrl: text(),
       ...lifecycleDates,
    },
    (table) => {

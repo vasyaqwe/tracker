@@ -96,6 +96,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
                .values({
                   email: githubUserProfile.email,
                   name: githubUserProfile.name || githubUserProfile.login,
+                  avatarUrl: githubUserProfile.avatar_url,
                })
                .returning({
                   id: user.id,

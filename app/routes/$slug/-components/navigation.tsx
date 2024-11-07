@@ -160,7 +160,6 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                            <div className="size-6 shrink-0" />
                         )}
                         <span className="line-clamp-1 break-all">
-                           {" "}
                            {project.name}
                         </span>
                      </Menu.Checkbox>
@@ -181,9 +180,18 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                className={cn(
                   buttonVariants({ intent: "outline", size: "icon" }),
                   "shrink-0 font-medium uppercase",
+                  user.avatarUrl ? "!px-0 !border-none" : "",
                )}
             >
-               {Array.from(user.name)[0]}
+               {user.avatarUrl ? (
+                  <img
+                     className="size-full rounded-[inherit] object-cover"
+                     src={user.avatarUrl}
+                     alt=""
+                  />
+               ) : (
+                  Array.from(user.name)[0]
+               )}
             </Menu.Trigger>
             <Menu.Content
                placement={!isMobile ? "bottom left" : "bottom right"}
