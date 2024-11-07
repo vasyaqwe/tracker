@@ -179,13 +179,15 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
             <Menu.Trigger
                className={cn(
                   buttonVariants({ intent: "outline", size: "icon" }),
-                  "shrink-0 font-medium uppercase",
-                  user.avatarUrl ? "!px-0 !border-none" : "",
+                  "shrink-0 rounded-full font-medium uppercase",
+                  user.avatarUrl
+                     ? "!px-0 !border-none size-7 transition-opacity duration-200 aria-expanded:opacity-80 hover:opacity-80"
+                     : "",
                )}
             >
                {user.avatarUrl ? (
                   <img
-                     className="size-full rounded-[inherit] object-cover"
+                     className="size-full rounded-full object-cover"
                      src={user.avatarUrl}
                      alt=""
                   />
