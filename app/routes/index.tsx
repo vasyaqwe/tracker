@@ -1,5 +1,5 @@
-import app from "@/assets/app.png"
-import app_mobile from "@/assets/app_mobile.png"
+import app from "@/assets/app.webp"
+import app_mobile from "@/assets/app_mobile.webp"
 import logo from "@/assets/logo.png"
 import { projectListQuery } from "@/project/queries"
 import { buttonVariants } from "@/ui/components/button"
