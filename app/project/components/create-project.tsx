@@ -46,7 +46,7 @@ export function CreateProject({
       mutationFn: insertFn,
       onSuccess: () => {
          queryClient.invalidateQueries(projectListQuery())
-         navigate({ to: `/${makeSlug(name)}` })
+         navigate({ to: `/$slug`, params: { slug: makeSlug(name) } })
       },
       onError: (error) => {
          match(parseError(error))
