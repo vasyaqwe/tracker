@@ -50,7 +50,7 @@ export const Route = createRootRouteWithContext<{
          { name: "og:type", content: "website" },
          { name: "og:title", content: title },
          { name: "og:description", content: description },
-         // { name: "og:image", content: "https://trackerhq.vercel.app/og.png" },
+         { name: "og:image", content: "https://trackerhq.vercel.app/og.png" },
          { name: "twitter:card", content: "summary_large_image" },
          { name: "twitter:creator", content: "@vasyaqwee" },
          { name: "twitter:site", content: "@vasyaqwee" },
