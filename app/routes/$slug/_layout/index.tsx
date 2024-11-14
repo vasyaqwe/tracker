@@ -74,7 +74,7 @@ function Component() {
 
    return (
       <Main>
-         <main>
+         <main className="relative">
             {summaries.data.length === 0 ? (
                <p className="mx-auto mt-6 flex max-w-[30ch] flex-col items-center gap-3 text-balance text-center font-medium text-foreground/70 md:mt-1">
                   <svg
@@ -100,6 +100,7 @@ function Component() {
             ) : (
                <>
                   <TransitionHeight
+                     className="md:-translate-y-[100%] top-0 w-full md:absolute"
                      data-expanded={Array.from(selectedKeys).length > 0}
                   >
                      <Card className="mb-2 flex items-center justify-between px-3 py-2 ">
