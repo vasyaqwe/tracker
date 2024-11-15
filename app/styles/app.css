@@ -71,19 +71,11 @@
    font-weight: 500;
 }
 
-html {
-   -webkit-font-smoothing: antialiased;
-   -moz-osx-font-smoothing: grayscale;
-   font-family: var(--font-family-primary);
-}
-body {
-   font-size: var(--font-size-base);
-   font-weight: 500;
-}
 * {
    scrollbar-width: thin;
    scrollbar-color: #a1a1aa transparent;
 }
+
 @layer components {
    .squircle {
       clip-path: polygon(
@@ -240,17 +232,6 @@ body {
 
 .hide-scrollbar::-webkit-scrollbar {
    display: none !important;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-   -webkit-appearance: none;
-   margin: 0;
-}
-
-input[type="number"] {
-   -moz-appearance: textfield;
-   appearance: textfield;
 }
 
 h1,

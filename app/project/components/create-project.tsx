@@ -1,4 +1,5 @@
 import { env } from "@/env"
+import type { ServerFnError } from "@/error"
 import { RESERVED_SLUGS } from "@/project/constants"
 import { projectListQuery } from "@/project/queries"
 import { Button } from "@/ui/components/button"
@@ -10,7 +11,6 @@ import { cn } from "@/ui/utils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
-import type { TRPCError } from "@trpc/server"
 import { useState } from "react"
 import { toast } from "sonner"
 import { match } from "ts-pattern"
@@ -25,7 +25,7 @@ const makeSlug = (name: string) =>
 const parseError = (error: Error) => {
    try {
       const parsedError = JSON.parse(error.message) as {
-         body: TRPCError
+         body: ServerFnError
       }
 
       return parsedError
@@ -49,6 +49,7 @@ export function CreateProject({
          navigate({ to: `/$slug`, params: { slug: makeSlug(name) } })
       },
       onError: (error) => {
+         console.log(error)
          match(parseError(error))
             .with({ body: { code: "CONFLICT" } }, () =>
                toast.error("Project name is not available"),
@@ -86,9 +87,11 @@ export function CreateProject({
                      .with(true, () => toast.error("This name is reserved"))
                      .otherwise(() =>
                         insert.mutate({
-                           name,
-                           slug: makeSlug(name),
-                           rate: +formData.rate,
+                           data: {
+                              name,
+                              slug: makeSlug(name),
+                              rate: +formData.rate,
+                           },
                         }),
                      )
                }}

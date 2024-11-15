@@ -204,7 +204,7 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                <Menu.Item
                   isDisabled={isRunning}
                   isDanger
-                  onAction={() => logout.mutate()}
+                  onAction={() => logout.mutate({})}
                >
                   <svg
                      className="size-5 opacity-75"

@@ -59,7 +59,11 @@ export function Stopwatch() {
          )
 
          insertSummaryToQueryData({
-            input: { ...input, id: crypto.randomUUID(), createdAt: Date.now() },
+            input: {
+               ...input.data,
+               id: crypto.randomUUID(),
+               createdAt: Date.now(),
+            },
          })
 
          return { data }
@@ -95,12 +99,14 @@ export function Stopwatch() {
          })
          .otherwise(() => {
             insert.mutate({
-               amountEarned: calculateAmountEarned(
-                  elapsedMs,
-                  project.rate,
-               ).toFixed(2),
-               projectId,
-               durationMinutes,
+               data: {
+                  amountEarned: calculateAmountEarned(
+                     elapsedMs,
+                     project.rate,
+                  ).toFixed(2),
+                  projectId,
+                  durationMinutes,
+               },
             })
          })
    }

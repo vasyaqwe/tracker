@@ -8,7 +8,7 @@ import {
    ScrollRestoration,
    createRootRouteWithContext,
 } from "@tanstack/react-router"
-import { Body, Head, Html, Meta, Scripts } from "@tanstack/start"
+import { Meta, Scripts } from "@tanstack/start"
 import { lazy } from "react"
 
 const _TanStackRouterDevtools = import.meta.env.PROD
@@ -89,24 +89,25 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
    return (
-      <Html>
-         <Head>
+      <html
+         lang="en"
+         className="font-primary antialiased"
+      >
+         <head>
             <Meta />
-         </Head>
-         <Body suppressHydrationWarning>
-            <div
-               className={cn(
-                  "bg-background text-foreground antialiased selection:bg-primary selection:text-background",
-               )}
-            >
-               {children}
-               <Toaster />
-            </div>
+         </head>
+         <body
+            className={cn(
+               "bg-background font-medium text-base text-foreground antialiased selection:bg-primary selection:text-background",
+            )}
+         >
+            {children}
+            <Toaster />
             <ScrollRestoration />
             {/* <ReactQueryDevtools buttonPosition="bottom-left" /> */}
             {/* <TanStackRouterDevtools position="bottom-right" /> */}
             <Scripts />
-         </Body>
-      </Html>
+         </body>
+      </html>
    )
 }

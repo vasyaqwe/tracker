@@ -1,20 +1,21 @@
-import { protectedProcedure } from "@/lib/trpc"
+import { ServerFnError } from "@/error"
 import { RESERVED_SLUGS } from "@/project/constants"
 import {
    insertProjectParams,
    project,
    updateProjectParams,
 } from "@/project/schema"
+import { authMiddleware } from "@/utils/middleware"
 import { createServerFn } from "@tanstack/start"
-import { TRPCError } from "@trpc/server"
+import { zodValidator } from "@tanstack/zod-adapter"
 import { and, desc, eq } from "drizzle-orm"
 import { z } from "zod"
 
-export const list = createServerFn(
-   "GET",
-   protectedProcedure.query(async ({ ctx }) => {
-      return await ctx.db.query.project.findMany({
-         where: eq(project.ownerId, ctx.user.id),
+export const list = createServerFn({ method: "GET" })
+   .middleware([authMiddleware])
+   .handler(async ({ context }) => {
+      return await context.db.query.project.findMany({
+         where: eq(project.ownerId, context.user.id),
          columns: {
             id: true,
             slug: true,
@@ -22,100 +23,91 @@ export const list = createServerFn(
          },
          orderBy: (data) => desc(data.createdAt),
       })
-   }),
-)
+   })
 
-export const bySlug = createServerFn(
-   "GET",
-   protectedProcedure
-      .input(z.object({ slug: z.string() }))
-      .query(async ({ ctx, input }) => {
-         const foundProject = await ctx.db.query.project.findFirst({
-            where: and(
-               eq(project.slug, input.slug),
-               eq(project.ownerId, ctx.user.id),
-            ),
-            columns: {
-               id: true,
-               slug: true,
-               name: true,
-               rate: true,
-            },
-         })
+export const bySlug = createServerFn({ method: "GET" })
+   .middleware([authMiddleware])
+   .validator(zodValidator(z.object({ slug: z.string() })))
+   .handler(async ({ context, data }) => {
+      const foundProject = await context.db.query.project.findFirst({
+         where: and(
+            eq(project.slug, data.slug),
+            eq(project.ownerId, context.user.id),
+         ),
+         columns: {
+            id: true,
+            slug: true,
+            name: true,
+            rate: true,
+         },
+      })
 
-         if (!foundProject) return null
+      if (!foundProject) return null
 
-         return foundProject
-      }),
-)
+      return foundProject
+   })
 
-export const insert = createServerFn(
-   "POST",
-   protectedProcedure
-      .input(insertProjectParams)
-      .mutation(async ({ ctx, input }) => {
-         if (RESERVED_SLUGS.includes(input.name.trim().toLowerCase()))
-            throw new TRPCError({ code: "CONFLICT" })
+export const insert = createServerFn({ method: "POST" })
+   .middleware([authMiddleware])
+   .validator(zodValidator(insertProjectParams))
+   .handler(async ({ context, data }) => {
+      if (RESERVED_SLUGS.includes(data.name.trim().toLowerCase()))
+         throw new ServerFnError({ code: "CONFLICT" })
 
-         const existingProject = await ctx.db.query.project.findFirst({
-            where: and(
-               eq(project.slug, input.slug),
-               eq(project.ownerId, ctx.user.id),
-            ),
-         })
+      const existingProject = await context.db.query.project.findFirst({
+         where: and(
+            eq(project.slug, data.slug),
+            eq(project.ownerId, context.user.id),
+         ),
+      })
 
-         if (existingProject) throw new TRPCError({ code: "CONFLICT" })
+      if (existingProject) throw new ServerFnError({ code: "CONFLICT" })
 
-         const createdProject = await ctx.db.transaction(async (tx) => {
-            const createdProject = await tx
-               .insert(project)
-               .values({
-                  name: input.name,
-                  slug: input.slug,
-                  rate: input.rate,
-                  ownerId: ctx.user.id,
-               })
-               .returning({
-                  id: project.id,
-               })
-               .get()
+      const createdProject = await context.db.transaction(async (tx) => {
+         const createdProject = await tx
+            .insert(project)
+            .values({
+               name: data.name,
+               slug: data.slug,
+               rate: data.rate,
+               ownerId: context.user.id,
+            })
+            .returning({
+               id: project.id,
+            })
+            .get()
 
-            if (!createdProject) throw new Error("Error")
-            return createdProject
-         })
+         if (!createdProject) throw new Error("Error")
+         return createdProject
+      })
 
-         return createdProject.id
-      }),
-)
+      return createdProject.id
+   })
 
-export const update = createServerFn(
-   "POST",
-   protectedProcedure
-      .input(updateProjectParams)
-      .mutation(async ({ ctx, input }) => {
-         return await ctx.db
-            .update(project)
-            .set(input)
+export const update = createServerFn({ method: "POST" })
+   .middleware([authMiddleware])
+   .validator(zodValidator(updateProjectParams))
+   .handler(async ({ context, data }) => {
+      return await context.db
+         .update(project)
+         .set(data)
+         .where(
+            and(eq(project.id, data.id), eq(project.ownerId, context.user.id)),
+         )
+   })
+
+export const deleteFn = createServerFn({ method: "POST" })
+   .middleware([authMiddleware])
+   .validator(zodValidator(z.object({ id: z.string() })))
+   .handler(async ({ context, data }) => {
+      return await context.db.transaction(async (tx) => {
+         await tx
+            .delete(project)
             .where(
-               and(eq(project.id, input.id), eq(project.ownerId, ctx.user.id)),
+               and(
+                  eq(project.id, data.id),
+                  eq(project.ownerId, context.user.id),
+               ),
             )
-      }),
-)
-
-export const deleteFn = createServerFn(
-   "POST",
-   protectedProcedure
-      .input(z.object({ id: z.string() }))
-      .mutation(async ({ ctx, input }) => {
-         return await ctx.db.transaction(async (tx) => {
-            await tx
-               .delete(project)
-               .where(
-                  and(
-                     eq(project.id, input.id),
-                     eq(project.ownerId, ctx.user.id),
-                  ),
-               )
-         })
-      }),
-)
+      })
+   })

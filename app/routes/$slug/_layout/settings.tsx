@@ -94,9 +94,11 @@ function Component() {
                         return toast.success("Saved")
 
                      updateProject.mutate({
-                        id: project.id,
-                        name: formData.name,
-                        rate: +formData.rate,
+                        data: {
+                           id: project.id,
+                           name: formData.name,
+                           rate: +formData.rate,
+                        },
                      })
                   }}
                >
@@ -162,7 +164,7 @@ function Component() {
                            onSubmit={(e) => {
                               e.preventDefault()
                               deleteProject.mutate({
-                                 id: project.id,
+                                 data: { id: project.id },
                               })
                            }}
                            id={"delete_project"}

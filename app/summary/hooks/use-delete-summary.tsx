@@ -21,7 +21,7 @@ export function useDeleteSummary() {
    const deleteFn = useServerFn(summary.deleteFn)
    const deleteSummary = useMutation({
       mutationFn: deleteFn,
-      onMutate: async ({ id: summaryId }) => {
+      onMutate: async ({ data: { id: summaryId } }) => {
          await queryClient.cancelQueries(summaryListQuery({ projectId }))
 
          const data = queryClient.getQueryData(

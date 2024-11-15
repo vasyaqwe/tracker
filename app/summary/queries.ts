@@ -4,5 +4,5 @@ import * as summary from "./functions"
 export const summaryListQuery = ({ projectId }: { projectId: string }) =>
    queryOptions({
       queryKey: ["summary_list", projectId],
-      queryFn: () => summary.list({ projectId }),
+      queryFn: () => summary.list({ data: { projectId } }),
    })

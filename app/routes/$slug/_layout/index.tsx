@@ -174,22 +174,24 @@ function Component() {
                                     }
 
                                     generateInvoice.mutate({
-                                       name: formData.name,
-                                       email: formData.email,
-                                       selectedItems: selectedItems.map(
-                                          (item) => ({
-                                             price: +item.amountEarned,
-                                             description: `${formatTime(
-                                                item.durationMinutes,
-                                                {
-                                                   short: false,
-                                                },
-                                             )} on ${formatDateIntl(
-                                                item.createdAt,
-                                             )}`,
-                                          }),
-                                       ),
-                                       amount: selectedEarnings,
+                                       data: {
+                                          name: formData.name,
+                                          email: formData.email,
+                                          selectedItems: selectedItems.map(
+                                             (item) => ({
+                                                price: +item.amountEarned,
+                                                description: `${formatTime(
+                                                   item.durationMinutes,
+                                                   {
+                                                      short: false,
+                                                   },
+                                                )} on ${formatDateIntl(
+                                                   item.createdAt,
+                                                )}`,
+                                             }),
+                                          ),
+                                          amount: selectedEarnings,
+                                       },
                                     })
                                  }}
                               >

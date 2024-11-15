@@ -175,7 +175,7 @@ export function LoginComponent() {
                            loginWithGoogle.isPending ||
                            loginWithGoogle.isSuccess
                         }
-                        onPress={() => loginWithGoogle.mutate()}
+                        onPress={() => loginWithGoogle.mutate({})}
                      >
                         {loginWithGoogle.isPending ||
                         loginWithGoogle.isSuccess ? (

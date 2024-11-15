@@ -7,14 +7,13 @@ const LayoutRoute = getRouteApi("/$slug/_layout")
 
 export function useAuth() {
    const params = LayoutRoute.useParams()
-   const session = useSuspenseQuery(userMeQuery())
+   const user = useSuspenseQuery(userMeQuery())
    const project = useSuspenseQuery(projectBySlugQuery({ slug: params.slug }))
 
-   if (!project.data || !session?.data?.session || !session.data.user)
-      throw new Error("Project not found")
+   if (!project.data) throw new Error("Project not found")
 
    return {
-      user: session.data.user,
+      user: user.data,
       project: project.data,
       projectId: project?.data.id,
    }

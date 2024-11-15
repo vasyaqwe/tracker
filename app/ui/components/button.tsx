@@ -34,7 +34,7 @@ const buttonVariants = cva(
          },
          size: {
             md: "h-8 rounded-[10px] px-3 text-sm",
-            icon: "size-8 rounded-[10px] px-3 text-sm",
+            icon: "size-8 rounded-[10px] text-sm",
          },
          isDisabled: {
             false: "",

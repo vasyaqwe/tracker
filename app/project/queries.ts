@@ -4,7 +4,7 @@ import * as project from "./functions"
 export const projectBySlugQuery = ({ slug }: { slug: string }) =>
    queryOptions({
       queryKey: ["project_by_slug", slug],
-      queryFn: () => project.bySlug({ slug }),
+      queryFn: () => project.bySlug({ data: { slug } }),
       staleTime: Infinity,
    })
 

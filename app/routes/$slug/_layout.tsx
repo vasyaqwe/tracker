@@ -15,7 +15,7 @@ import { useEffect } from "react"
 import { getRequestHeader } from "vinxi/http"
 import { Navigation } from "./-components/navigation"
 
-export const getDevice = createServerFn("GET", () => {
+export const getDevice = createServerFn({ method: "GET" }).handler(() => {
    const userAgent = getRequestHeader("user-agent") ?? ""
    return /mobile/i.test(userAgent) ? "mobile" : "desktop"
 })
@@ -23,12 +23,12 @@ export const getDevice = createServerFn("GET", () => {
 export const Route = createFileRoute("/$slug/_layout")({
    component: Component,
    beforeLoad: async ({ context, params }) => {
-      const session = await context.queryClient
+      const user = await context.queryClient
          .ensureQueryData(userMeQuery())
          .catch(() => {
             throw redirect({ to: "/login" })
          })
-      if (!session?.session || !session.user) throw redirect({ to: "/login" })
+      if (!user) throw redirect({ to: "/login" })
 
       const project = await context.queryClient.ensureQueryData(
          projectBySlugQuery({ slug: params.slug }),
