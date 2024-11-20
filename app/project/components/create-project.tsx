@@ -49,7 +49,6 @@ export function CreateProject({
          navigate({ to: `/$slug`, params: { slug: makeSlug(name) } })
       },
       onError: (error) => {
-         console.log(error)
          match(parseError(error))
             .with({ body: { code: "CONFLICT" } }, () =>
                toast.error("Project name is not available"),

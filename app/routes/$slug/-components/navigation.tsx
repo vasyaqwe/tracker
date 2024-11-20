@@ -113,7 +113,7 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                {isClient ? (
                   <Avatar
                      name={project.id}
-                     className="size-[22px] shrink-0 animate-fade-in opacity-0 [--animation-delay:0ms]"
+                     className="size-[22px] shrink-0 animate-fade-in opacity-0"
                   />
                ) : (
                   <div className="size-6 shrink-0" />

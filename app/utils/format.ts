@@ -100,7 +100,7 @@ export const formatTime = (
       : `${remainingMinutes} minutes`
    const hoursDisplay = opts.short
       ? `${remainingHours}h`
-      : `${remainingHours} hours,`
+      : `${remainingHours} hours${remainingMinutes === 0 ? "" : ","}`
 
    const minutesResult = remainingMinutes === 0 ? "" : minutesDisplay
    const hoursResult = remainingHours === 0 ? "" : hoursDisplay

@@ -16,22 +16,24 @@
    --color-destructive-foreground: #fff;
    --color-elevated: #fbfbfb;
 
-   --font-family-primary: "satoshi", sans-serif;
-   --font-family-mono: "geist_mono", monospace;
+   --font-primary: "satoshi", sans-serif;
+   --font-mono: "geist_mono", monospace;
 
    --ease-vaul: cubic-bezier(0.32, 0.72, 0, 1);
 
-   --animate-fade-in: fade-in var(--animation-duration, 500ms)
-      var(--animation-delay) ease forwards;
+   --animation-delay: 0ms;
+   --animation-duration: 500ms;
+
+   --animate-fade-in: fade-in 0.5s var(--animation-delay) ease forwards;
    --animate-slide-up: slide-up 0.5s var(--ease-vaul);
 
-   --font-size-xs: 0.825rem;
-   --font-size-sm: 0.925rem;
-   --font-size-sm--line-height: 1.2rem;
-   --font-size-base: 0.9725rem;
-   --font-size-base--line-height: 1.4rem;
-   --font-size-lg: 1.05rem;
-   --font-size-xl: 1.3rem;
+   --text-xs: 0.825rem;
+   --text-sm: 0.925rem;
+   --text-sm--line-height: 1.2rem;
+   --text-base: 0.9725rem;
+   --text-base--line-height: 1.4rem;
+   --text-lg: 1.05rem;
+   --text-xl: 1.3rem;
 
    @keyframes fade-in {
       from {
@@ -224,6 +226,16 @@
    }
 }
 
+html {
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   font-family: var(--font-primary);
+}
+body {
+   font-size: var(--text-base);
+   font-weight: 500;
+}
+
 /* reset */
 .hide-scrollbar {
    -ms-overflow-style: none;
@@ -252,13 +264,4 @@ p {
 }
 [data-sonner-toaster] {
    --mobile-offset: 0 !important;
-}
-
-/* misc */
-@media screen and (-webkit-min-device-pixel-ratio: 0) and (
-      min-resolution: .001dpcm
-   ) {
-   .nav-link-text {
-      margin-bottom: -2px;
-   }
 }

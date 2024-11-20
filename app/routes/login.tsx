@@ -11,7 +11,9 @@ import { useState } from "react"
 
 export const Route = createFileRoute("/login")({
    component: LoginComponent,
-   meta: () => [{ title: "Log in" }],
+   head: () => ({
+      meta: [{ title: "Log in" }],
+   }),
    validateSearch: (
       search: Record<string, unknown>,
    ): {

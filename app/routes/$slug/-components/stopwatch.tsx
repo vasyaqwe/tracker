@@ -117,7 +117,7 @@ export function Stopwatch() {
    if (!isClient) return null
 
    return (
-      <div className="-translate-x-1/2 fixed bottom-5 left-1/2 flex h-[46px] w-[201px] animate-slide-up items-center items-center rounded-full bg-popover pr-1.5 pl-5 text-popover-foreground">
+      <div className="-translate-x-1/2 fixed bottom-5 left-1/2 flex h-[42px] w-[201px] animate-slide-up items-center rounded-full bg-popover pr-1.5 pl-5 text-popover-foreground">
          {timer.isRunning() ? (
             <>
                <TimerRenderer
@@ -125,7 +125,7 @@ export function Stopwatch() {
                   className="mr-4 text-xl"
                />
                <Button
-                  className={"min-w-[60px] rounded-full"}
+                  className={"h-[34px] min-w-[60px] rounded-full"}
                   intent={"destructive-secondary"}
                   aria-label="Stop session"
                   onPress={stop}

@@ -24,7 +24,9 @@ import { match } from "ts-pattern"
 
 export const Route = createFileRoute("/$slug/_layout/settings")({
    component: Component,
-   meta: () => [{ title: "Settings" }],
+   head: () => ({
+      meta: [{ title: "Settings" }],
+   }),
 })
 
 function Component() {

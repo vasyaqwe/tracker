@@ -29,7 +29,9 @@ export const Route = createFileRoute("/$slug/_layout/")({
          summaryListQuery({ projectId: context.projectId }),
       )
    },
-   meta: () => [{ title: "Home" }],
+   head: () => ({
+      meta: [{ title: "Home" }],
+   }),
 })
 
 function Component() {
