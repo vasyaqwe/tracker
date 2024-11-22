@@ -48,11 +48,13 @@
          opacity: 0;
          scale: 75%;
          transform: translateY(100%);
+         filter: blur(0.4rem);
       }
       to {
          opacity: 1;
          scale: 100%;
          transform: translateY(0);
+         filter: blur(0);
       }
    }
 }
@@ -237,12 +239,12 @@ body {
 }
 
 /* reset */
-.hide-scrollbar {
+.scrollbar-hidden {
    -ms-overflow-style: none;
    scrollbar-width: none;
 }
 
-.hide-scrollbar::-webkit-scrollbar {
+.scrollbar-hidden::-webkit-scrollbar {
    display: none !important;
 }
 

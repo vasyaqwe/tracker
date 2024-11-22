@@ -21,6 +21,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
 import { useState } from "react"
 import type { Selection } from "react-aria-components"
+import { toast } from "sonner"
 
 export const Route = createFileRoute("/$slug/_layout/")({
    component: Component,
@@ -72,6 +73,7 @@ function Component() {
          a.click()
          window.URL.revokeObjectURL(url)
       },
+      onError: () => toast.info("Invoices are temporarily disabled"),
    })
 
    return (

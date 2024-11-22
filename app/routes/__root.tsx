@@ -1,7 +1,7 @@
-import "@/styles/app.css"
-import appCss from "@/styles/app.css?url"
+import "@/ui/styles.css"
 import { Toaster } from "@/ui/components/toast"
 import toastStyles from "@/ui/components/toast/styles.css?url"
+import styles from "@/ui/styles.css?url"
 import { cn } from "@/ui/utils"
 import type { QueryClient } from "@tanstack/react-query"
 import {
@@ -61,7 +61,7 @@ export const Route = createRootRouteWithContext<{
             { name: "twitter:site", content: "@vasyaqwee" },
          ],
          links: [
-            { rel: "stylesheet", href: appCss },
+            { rel: "stylesheet", href: styles },
             { rel: "stylesheet", href: toastStyles },
             { rel: "icon", href: "/favicon.ico" },
             // { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
