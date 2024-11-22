@@ -92,7 +92,7 @@ function Content<T extends object>({
          respectScreen={respectScreen}
          showArrow={showArrow}
          className={cn(
-            "z-50 min-w-40 bg-popover p-0 text-popover-foreground shadow-lg outline-none",
+            "z-50 min-w-40 bg-popover p-0 text-popover-foreground shadow-lg outline-hidden",
             [
                showArrow &&
                   "placement-left:mt-[-0.38rem] placement-right:mt-[-0.38rem]",

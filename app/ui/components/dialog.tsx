@@ -22,7 +22,7 @@ function Dialog({ role, className, ...props }: DialogProps) {
          {...props}
          role={role ?? "dialog"}
          className={cn([
-            "relative flex max-h-[inherit] flex-col overflow-hidden px-4 outline-none",
+            "relative flex max-h-[inherit] flex-col overflow-hidden px-4 outline-hidden",
             className,
          ])}
       />
@@ -189,7 +189,7 @@ function CloseIndicator({ className, ...props }: CloseButtonIndicatorProps) {
          aria-label="Close"
          onPress={props.close}
          className={cn(
-            "absolute top-2 right-2 z-50 grid size-8 place-content-center rounded-[9px] ring-offset-1 transition-colors duration-100 md:size-7 hover:bg-border/60 focus:outline-none focus-visible:ring-1 focus-visible:ring-primary",
+            "absolute top-2 right-2 z-50 grid size-8 place-content-center rounded-[9px] ring-offset-1 transition-colors duration-100 md:size-7 hover:bg-border/60 focus:outline-hidden focus-visible:ring-1 focus-visible:ring-primary",
             className,
          )}
       >

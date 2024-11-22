@@ -28,7 +28,7 @@ export function Navigation() {
          </div>
          <nav className="max-md:mb-4">
             <Logo className="-ml-[3px] mb-6 size-8 max-md:hidden" />
-            <ul className="md:before:-left-[2px] max-md:before:-ml-5 before:-bottom-[1px] relative items-center gap-3 pl-1 [--padding-block:4px] before:absolute md:before:top-[2px] max-md:flex before:h-[2px] md:before:h-[calc(100%-var(--padding-block))] before:w-[calc(100%+2rem)] md:before:w-[2px] md:space-y-2.5 before:rounded-sm before:bg-border">
+            <ul className="md:before:-left-[2px] max-md:before:-ml-5 before:-bottom-[1px] relative items-center gap-3 pl-1 [--padding-block:4px] before:absolute md:before:top-[2px] max-md:flex before:h-[2px] md:before:h-[calc(100%-var(--padding-block))] before:w-[calc(100%+2rem)] md:before:w-[2px] md:space-y-2.5 before:rounded-xs before:bg-border">
                <li>
                   <Link
                      params={{ slug }}
@@ -45,7 +45,7 @@ export function Navigation() {
                      }}
                      to={homeRoute.to}
                      className={cn(
-                        "group md:before:-left-[6px] relative flex items-center gap-2 px-1 font-medium leading-none transition-opacity duration-100 before:absolute before:left-0 before:h-[3px] md:before:h-[calc(100%-var(--padding-block))] before:w-full md:before:w-[2px] before:rounded-sm before:bg-foreground md:px-2 md:py-1 max-md:pb-3 hover:opacity-100",
+                        "group md:before:-left-[6px] relative flex items-center gap-2 px-1 font-medium leading-none transition-opacity duration-100 before:absolute before:left-0 before:h-[3px] md:before:h-[calc(100%-var(--padding-block))] before:w-full md:before:w-[2px] before:rounded-xs before:bg-foreground md:px-2 md:py-1 max-md:pb-3 hover:opacity-100",
                      )}
                   >
                      Home
@@ -64,7 +64,7 @@ export function Navigation() {
                      }}
                      to={settingsRoute.to}
                      className={cn(
-                        "group md:before:-left-[6px] relative flex items-center gap-2 px-1 font-medium leading-none transition-opacity duration-100 before:absolute before:left-0 before:h-[3px] md:before:h-[calc(100%-var(--padding-block))] before:w-full md:before:w-[2px] before:rounded-sm before:bg-foreground md:px-2 md:py-1 max-md:pb-3 hover:opacity-100",
+                        "group md:before:-left-[6px] relative flex items-center gap-2 px-1 font-medium leading-none transition-opacity duration-100 before:absolute before:left-0 before:h-[3px] md:before:h-[calc(100%-var(--padding-block))] before:w-full md:before:w-[2px] before:rounded-xs before:bg-foreground md:px-2 md:py-1 max-md:pb-3 hover:opacity-100",
                      )}
                   >
                      Settings

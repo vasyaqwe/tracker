@@ -8,7 +8,7 @@ import {
 
 const buttonVariants = cva(
    [
-      "inline-flex items-center justify-center gap-2 border font-medium outline-none transition-colors duration-100",
+      "inline-flex items-center justify-center gap-2 border font-medium outline-hidden transition-colors duration-100",
    ],
    {
       variants: {

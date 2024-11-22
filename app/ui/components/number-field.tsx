@@ -54,7 +54,7 @@ function NumberField({
                      />
                   </div>
                   <Input
-                     className="!outline-none !border-none !bg-transparent p-0 tabular-nums max-md:pl-2"
+                     className="!outline-hidden !border-none !bg-transparent p-0 tabular-nums max-md:pl-2"
                      placeholder={placeholder}
                   />
                   <div

@@ -24,7 +24,7 @@ import {
 import { Checkbox } from "./checkbox"
 
 const root = cn(
-   "table w-full caption-bottom border-spacing-0 text-sm outline-none",
+   "table w-full caption-bottom border-spacing-0 text-sm outline-hidden",
 )
 const header = cn(
    "[&>tr]:!border-0 [&>tr]:bottom-0 [&>tr]:mt-1 max-md:hidden [&>tr]:before:border-none [&>tr]:bg-transparent",
@@ -33,7 +33,7 @@ const row = cn(
    "relative transition-colors before:absolute before:inset-0 before:bottom-0 before:z-[1] before:mx-auto before:h-px before:w-[calc(100%-0.75rem)]",
    "max-md:flex before:border-border before:border-t-2 before:border-dotted first:before:border-none",
    "md:[&:last-child>td]:!pb-5 md:[&:first-child>td]:mt-1 max-md:flex-col max-md:gap-3 max-md:px-6 max-md:py-5",
-   "tr group relative cursor-default outline-none focus-visible:after:block",
+   "tr group relative cursor-default outline-hidden focus-visible:after:block",
    "after:-inset-y-0 after:absolute after:inset-x-1 last:after:bottom-1 after:z-[-1] data-[selected=true]:after:block after:hidden first:after:rounded-t-[calc(15px-1px)] last:after:rounded-b-[calc(15px-1px)] after:bg-border/40",
 )
 
@@ -79,7 +79,7 @@ function Body<T extends object>(props: TableBodyProps<T>) {
       <TableBody
          {...props}
          className={cn(
-            "isolate before:absolute before:inset-1 md:before:top-12 before:z-[-1] before:rounded-[calc(15px-4px)] before:border before:border-border before:bg-background before:shadow-sm",
+            "isolate before:absolute before:inset-1 md:before:top-12 before:z-[-1] before:rounded-[calc(15px-4px)] before:border before:border-border before:bg-background before:shadow-xs",
          )}
       />
    )
@@ -115,7 +115,7 @@ function TableCell({
 }
 
 const columnVariants = cva(
-   "h-12 px-5 text-left align-middle font-medium text-foreground/60 text-sm leading-none [&>[role=checkbox]]:translate-y-[2px] [&:has([role=checkbox])]:pr-0 [&:has([slot=selection])]:pr-0 first:pl-[26px] md:text-base focus-visible:outline-none",
+   "h-12 px-5 text-left align-middle font-medium text-foreground/60 text-sm leading-none [&>[role=checkbox]]:translate-y-[2px] [&:has([role=checkbox])]:pr-0 [&:has([slot=selection])]:pr-0 first:pl-[26px] md:text-base focus-visible:outline-hidden",
    {
       variants: {
          isResizable: {
