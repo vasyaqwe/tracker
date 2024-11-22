@@ -32,7 +32,7 @@ export const Route = createFileRoute("/$slug/_layout/settings")({
 function Component() {
    const queryClient = useQueryClient()
    const { slug } = useParams({ from: "/$slug/_layout" })
-   const { user, project } = useAuth()
+   const { project } = useAuth()
    const isMobile = useUIStore().isMobile
    const navigate = useNavigate()
 
@@ -92,7 +92,10 @@ function Component() {
                         rate: string
                      }
 
-                     if (formData.name === user.name)
+                     if (
+                        formData.name === project.name &&
+                        formData.rate === project.rate.toString()
+                     )
                         return toast.success("Saved")
 
                      updateProject.mutate({
