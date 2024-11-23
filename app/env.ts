@@ -47,7 +47,7 @@ const publicEnv = createEnv({
       VITE_BASE_URL:
          process.env.NODE_ENV === "development"
             ? "http://localhost:3000"
-            : "https://trackerhq.vercel.app",
+            : "https://tracker-bfs.pages.dev",
    },
    emptyStringAsUndefined: true,
 })

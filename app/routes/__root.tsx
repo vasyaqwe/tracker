@@ -54,7 +54,7 @@ export const Route = createRootRouteWithContext<{
             { name: "og:description", content: description },
             {
                name: "og:image",
-               content: "https://trackerhq.vercel.app/og.png",
+               content: `${import.meta.env.BASE_URL}/og.png`,
             },
             { name: "twitter:card", content: "summary_large_image" },
             { name: "twitter:creator", content: "@vasyaqwee" },
