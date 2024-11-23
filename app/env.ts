@@ -35,15 +35,7 @@ const publicSchema = createEnvSchema("Public", {
 // Private environment variables should be defined in the `.dev.vars` file or cloudflare dashboard
 const privateSchema = createEnvSchema("Private", {
    DATABASE_URL: z.string().min(1),
-   DATABASE_CONNECTION_TYPE: z.enum(["local", "remote"]),
-   DATABASE_AUTH_TOKEN: z
-      .string()
-      .optional()
-      .refine((s) => {
-         // not needed for local only
-         const type = process.env.DATABASE_CONNECTION_TYPE
-         return type === "remote" ? s && s.length > 0 : true
-      }),
+   DATABASE_AUTH_TOKEN: z.string().min(1),
    GITHUB_CLIENT_ID: z.string().min(1),
    GITHUB_CLIENT_SECRET: z.string().min(1),
    GOOGLE_CLIENT_ID: z.string().min(1),
