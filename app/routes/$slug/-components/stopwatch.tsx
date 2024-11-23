@@ -117,7 +117,7 @@ export function Stopwatch() {
    if (!isClient) return null
 
    return (
-      <div className="-translate-x-1/2 fixed bottom-5 left-1/2 flex h-[42px] w-[201px] animate-slide-up items-center rounded-full bg-popover pr-1.5 pl-5 text-popover-foreground">
+      <div className="-translate-x-1/2 fixed bottom-5 left-1/2 flex h-[42px] w-[200px] animate-slide-up items-center rounded-full bg-popover pr-1.5 pl-5 text-popover-foreground">
          {timer.isRunning() ? (
             <>
                <TimerRenderer

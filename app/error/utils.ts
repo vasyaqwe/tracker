@@ -1,4 +1,3 @@
-import { P, match } from "ts-pattern"
 import type { ZodIssue } from "zod"
 import type { ErrorCode } from "./schema"
 
@@ -66,16 +65,11 @@ export const parseZodErrorIssues = (issues: ZodIssue[]): string => {
 export function handleAuthError(
    error: unknown,
    request: Request,
-   inviteCode?: string,
 ) {
    console.error(error)
 
    const redirectUrl = new URL("/login", request.url)
    redirectUrl.searchParams.set("error", "true")
-
-   match(inviteCode).with(P.not(undefined), (code) =>
-      redirectUrl.searchParams.set("inviteCode", code),
-   )
 
    return new Response(null, {
       status: 302,

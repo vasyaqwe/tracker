@@ -1,5 +1,3 @@
 # Tracker
 
-An finance app built with Tanstack Start.
-
-Based on [this starter](https://github.com/ally-ahmed/tss-app)
+A time tracking app built with Tanstack Start.
