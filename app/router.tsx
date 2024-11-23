@@ -83,6 +83,7 @@ function NotFound() {
          <div>
             <div className="relative mb-6">
                <svg
+                  className="mx-auto"
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"

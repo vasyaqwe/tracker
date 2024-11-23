@@ -1,4 +1,6 @@
 import "@/ui/styles.css"
+import ogImage from "@/assets/og.png"
+import { publicEnv } from "@/env"
 import { Toaster } from "@/ui/components/toast"
 import toastStyles from "@/ui/components/toast/styles.css?url"
 import styles from "@/ui/styles.css?url"
@@ -54,7 +56,7 @@ export const Route = createRootRouteWithContext<{
             { name: "og:description", content: description },
             {
                name: "og:image",
-               content: `${import.meta.env.BASE_URL}/og.png`,
+               content: `${publicEnv.VITE_BASE_URL}${ogImage}`,
             },
             { name: "twitter:card", content: "summary_large_image" },
             { name: "twitter:creator", content: "@vasyaqwee" },
