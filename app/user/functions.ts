@@ -35,7 +35,7 @@ export const logInWithGithub = createServerFn({ method: "POST" })
    .middleware([baseMiddleware])
    .handler(async () => {
       const state = generateState()
-      const url = await github.createAuthorizationURL(state, {
+      const url = await github().createAuthorizationURL(state, {
          scopes: ["user:email"],
       })
 
@@ -51,10 +51,10 @@ export const logInWithGoogle = createServerFn({ method: "POST" })
    .handler(async () => {
       const state = generateState()
       const codeVerifier = generateCodeVerifier()
-      const url = await google.createAuthorizationURL(state, codeVerifier, {
+      const url = await google().createAuthorizationURL(state, codeVerifier, {
          scopes: ["profile", "email"],
       })
-
+      console.log(COOKIE_OPTIONS)
       setCookie("google_oauth_state", state, COOKIE_OPTIONS)
       setCookie("google_oauth_code_verifier", codeVerifier, COOKIE_OPTIONS)
 

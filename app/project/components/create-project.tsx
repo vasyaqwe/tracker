@@ -1,4 +1,4 @@
-import { env } from "@/env"
+import { publicEnv } from "@/env"
 import type { ServerFnError } from "@/error"
 import { RESERVED_SLUGS } from "@/project/constants"
 import { projectListQuery } from "@/project/queries"
@@ -110,7 +110,7 @@ export function CreateProject({
                />
                <p className="mt-1.5 mb-3 break-all text-foreground/75">
                   <u>
-                     {env.VITE_BASE_URL}/{makeSlug(name)}
+                     {publicEnv.VITE_BASE_URL}/{makeSlug(name)}
                   </u>
                </p>
                <NumberField

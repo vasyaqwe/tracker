@@ -1,4 +1,4 @@
-import { db } from "@/db"
+import { database } from "@/db"
 import { handleAuthError } from "@/error/utils"
 import { createSession, github } from "@/user/auth"
 import { oauthAccount, user } from "@/user/schema"
@@ -13,7 +13,8 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
       const state = url.searchParams.get("state")
       const cookies = parseCookies()
       const storedState = cookies.github_oauth_state
-      const _inviteCode = cookies.invite_code
+
+      const db = database()
 
       try {
          if (!code || !state || !storedState || state !== storedState) {
@@ -21,7 +22,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
             throw new Error("Error")
          }
 
-         const tokens = await github.validateAuthorizationCode(code)
+         const tokens = await github().validateAuthorizationCode(code)
          const userProfile = await fetch("https://api.github.com/user", {
             headers: {
                Authorization: `Bearer ${tokens.accessToken}`,
@@ -124,7 +125,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
             },
          })
       } catch (e) {
-         return handleAuthError(e, request, cookies.invite_code)
+         return handleAuthError(e, request)
       }
    },
 })

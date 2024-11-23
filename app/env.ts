@@ -1,70 +1,115 @@
 import { createEnv } from "@t3-oss/env-core"
 import { z } from "zod"
-export const env = createEnv({
-   server: {
-      NODE_ENV: z
-         .enum(["development", "test", "production"])
-         .default("development"),
-      DATABASE_URL: z.string().min(1),
-      DATABASE_CONNECTION_TYPE: z
-         .enum(["local", "remote", "local-replica"])
-         .default("local"),
-      DATABASE_AUTH_TOKEN: z
-         .string()
-         .optional()
-         .refine((s) => {
-            // not needed for local only
-            const type = process.env.DATABASE_CONNECTION_TYPE
-            return type === "remote" || type === "local-replica"
-               ? s && s.length > 0
-               : true
-         }),
-      GITHUB_CLIENT_ID: z.string().min(1),
-      GITHUB_CLIENT_SECRET: z.string().min(1),
-      GOOGLE_CLIENT_ID: z.string().min(1),
-      GOOGLE_CLIENT_SECRET: z.string().min(1),
-   },
+import { getCloudflareProxyEnv, isInCloudflareCI } from "./lib/cloudflare"
 
-   /**
-    * The prefix that client-side variables must have. This is enforced both at
-    * a type-level and at runtime.
-    */
-   clientPrefix: "VITE_",
+const PUBLIC_ENV_PREFIX = "VITE_" as const
 
+const createEnvSchema = <Shape extends z.ZodRawShape>(
+   type: "Public" | "Private",
+   shape: Shape,
+) => {
+   for (const key in shape) {
+      if (type === "Public" && !key.startsWith(PUBLIC_ENV_PREFIX)) {
+         throw new Error(
+            `Public environment variables must start with "${PUBLIC_ENV_PREFIX}", got "${key}"`,
+         )
+      }
+
+      if (type === "Private" && key.startsWith(PUBLIC_ENV_PREFIX)) {
+         throw new Error(
+            `Private environment variables must not start with "${PUBLIC_ENV_PREFIX}", got "${key}"`,
+         )
+      }
+   }
+
+   return z.object(shape)
+}
+
+// https://developers.cloudflare.com/workers/configuration/environment-variables/
+
+// Public environment variables should be defined in the `wrangler.toml` file
+const publicSchema = createEnvSchema("Public", {
+   VITE_BASE_URL: z.string(),
+})
+
+// Private environment variables should be defined in the `.dev.vars` file or cloudflare dashboard
+const privateSchema = createEnvSchema("Private", {
+   DATABASE_URL: z.string().min(1),
+   DATABASE_CONNECTION_TYPE: z.enum(["local", "remote"]),
+   DATABASE_AUTH_TOKEN: z
+      .string()
+      .optional()
+      .refine((s) => {
+         // not needed for local only
+         const type = process.env.DATABASE_CONNECTION_TYPE
+         return type === "remote" ? s && s.length > 0 : true
+      }),
+   GITHUB_CLIENT_ID: z.string().min(1),
+   GITHUB_CLIENT_SECRET: z.string().min(1),
+   GOOGLE_CLIENT_ID: z.string().min(1),
+   GOOGLE_CLIENT_SECRET: z.string().min(1),
+})
+
+const publicEnv = createEnv({
+   server: {},
+   clientPrefix: PUBLIC_ENV_PREFIX,
    client: {
       VITE_BASE_URL: z.string().min(1),
    },
-
-   /**
-    * What object holds the environment variables at runtime. This is usually
-    * `process.env` or `import.meta.env`.
-    */
    runtimeEnv: {
-      ...process.env,
       VITE_BASE_URL:
          process.env.NODE_ENV === "development"
             ? "http://localhost:3000"
             : "https://trackerhq.vercel.app",
    },
-
-   /**
-    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
-    * useful for Docker builds.
-    */
-   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
-
-   /**
-    * By default, this library will feed the environment variables directly to
-    * the Zod validator.
-    *
-    * This means that if you have an empty string for a value that is supposed
-    * to be a number (e.g. `PORT=` in a ".env" file), Zod will incorrectly flag
-    * it as a type mismatch violation. Additionally, if you have an empty string
-    * for a value that is supposed to be a string with a default value (e.g.
-    * `DOMAIN=` in an ".env" file), the default value will never be applied.
-    *
-    * In order to solve these issues, we recommend that all new projects
-    * explicitly specify this option as true.
-    */
    emptyStringAsUndefined: true,
 })
+
+const envSchema = z.object({
+   ...publicSchema.shape,
+   ...privateSchema.shape,
+})
+
+// you should only call this function in app.config.ts
+const parseEnv = async () => {
+   let result: ReturnType<typeof envSchema.safeParse>
+
+   if (isInCloudflareCI()) {
+      result = envSchema.safeParse(process.env)
+   } else {
+      result = envSchema.safeParse(await getCloudflareProxyEnv())
+   }
+
+   if (result.error) {
+      console.log(result.error.message)
+
+      throw new Error("Invalid environment variables")
+   }
+
+   const total = Object.keys(result.data).length
+
+   console.log(`Environment variables parsed successfully (${total} variables)`)
+}
+
+type ViteBuiltInEnv = {
+   MODE: "development" | "production" | "test"
+   DEV: boolean
+   SSR: boolean
+   PROD: boolean
+   BASE_URL: string
+}
+
+type Env = z.infer<typeof envSchema>
+type PublicEnv = z.infer<typeof publicSchema>
+type PrivateEnv = z.infer<typeof privateSchema>
+
+declare global {
+   interface ImportMetaEnv extends PublicEnv, ViteBuiltInEnv {}
+
+   interface ImportMeta {
+      readonly env: ImportMetaEnv
+   }
+}
+
+export { parseEnv, PUBLIC_ENV_PREFIX, publicEnv }
+export type { Env, PublicEnv, PrivateEnv }

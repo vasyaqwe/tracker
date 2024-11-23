@@ -1,5 +1,5 @@
-import { type Database, db } from "@/db"
-import { env } from "@/env"
+import { type Database, database } from "@/db"
+import { publicEnv } from "@/env"
 import {
    type Session,
    type User,
@@ -16,19 +16,27 @@ import { GitHub, Google } from "arctic"
 import { eq } from "drizzle-orm"
 import { TimeSpan, createDate, isWithinExpirationDate } from "oslo"
 import { alphabet, generateRandomString } from "oslo/crypto"
-import { getCookie, getHeader, getWebRequest, setCookie } from "vinxi/http"
+import {
+   getCookie,
+   getEvent,
+   getHeader,
+   getWebRequest,
+   setCookie,
+} from "vinxi/http"
 
-export const github = new GitHub(
-   env.GITHUB_CLIENT_ID,
-   env.GITHUB_CLIENT_SECRET,
-   {},
-)
+export const github = () => {
+   const env = getEvent().context.cloudflare.env
+   return new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET, {})
+}
 
-export const google = new Google(
-   env.GOOGLE_CLIENT_ID,
-   env.GOOGLE_CLIENT_SECRET,
-   `${env.VITE_BASE_URL}/api/auth/callback/google`,
-)
+export const google = () => {
+   const env = getEvent().context.cloudflare.env
+   return new Google(
+      env.GOOGLE_CLIENT_ID,
+      env.GOOGLE_CLIENT_SECRET,
+      `${env.VITE_BASE_URL}/api/auth/callback/google`,
+   )
+}
 
 export const createSession = async (userId: string) => {
    const token = generateSessionToken()
@@ -39,6 +47,8 @@ export const createSession = async (userId: string) => {
       userId: userId,
       expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
    }
+
+   const db = database()
 
    await db.insert(session).values(newSession).returning()
 
@@ -55,7 +65,7 @@ export const auth = async () => {
    if (request.method !== "GET") {
       const origin = getHeader("Origin")
       // You can also compare it against the Host or X-Forwarded-Host header.
-      if (origin === null || origin !== env.VITE_BASE_URL) {
+      if (origin === null || origin !== publicEnv.VITE_BASE_URL) {
          return {
             user: null,
             session: null,
@@ -118,6 +128,7 @@ export const generateSessionToken = () => {
 
 export const validateSessionToken = async (token: string) => {
    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
+   const db = database()
 
    const found = await db
       .select({ foundUser: user, foundSession: session })
@@ -151,8 +162,10 @@ export const validateSessionToken = async (token: string) => {
    return { session: foundSession, user: foundUser }
 }
 
-export const invalidateSession = async (sessionId: string) =>
-   await db
+export const invalidateSession = async (sessionId: string) => {
+   const db = database()
+
+   return await db
       .delete(session)
       .where(
          eq(
@@ -160,6 +173,7 @@ export const invalidateSession = async (sessionId: string) =>
             encodeHexLowerCase(sha256(new TextEncoder().encode(sessionId))),
          ),
       )
+}
 
 export type SessionValidationResult =
    | { session: Session; user: User }

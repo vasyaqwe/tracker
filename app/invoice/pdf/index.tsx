@@ -1,4 +1,4 @@
-import { env } from "@/env"
+import { publicEnv } from "@/env"
 import type { EditorDoc, LineItem } from "@/invoice/pdf/types"
 import { Document, Font, Image, Page, Text, View } from "@react-pdf/renderer"
 import { EditorContent } from "./components/editor-content"
@@ -38,11 +38,11 @@ Font.register({
    family: "geist_mono",
    fonts: [
       {
-         src: `${env.VITE_BASE_URL}/font/geist_mono_regular.ttf`,
+         src: `${publicEnv.VITE_BASE_URL}/font/geist_mono_regular.ttf`,
          fontWeight: 400,
       },
       {
-         src: `${env.VITE_BASE_URL}/font/geist_mono_medium.ttf`,
+         src: `${publicEnv.VITE_BASE_URL}/font/geist_mono_medium.ttf`,
          fontWeight: 500,
       },
    ],

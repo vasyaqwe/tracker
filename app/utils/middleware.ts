@@ -1,4 +1,4 @@
-import { db } from "@/db"
+import { database } from "@/db"
 import { ServerFnError } from "@/error"
 import { auth } from "@/user/auth"
 import { createMiddleware } from "@tanstack/start"
@@ -6,7 +6,7 @@ import { createMiddleware } from "@tanstack/start"
 export const baseMiddleware = createMiddleware().server(async ({ next }) => {
    return next({
       context: {
-         db,
+         db: database(),
          auth: await auth(),
       },
    })

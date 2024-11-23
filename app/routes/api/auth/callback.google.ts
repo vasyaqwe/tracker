@@ -1,4 +1,4 @@
-import { db } from "@/db"
+import { database } from "@/db"
 import { handleAuthError } from "@/error/utils"
 import { project } from "@/project/schema"
 import { createSession, google } from "@/user/auth"
@@ -14,8 +14,9 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
       const state = url.searchParams.get("state")
       const cookies = parseCookies()
       const storedState = cookies.google_oauth_state
-      const inviteCode = cookies.invite_code
       const codeVerifier = cookies.google_oauth_code_verifier
+
+      const db = database()
 
       try {
          if (
@@ -28,7 +29,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
             console.error(`Invalid state or code in Google OAuth callback`)
             throw new Error("Error")
          }
-         const tokens = await google.validateAuthorizationCode(
+         const tokens = await google().validateAuthorizationCode(
             code,
             codeVerifier,
          )
@@ -115,7 +116,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
             },
          })
       } catch (error) {
-         return handleAuthError(error, request, inviteCode)
+         return handleAuthError(error, request)
       }
    },
 })
