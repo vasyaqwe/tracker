@@ -34,7 +34,7 @@ export const google = () => {
    return new Google(
       env.GOOGLE_CLIENT_ID,
       env.GOOGLE_CLIENT_SECRET,
-      `${env.VITE_BASE_URL}/api/auth/callback/google`,
+      `${publicEnv.VITE_BASE_URL}/api/auth/callback/google`,
    )
 }
 

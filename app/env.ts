@@ -27,11 +27,6 @@ const createEnvSchema = <Shape extends z.ZodRawShape>(
 
 // https://developers.cloudflare.com/workers/configuration/environment-variables/
 
-// Public environment variables should be defined in the `wrangler.toml` file
-const publicSchema = createEnvSchema("Public", {
-   VITE_BASE_URL: z.string(),
-})
-
 // Private environment variables should be defined in the `.dev.vars` file or cloudflare dashboard
 const privateSchema = createEnvSchema("Private", {
    DATABASE_URL: z.string().min(1),
@@ -58,7 +53,6 @@ const publicEnv = createEnv({
 })
 
 const envSchema = z.object({
-   ...publicSchema.shape,
    ...privateSchema.shape,
 })
 
@@ -92,11 +86,10 @@ type ViteBuiltInEnv = {
 }
 
 type Env = z.infer<typeof envSchema>
-type PublicEnv = z.infer<typeof publicSchema>
 type PrivateEnv = z.infer<typeof privateSchema>
 
 declare global {
-   interface ImportMetaEnv extends PublicEnv, ViteBuiltInEnv {}
+   interface ImportMetaEnv extends ViteBuiltInEnv {}
 
    interface ImportMeta {
       readonly env: ImportMetaEnv
@@ -104,4 +97,4 @@ declare global {
 }
 
 export { parseEnv, PUBLIC_ENV_PREFIX, publicEnv }
-export type { Env, PublicEnv, PrivateEnv }
+export type { Env, PrivateEnv }
