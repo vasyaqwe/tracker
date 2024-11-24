@@ -21,7 +21,6 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
 import { useState } from "react"
 import type { Selection } from "react-aria-components"
-import { toast } from "sonner"
 
 export const Route = createFileRoute("/$slug/_layout/")({
    component: Component,
@@ -60,20 +59,26 @@ function Component() {
    const generateInvoiceFn = useServerFn(invoice.generate)
    const generateInvoice = useMutation({
       mutationFn: generateInvoiceFn,
-      onSuccess: async (response) => {
+      onSuccess: async (data) => {
          setIsOpen(false)
          setSelectedKeys(new Set())
-         const blob = await response.blob()
+
+         const binaryString = window.atob(data.base64Pdf)
+         const bytes = new Uint8Array(binaryString.length)
+         for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i)
+         }
+         const blob = new Blob([bytes], { type: "application/pdf" })
+
          const url = window.URL.createObjectURL(blob)
          const a = document.createElement("a")
          a.style.display = "none"
          a.href = url
-         a.download = `invoice-${response.headers.get("X-Invoice-Number")}.pdf`
+         a.download = data.fileName
          document.body.appendChild(a)
          a.click()
          window.URL.revokeObjectURL(url)
       },
-      onError: () => toast.info("Invoices are temporarily disabled"),
    })
 
    return (

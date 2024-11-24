@@ -4,6 +4,7 @@ import { authMiddleware } from "@/utils/middleware"
 import { renderToStream } from "@react-pdf/renderer"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
+import { getEvent, setHeaders } from "vinxi/http"
 import { z } from "zod"
 
 export const generate = createServerFn({ method: "GET" })
@@ -85,14 +86,30 @@ export const generate = createServerFn({ method: "GET" })
       )
 
       // @ts-expect-error ...
-      const blob = await new Response(stream).blob()
+      const buffer = Buffer.from(await new Response(stream).arrayBuffer())
 
-      return new Response(blob, {
-         headers: {
-            "Content-Type": "application/pdf",
-            "Cache-Control": "no-store, max-age=0",
-            "Content-Disposition": `attachment; filename="invoice-${invoiceNumber}.pdf"`,
-            "X-Invoice-Number": invoiceNumber, // Add invoice number as a custom header
-         },
-      })
+      const base64Pdf = buffer.toString("base64")
+
+      return handleResponse<{ base64Pdf: string; fileName: string }>(
+         new Response(
+            JSON.stringify({
+               base64Pdf,
+               fileName: `invoice-${invoiceNumber}.pdf`,
+            }),
+            {
+               headers: {
+                  "Content-Type": "application/json",
+               },
+            },
+         ),
+      )
    })
+
+// temporary fix
+async function handleResponse<ResponseBody = unknown>(
+   response: Response,
+): Promise<ResponseBody> {
+   const event = getEvent()
+   setHeaders(event, Object.fromEntries(response.headers))
+   return response.json() as ResponseBody
+}
