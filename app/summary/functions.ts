@@ -43,8 +43,8 @@ export const insert = createServerFn({ method: "POST" })
          )
          .get()
 
-      if (existingSummary)
-         return await context.db
+      if (existingSummary) {
+         await context.db
             .update(summary)
             .set({
                amountEarned: sql`${summary.amountEarned} + ${data.amountEarned}`,
@@ -52,7 +52,10 @@ export const insert = createServerFn({ method: "POST" })
             })
             .where(eq(summary.id, existingSummary.id))
 
-      return await context.db.insert(summary).values({
+         return
+      }
+
+      await context.db.insert(summary).values({
          projectId: data.projectId,
          amountEarned: data.amountEarned,
          durationMinutes: data.durationMinutes,

@@ -88,7 +88,7 @@ export const update = createServerFn({ method: "POST" })
    .middleware([authMiddleware])
    .validator(zodValidator(updateProjectParams))
    .handler(async ({ context, data }) => {
-      return await context.db
+      await context.db
          .update(project)
          .set(data)
          .where(

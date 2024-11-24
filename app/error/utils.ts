@@ -62,10 +62,7 @@ export const parseZodErrorIssues = (issues: ZodIssue[]): string => {
       .join("; ")
 }
 
-export function handleAuthError(
-   error: unknown,
-   request: Request,
-) {
+export function handleAuthError(error: unknown, request: Request) {
    console.error(error)
 
    const redirectUrl = new URL("/login", request.url)
