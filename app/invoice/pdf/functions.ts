@@ -80,7 +80,6 @@ export const generate = createServerFn({ method: "GET" })
                ],
                type: "doc",
             },
-
             size: "a4",
          }),
       )
