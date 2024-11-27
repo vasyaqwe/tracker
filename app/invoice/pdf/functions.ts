@@ -23,7 +23,7 @@ export const generate = createServerFn({ method: "GET" })
    )
    .handler(async ({ context, data }) => {
       const invoiceNumber = generateInvoiceNumber()
-      const stream = await renderToStream(
+      const pdfStream = await renderToStream(
          await InvoicePdf({
             amount: data.amount,
             dueDate: new Date().getTime(),
@@ -84,10 +84,13 @@ export const generate = createServerFn({ method: "GET" })
          }),
       )
 
-      // @ts-expect-error ...
-      const buffer = Buffer.from(await new Response(stream).arrayBuffer())
+      const chunks: Buffer[] = []
+      for await (const chunk of pdfStream) {
+         chunks.push(Buffer.from(chunk))
+      }
 
-      const base64Pdf = buffer.toString("base64")
+      const combinedBuffer = Buffer.concat(chunks)
+      const base64Pdf = combinedBuffer.toString("base64")
 
       return handleResponse<{ base64Pdf: string; fileName: string }>(
          new Response(
