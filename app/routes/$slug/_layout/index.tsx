@@ -1,5 +1,5 @@
 import { useDelayedValue } from "@/interactions/use-delayed-value"
-import * as invoice from "@/invoice/pdf/functions"
+import * as invoice from "@/invoice/functions"
 import { Main } from "@/routes/$slug/-components/main"
 import { summaryListQuery } from "@/summary/queries"
 import { Button, buttonVariants } from "@/ui/components/button"
@@ -184,8 +184,10 @@ function Component() {
 
                                     generateInvoice.mutate({
                                        data: {
-                                          name: formData.name,
-                                          email: formData.email,
+                                          customer: {
+                                             name: formData.name,
+                                             email: formData.email,
+                                          },
                                           selectedItems: selectedItems.map(
                                              (item) => ({
                                                 price: +item.amountEarned,
