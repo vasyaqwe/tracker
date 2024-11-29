@@ -1,5 +1,4 @@
 import { publicEnv } from "@/env"
-import type { ServerFnError } from "@/error"
 import { RESERVED_SLUGS } from "@/project/constants"
 import { projectListQuery } from "@/project/queries"
 import { Button } from "@/ui/components/button"
@@ -22,18 +21,6 @@ const makeSlug = (name: string) =>
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
 
-const parseError = (error: Error) => {
-   try {
-      const parsedError = JSON.parse(error.message) as {
-         body: ServerFnError
-      }
-
-      return parsedError
-   } catch (jsonError) {
-      console.error("Failed to parse error message as JSON:", jsonError)
-   }
-}
-
 export function CreateProject({
    isFirstProject = true,
 }: { isFirstProject?: boolean }) {
@@ -47,13 +34,6 @@ export function CreateProject({
       onSuccess: () => {
          queryClient.invalidateQueries(projectListQuery())
          navigate({ to: `/$slug`, params: { slug: makeSlug(name) } })
-      },
-      onError: (error) => {
-         match(parseError(error))
-            .with({ body: { code: "CONFLICT" } }, () =>
-               toast.error("Project name is not available"),
-            )
-            .otherwise(() => toast.error("An unknown error occurred"))
       },
    })
 

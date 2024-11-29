@@ -1,4 +1,4 @@
-import type { ServerFnError } from "@/error"
+import { ServerFnError } from "@/error"
 import { routeTree } from "@/routeTree.gen"
 import { Button, buttonVariants } from "@/ui/components/button"
 import { toast } from "@/ui/components/toast"
@@ -14,21 +14,7 @@ import {
 } from "@tanstack/react-router"
 import { routerWithQueryClient } from "@tanstack/react-router-with-query"
 import superjson from "superjson"
-import { match } from "ts-pattern"
-
-type ClientError = Error & {
-   data: {
-      code: ServerFnError["code"]
-   }
-}
-
-export const isServerFnError = (
-   error: Error & { body?: unknown },
-): error is ClientError =>
-   "data" in error &&
-   error.data !== null &&
-   typeof error.data === "object" &&
-   "code" in error.data
+import { z } from "zod"
 
 export function createRouter() {
    const queryClient = new QueryClient({
@@ -48,16 +34,25 @@ export function createRouter() {
             staleTime: 300 * 1000,
          },
          mutations: {
-            onError: (error) =>
-               match(error)
-                  .when(
-                     (e): e is ServerFnError => isServerFnError(e),
-                     (e) =>
-                        e.code === "INTERNAL_SERVER_ERROR"
-                           ? toast.error("An unknown error occurred")
-                           : toast.error(e.message),
-                  )
-                  .otherwise(() => toast.error("An unknown error occurred")),
+            onError: (error) => {
+               try {
+                  const parsedError: unknown = JSON.parse(error.message)
+
+                  const errorSchema = z.object({
+                     body: ServerFnError.schema,
+                  })
+                  const result = errorSchema.safeParse(parsedError)
+
+                  if (!result.success || !result.data.body.message) {
+                     return toast.error("An unknown error occurred")
+                  }
+
+                  if (result.data.body.message)
+                     return toast.error(result.data.body.message)
+               } catch (_e) {
+                  return toast.error("An unknown error occurred")
+               }
+            },
          },
       },
    })
@@ -91,7 +86,7 @@ function NotFound() {
                   xmlns="http://www.w3.org/2000/svg"
                >
                   <path
-                     opacity="0.12"
+                     opacity="0.1"
                      d="M20 11.5C20 16.1944 16.1944 20 11.5 20C6.80558 20 3 16.1944 3 11.5C3 6.80558 6.80558 3 11.5 3C16.1944 3 20 6.80558 20 11.5Z"
                      fill="currentColor"
                   />

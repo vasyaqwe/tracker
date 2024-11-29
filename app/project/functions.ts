@@ -52,7 +52,10 @@ export const insert = createServerFn({ method: "POST" })
    .validator(zodValidator(insertProjectParams))
    .handler(async ({ context, data }) => {
       if (RESERVED_SLUGS.includes(data.name.trim().toLowerCase()))
-         throw new ServerFnError({ code: "CONFLICT" })
+         throw new ServerFnError({
+            code: "CONFLICT",
+            message: "Project name is not available",
+         })
 
       const existingProject = await context.db.query.project.findFirst({
          where: and(
@@ -61,7 +64,11 @@ export const insert = createServerFn({ method: "POST" })
          ),
       })
 
-      if (existingProject) throw new ServerFnError({ code: "CONFLICT" })
+      if (existingProject)
+         throw new ServerFnError({
+            code: "CONFLICT",
+            message: "Project name is not available",
+         })
 
       const createdProject = await context.db.transaction(async (tx) => {
          const createdProject = await tx
@@ -77,7 +84,9 @@ export const insert = createServerFn({ method: "POST" })
             })
             .get()
 
-         if (!createdProject) throw new Error("Error")
+         if (!createdProject)
+            throw new ServerFnError({ code: "INTERNAL_SERVER_ERROR" })
+
          return createdProject
       })
 
