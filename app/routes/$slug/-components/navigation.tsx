@@ -116,7 +116,7 @@ function Menus({ className, ...props }: ComponentProps<"div">) {
                      className="size-[22px] shrink-0 animate-fade-in opacity-0"
                   />
                ) : (
-                  <div className="size-6 shrink-0" />
+                  <div className="size-[22px] shrink-0" />
                )}
                <span className="line-clamp-1 break-all">{project.name}</span>
                <svg
