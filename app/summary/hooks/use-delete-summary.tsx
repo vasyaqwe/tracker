@@ -5,39 +5,44 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/start"
 import { toast } from "sonner"
 
-export function useDeleteSummary() {
+export function useDeleteSummaries({
+   onMutate,
+   onError,
+}: { onMutate?: () => void; onError?: () => void } = {}) {
    const queryClient = useQueryClient()
    const { projectId } = useAuth()
 
-   const deleteSummaryFromQueryData = ({
-      summaryId,
-   }: { summaryId: string }) => {
+   const deleteSummariesFromQueryData = ({ ids }: { ids: string[] }) => {
       queryClient.setQueryData(
          summaryListQuery({ projectId }).queryKey,
-         (oldData) => oldData?.filter((summary) => summary.id !== summaryId),
+         (oldData) => oldData?.filter((summary) => !ids.includes(summary.id)),
       )
    }
 
    const deleteFn = useServerFn(summary.deleteFn)
-   const deleteSummary = useMutation({
+   const deleteSummaries = useMutation({
       mutationFn: deleteFn,
-      onMutate: async ({ data: { id: summaryId } }) => {
+      onMutate: async ({ data: { ids } }) => {
+         onMutate?.()
+
          await queryClient.cancelQueries(summaryListQuery({ projectId }))
 
          const data = queryClient.getQueryData(
             summaryListQuery({ projectId }).queryKey,
          )
 
-         deleteSummaryFromQueryData({ summaryId })
+         deleteSummariesFromQueryData({ ids })
 
          return { data }
       },
       onError: (_err, _data, context) => {
+         onError?.()
+
          queryClient.setQueryData(
             summaryListQuery({ projectId }).queryKey,
             context?.data,
          )
-         toast.error("Failed to delete summary")
+         toast.error("Failed to delete summaries")
       },
       onSettled: (_, _error, _data) => {
          queryClient.invalidateQueries(summaryListQuery({ projectId }))
@@ -45,7 +50,7 @@ export function useDeleteSummary() {
    })
 
    return {
-      deleteSummary,
-      deleteSummaryFromQueryData,
+      deleteSummaries,
+      deleteSummariesFromQueryData,
    }
 }

@@ -2,7 +2,7 @@ import { insertSummaryParams, summary } from "@/summary/schema"
 import { authMiddleware } from "@/utils/middleware"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
-import { and, desc, eq, gte, lt, sql } from "drizzle-orm"
+import { and, desc, eq, gte, inArray, lt, sql } from "drizzle-orm"
 import { z } from "zod"
 
 export const list = createServerFn({ method: "GET" })
@@ -64,9 +64,7 @@ export const insert = createServerFn({ method: "POST" })
 
 export const deleteFn = createServerFn({ method: "POST" })
    .middleware([authMiddleware])
-   .validator(zodValidator(z.object({ id: z.string() })))
+   .validator(zodValidator(z.object({ ids: z.array(z.string()) })))
    .handler(async ({ context, data }) => {
-      return await context.db.transaction(async (tx) => {
-         await tx.delete(summary).where(eq(summary.id, data.id))
-      })
+      await context.db.delete(summary).where(inArray(summary.id, data.ids))
    })
