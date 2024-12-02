@@ -1,6 +1,5 @@
 import * as projectFns from "@/project/functions"
 import { projectBySlugQuery, projectListQuery } from "@/project/queries"
-import { Main } from "@/routes/$slug/-components/main"
 import { useTimerStore } from "@/timer/store"
 import { Button, buttonVariants } from "@/ui/components/button"
 import { Card } from "@/ui/components/card"
@@ -78,148 +77,145 @@ function Component() {
    const isRunning = useTimerStore().isRunning
 
    return (
-      <Main>
-         <main>
-            <Card className="p-4 pt-3">
-               <form
-                  onSubmit={(e) => {
-                     e.preventDefault()
+      <div>
+         <Card className="p-4 pt-3">
+            <form
+               onSubmit={(e) => {
+                  e.preventDefault()
 
-                     const formData = Object.fromEntries(
-                        new FormData(e.target as HTMLFormElement).entries(),
-                     ) as {
-                        name: string
-                        rate: string
-                     }
+                  const formData = Object.fromEntries(
+                     new FormData(e.target as HTMLFormElement).entries(),
+                  ) as {
+                     name: string
+                     rate: string
+                  }
 
-                     if (
-                        formData.name === project.name &&
-                        formData.rate === project.rate.toString()
-                     )
-                        return toast.success("Saved")
+                  if (
+                     formData.name === project.name &&
+                     formData.rate === project.rate.toString()
+                  )
+                     return toast.success("Saved")
 
-                     updateProject.mutate({
-                        data: {
-                           id: project.id,
-                           name: formData.name,
-                           rate: +formData.rate,
-                        },
-                     })
-                  }}
+                  updateProject.mutate({
+                     data: {
+                        id: project.id,
+                        name: formData.name,
+                        rate: +formData.rate,
+                     },
+                  })
+               }}
+            >
+               <TextField
+                  className="mb-3 max-w-[300px]"
+                  label="Name"
+                  defaultValue={project.name}
+                  name="name"
+                  id="name"
+                  placeholder="Project name"
+                  maxLength={32}
+                  isRequired
+               />
+               <NumberField
+                  className="max-w-[300px]"
+                  label="Hourly rate"
+                  isDisabled={isRunning}
+                  minValue={1}
+                  maxValue={1000}
+                  name="rate"
+                  id="rate"
+                  placeholder="$"
+                  isRequired
+                  defaultValue={project.rate}
+               />
+               <Button
+                  type="submit"
+                  isDisabled={updateProject.isPending}
+                  className="mt-3"
                >
-                  <TextField
-                     className="mb-3 max-w-[300px]"
-                     label="Name"
-                     defaultValue={project.name}
-                     name="name"
-                     id="name"
-                     placeholder="Project name"
-                     maxLength={32}
-                     isRequired
-                  />
-                  <NumberField
-                     className="max-w-[300px]"
-                     label="Hourly rate"
-                     isDisabled={isRunning}
-                     minValue={1}
-                     maxValue={1000}
-                     name="rate"
-                     id="rate"
-                     placeholder="$"
-                     isRequired
-                     defaultValue={project.rate}
-                  />
-                  <Button
-                     type="submit"
-                     isDisabled={updateProject.isPending}
-                     className="mt-3"
-                  >
-                     Save
-                  </Button>
-               </form>
-            </Card>
-            <Card className="mt-3 p-4">
-               <div>
-                  <p>Delete project</p>
-                  <p className="mt-1 text-foreground/75 text-sm">
-                     This is permanent. Project will be fully deleted.
-                  </p>
-               </div>
-               <Modal>
-                  <Modal.Trigger
-                     className={cn(
-                        buttonVariants({
-                           intent: "destructive",
-                        }),
-                        "mt-3 max-lg:w-full",
-                     )}
-                  >
-                     Delete project
-                  </Modal.Trigger>
-                  <Modal.Content role="alertdialog">
-                     <Modal.Header>
-                        <Modal.Title>Delete this project?</Modal.Title>
-                        <Modal.Description>
-                           This action cannot be undone. Your project and all of
-                           its data will be fully deleted.
-                        </Modal.Description>
-                     </Modal.Header>
-                     <div>
-                        <form
-                           onSubmit={(e) => {
-                              e.preventDefault()
-                              deleteProject.mutate({
-                                 data: { id: project.id },
-                              })
-                           }}
-                           id={"delete_project"}
-                        >
-                           <TextField
-                              label="To confirm, enter project name below"
-                              autoComplete="off"
-                              autoFocus={!isMobile}
-                              id="confirmation"
-                              name="confirmation"
-                              placeholder={project.name}
-                              value={confirmDeletion}
-                              onChange={(value) => setConfirmDeletion(value)}
-                           />
-                        </form>
-                     </div>
-                     <Modal.Footer>
-                        <Modal.Close
-                           className={cn(
-                              buttonVariants({ intent: "outline" }),
-                              "ml-auto",
-                           )}
-                        >
-                           Cancel
-                        </Modal.Close>
-                        <Button
-                           form={"delete_project"}
-                           type="submit"
-                           isDisabled={
-                              confirmDeletion.trim() !== project.name ||
-                              deleteProject.isPending ||
-                              deleteProject.isSuccess
-                           }
-                           intent={"destructive"}
-                        >
-                           {deleteProject.isPending ||
-                           deleteProject.isSuccess ? (
-                              <>
-                                 <Loading />
-                                 Deleting..
-                              </>
-                           ) : (
-                              "Delete forever"
-                           )}
-                        </Button>
-                     </Modal.Footer>
-                  </Modal.Content>
-               </Modal>
-            </Card>
-         </main>
-      </Main>
+                  Save
+               </Button>
+            </form>
+         </Card>
+         <Card className="mt-3 p-4">
+            <div>
+               <p>Delete project</p>
+               <p className="mt-1 text-foreground/75 text-sm">
+                  This is permanent. Project will be fully deleted.
+               </p>
+            </div>
+            <Modal>
+               <Modal.Trigger
+                  className={cn(
+                     buttonVariants({
+                        intent: "destructive",
+                     }),
+                     "mt-3 max-lg:w-full",
+                  )}
+               >
+                  Delete project
+               </Modal.Trigger>
+               <Modal.Content role="alertdialog">
+                  <Modal.Header>
+                     <Modal.Title>Delete this project?</Modal.Title>
+                     <Modal.Description>
+                        This action cannot be undone. Your project and all of
+                        its data will be fully deleted.
+                     </Modal.Description>
+                  </Modal.Header>
+                  <div>
+                     <form
+                        onSubmit={(e) => {
+                           e.preventDefault()
+                           deleteProject.mutate({
+                              data: { id: project.id },
+                           })
+                        }}
+                        id={"delete_project"}
+                     >
+                        <TextField
+                           label="To confirm, enter project name below"
+                           autoComplete="off"
+                           autoFocus={!isMobile}
+                           id="confirmation"
+                           name="confirmation"
+                           placeholder={project.name}
+                           value={confirmDeletion}
+                           onChange={(value) => setConfirmDeletion(value)}
+                        />
+                     </form>
+                  </div>
+                  <Modal.Footer>
+                     <Modal.Close
+                        className={cn(
+                           buttonVariants({ intent: "outline" }),
+                           "ml-auto",
+                        )}
+                     >
+                        Cancel
+                     </Modal.Close>
+                     <Button
+                        form={"delete_project"}
+                        type="submit"
+                        isDisabled={
+                           confirmDeletion.trim() !== project.name ||
+                           deleteProject.isPending ||
+                           deleteProject.isSuccess
+                        }
+                        intent={"destructive"}
+                     >
+                        {deleteProject.isPending || deleteProject.isSuccess ? (
+                           <>
+                              <Loading />
+                              Deleting..
+                           </>
+                        ) : (
+                           "Delete forever"
+                        )}
+                     </Button>
+                  </Modal.Footer>
+               </Modal.Content>
+            </Modal>
+         </Card>
+      </div>
    )
 }

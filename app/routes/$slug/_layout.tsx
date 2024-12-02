@@ -45,12 +45,12 @@ export const Route = createFileRoute("/$slug/_layout")({
       }
    },
    pendingComponent: () => (
-      <div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-full">
+      <main className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-full">
          <Logo className="mx-auto size-9 animate-fade-in opacity-0 [--animation-delay:100ms]" />
          <h1 className="mt-4 animate-fade-in text-center text-foreground/75 opacity-0 duration-500 [--animation-delay:600ms]">
             Workspace is loading...
          </h1>
-      </div>
+      </main>
    ),
 })
 
@@ -77,7 +77,13 @@ function Component() {
    return (
       <div className="mx-auto max-w-4xl items-start gap-9 px-4 pt-4 [--sidebar-height:340px] md:flex md:pt-32 max-md:pb-8">
          <Navigation />
-         <Outlet />
+         <main
+            className={
+               "relative flex min-h-[var(--sidebar-height)] flex-1 flex-col md:pb-20"
+            }
+         >
+            <Outlet />
+         </main>
          <Stopwatch />
       </div>
    )
