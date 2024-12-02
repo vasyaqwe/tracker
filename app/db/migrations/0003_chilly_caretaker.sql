@@ -1,0 +1,1 @@
+ALTER TABLE `session` ADD `owned_projects` text DEFAULT '[]' NOT NULL;

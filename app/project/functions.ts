@@ -5,6 +5,7 @@ import {
    project,
    updateProjectParams,
 } from "@/project/schema"
+import { session } from "@/user/schema"
 import { authMiddleware } from "@/utils/middleware"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
@@ -87,6 +88,18 @@ export const insert = createServerFn({ method: "POST" })
          if (!createdProject)
             throw new ServerFnError({ code: "INTERNAL_SERVER_ERROR" })
 
+         await tx
+            .update(session)
+            .set({
+               ownedProjects: [
+                  ...context.session.ownedProjects,
+                  {
+                     id: createdProject.id,
+                  },
+               ],
+            })
+            .where(eq(session.userId, context.user.id))
+
          return createdProject
       })
 
@@ -118,5 +131,14 @@ export const deleteFn = createServerFn({ method: "POST" })
                   eq(project.ownerId, context.user.id),
                ),
             )
+
+         await tx
+            .update(session)
+            .set({
+               ownedProjects: context.session.ownedProjects.filter(
+                  (project) => project.id !== data.id,
+               ),
+            })
+            .where(eq(session.userId, context.user.id))
       })
    })

@@ -38,6 +38,9 @@ export const Route = createFileRoute("/$slug/_layout/")({
 function Component() {
    const { projectId } = useAuth()
    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set())
+   const [lastSelectedKeys, setLastSelectedKeys] = useState<Selection>(
+      new Set(),
+   )
 
    const summaries = useSuspenseQuery(summaryListQuery({ projectId }))
 
@@ -86,9 +89,13 @@ function Component() {
    const { deleteSummaries } = useDeleteSummaries({
       onMutate: () => {
          setDeleteConfirmationOpen(false)
+         setLastSelectedKeys(selectedKeys)
          setSelectedKeys(new Set())
       },
-      onError: () => setDeleteConfirmationOpen(true),
+      onError: () => {
+         setDeleteConfirmationOpen(true)
+         setSelectedKeys(lastSelectedKeys)
+      },
    })
 
    return (
@@ -316,6 +323,7 @@ function Component() {
                                              ids: selectedItems.map(
                                                 (item) => item.id,
                                              ),
+                                             projectId,
                                           },
                                        })
                                     }

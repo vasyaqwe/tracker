@@ -1,5 +1,6 @@
 import { type Database, database } from "@/db"
 import { publicEnv } from "@/env"
+import { project } from "@/project/schema"
 import {
    type Session,
    type User,
@@ -39,6 +40,15 @@ export const google = () => {
 }
 
 export const createSession = async (userId: string) => {
+   const db = database()
+
+   const ownedProjects = await db.query.project.findMany({
+      where: eq(project.ownerId, userId),
+      columns: {
+         id: true,
+      },
+   })
+
    const token = generateSessionToken()
 
    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
@@ -46,9 +56,8 @@ export const createSession = async (userId: string) => {
       id: sessionId,
       userId: userId,
       expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+      ownedProjects,
    }
-
-   const db = database()
 
    await db.insert(session).values(newSession).returning()
 

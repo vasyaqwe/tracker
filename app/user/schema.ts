@@ -80,6 +80,8 @@ export const emailVerificationCode = createTable(
    },
 )
 
+const ownedProjectsSchema = z.array(z.object({ id: z.string() }))
+
 export const session = createTable("session", {
    id: text().primaryKey(),
    expiresAt: integer({
@@ -88,10 +90,18 @@ export const session = createTable("session", {
    userId: text()
       .references(() => user.id, { onDelete: "cascade" })
       .notNull(),
+   ownedProjects: text({
+      mode: "json",
+   })
+      .$type<z.infer<typeof ownedProjectsSchema>>()
+      .notNull()
+      .default([]),
 })
 
 export const selectUserParams = createSelectSchema(user)
-export const selectSessionParams = createSelectSchema(session)
+export const selectSessionParams = createSelectSchema(session, {
+   ownedProjects: ownedProjectsSchema,
+})
 export const insertUserParams = z
    .object({
       email: z.string().email(),
