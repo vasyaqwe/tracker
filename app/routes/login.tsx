@@ -1,10 +1,12 @@
 import { useMountError } from "@/interactions/use-mount-error"
-import { Button } from "@/ui/components/button"
+import { Button, buttonVariants } from "@/ui/components/button"
+import { Icons } from "@/ui/components/icons"
 import { Loading } from "@/ui/components/loading"
 import { Logo } from "@/ui/components/logo"
 import { cn } from "@/ui/utils"
 import * as userFns from "@/user/functions"
 import { useMutation } from "@tanstack/react-query"
+import { Link } from "@tanstack/react-router"
 import { createFileRoute } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
 import { useState } from "react"
@@ -49,6 +51,20 @@ export function LoginComponent() {
 
    return (
       <main className="isolate grid h-svh w-full place-items-center px-4">
+         <Link
+            to="/"
+            aria-label="Go back"
+            className={cn(
+               buttonVariants({ intent: "ghost", size: "icon" }),
+               "absolute top-4 left-4 hover:bg-border/50",
+            )}
+            onClick={(e) => {
+               e.preventDefault()
+               window.history.back()
+            }}
+         >
+            <Icons.arrowLeft />
+         </Link>
          <div className="-mt-8 flex w-full max-w-[260px] flex-col">
             <Logo className="mx-auto mb-4 size-9" />
 
