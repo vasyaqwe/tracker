@@ -16,13 +16,13 @@ import { Dialog } from "./dialog"
 const modalOverlayVariants = cva(
    [
       "fixed top-0 left-0 isolate z-50 size-full",
-      "flex items-end bg-foreground/30 text-center sm:block",
+      "flex items-end bg-black/30 text-center sm:block",
       "[--visual-viewport-vertical-padding:16px] sm:[--visual-viewport-vertical-padding:32px]",
    ],
    {
       variants: {
          isEntering: {
-            true: "fade-in animate-in ease-out",
+            true: "fade-in animate-in duration-200 ease-out",
          },
          isExiting: {
             true: "fade-out animate-out duration-200 ease-in",

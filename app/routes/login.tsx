@@ -9,22 +9,20 @@ import { useMutation } from "@tanstack/react-query"
 import { Link } from "@tanstack/react-router"
 import { createFileRoute } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
+import { zodValidator } from "@tanstack/zod-adapter"
 import { useState } from "react"
+import { z } from "zod"
+
+const searchSchema = z.object({
+   error: z.string().optional(),
+})
 
 export const Route = createFileRoute("/login")({
    component: LoginComponent,
    head: () => ({
       meta: [{ title: "Log in" }],
    }),
-   validateSearch: (
-      search: Record<string, unknown>,
-   ): {
-      error?: string | undefined
-   } => {
-      return {
-         error: search.error as string | undefined,
-      }
-   },
+   validateSearch: zodValidator(searchSchema),
 })
 
 export function LoginComponent() {
