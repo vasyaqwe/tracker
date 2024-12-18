@@ -1,3 +1,4 @@
+import { logger } from "@/lib/logger"
 import { projectBySlugQuery, projectListQuery } from "@/project/queries"
 import { Stopwatch } from "@/routes/$slug/-components/stopwatch"
 import { Logo } from "@/ui/components/logo"
@@ -23,19 +24,19 @@ export const getDevice = createServerFn({ method: "GET" }).handler(() => {
 export const Route = createFileRoute("/$slug/_layout")({
    component: Component,
    beforeLoad: async ({ context, params }) => {
-      const user = await context.queryClient
-         .ensureQueryData(userMeQuery())
-         .catch(() => {
+      logger.info("Loading project...")
+      const [user, project] = await Promise.all([
+         context.queryClient.ensureQueryData(userMeQuery()).catch(() => {
             throw redirect({ to: "/login" })
-         })
+         }),
+         context.queryClient
+            .ensureQueryData(projectBySlugQuery({ slug: params.slug }))
+            .catch(() => {
+               throw redirect({ to: "/login" })
+            }),
+      ])
       if (!user) throw redirect({ to: "/login" })
-
-      const project = await context.queryClient.ensureQueryData(
-         projectBySlugQuery({ slug: params.slug }),
-      )
       if (!project) throw notFound()
-
-      context.queryClient.prefetchQuery(projectListQuery())
 
       const device = await getDevice()
 
@@ -43,6 +44,9 @@ export const Route = createFileRoute("/$slug/_layout")({
          projectId: project.id,
          device,
       }
+   },
+   loader: ({ context }) => {
+      context.queryClient.prefetchQuery(projectListQuery())
    },
    pendingComponent: () => (
       <main className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-full">

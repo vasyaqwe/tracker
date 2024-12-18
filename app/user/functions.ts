@@ -54,7 +54,7 @@ export const logInWithGoogle = createServerFn({ method: "POST" })
       const url = await google().createAuthorizationURL(state, codeVerifier, {
          scopes: ["profile", "email"],
       })
-      console.log(COOKIE_OPTIONS)
+
       setCookie("google_oauth_state", state, COOKIE_OPTIONS)
       setCookie("google_oauth_code_verifier", codeVerifier, COOKIE_OPTIONS)
 

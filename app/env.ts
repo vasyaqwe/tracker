@@ -1,3 +1,4 @@
+import { logger } from "@/lib/logger"
 import { createEnv } from "@t3-oss/env-core"
 import { z } from "zod"
 import { getCloudflareProxyEnv, isInCloudflareCI } from "./lib/cloudflare"
@@ -67,14 +68,14 @@ const parseEnv = async () => {
    }
 
    if (result.error) {
-      console.log(result.error.message)
+      logger.error(result.error.message)
 
       throw new Error("Invalid environment variables")
    }
 
    const total = Object.keys(result.data).length
 
-   console.log(`Environment variables parsed successfully (${total} variables)`)
+   logger.info(`Environment variables parsed successfully (${total} variables)`)
 }
 
 type ViteBuiltInEnv = {
