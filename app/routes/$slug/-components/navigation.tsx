@@ -31,6 +31,7 @@ export function Navigation() {
             <ul className="md:before:-left-[2px] max-md:before:-ml-5 before:-bottom-[1px] relative items-center gap-3 pl-1 [--padding-block:4px] before:absolute md:before:top-[2px] max-md:flex before:h-[2px] md:before:h-[calc(100%-var(--padding-block))] before:w-[calc(100%+2rem)] md:before:w-[2px] md:space-y-2.5 before:rounded-xs before:bg-border">
                <li>
                   <Link
+                     preload="render"
                      params={{ slug }}
                      activeProps={{
                         className:
@@ -53,6 +54,7 @@ export function Navigation() {
                </li>
                <li>
                   <Link
+                     preload="render"
                      params={{ slug }}
                      activeProps={{
                         className:

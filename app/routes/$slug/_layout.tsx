@@ -1,4 +1,3 @@
-import { logger } from "@/lib/logger"
 import { projectBySlugQuery, projectListQuery } from "@/project/queries"
 import { Stopwatch } from "@/routes/$slug/-components/stopwatch"
 import { Logo } from "@/ui/components/logo"
@@ -24,8 +23,7 @@ export const getDevice = createServerFn({ method: "GET" }).handler(() => {
 export const Route = createFileRoute("/$slug/_layout")({
    component: Component,
    beforeLoad: async ({ context, params }) => {
-      logger.info("Loading project...")
-      const [user, project] = await Promise.all([
+      const [user, project, device] = await Promise.all([
          context.queryClient.ensureQueryData(userMeQuery()).catch(() => {
             throw redirect({ to: "/login" })
          }),
@@ -34,11 +32,10 @@ export const Route = createFileRoute("/$slug/_layout")({
             .catch(() => {
                throw redirect({ to: "/login" })
             }),
+         getDevice(),
       ])
       if (!user) throw redirect({ to: "/login" })
       if (!project) throw notFound()
-
-      const device = await getDevice()
 
       return {
          projectId: project.id,
