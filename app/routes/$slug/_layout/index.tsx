@@ -25,11 +25,10 @@ import type { Selection } from "react-aria-components"
 
 export const Route = createFileRoute("/$slug/_layout/")({
    component: Component,
-   loader: async ({ context }) => {
-      context.queryClient.prefetchQuery(
+   loader: ({ context }) =>
+      context.queryClient.ensureQueryData(
          summaryListQuery({ projectId: context.projectId }),
-      )
-   },
+      ),
    head: () => ({
       meta: [{ title: "Home" }],
    }),
