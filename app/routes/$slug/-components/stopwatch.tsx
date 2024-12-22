@@ -1,6 +1,6 @@
+import tap from "@/assets/sound/tap.wav"
 import { useBlocker } from "@/interactions/use-blocker"
 import { useLocalStorage } from "@/interactions/use-local-storage"
-import { useSound } from "@/interactions/use-sound"
 import * as summary from "@/summary/functions"
 import { useInsertSummary } from "@/summary/hooks/use-insert-summary"
 import { summaryListQuery } from "@/summary/queries"
@@ -17,6 +17,7 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { useTimer } from "react-use-precision-timer"
 import { toast } from "sonner"
 import { match } from "ts-pattern"
+import { useSound } from "use-sound"
 
 export function Stopwatch() {
    const queryClient = useQueryClient()
@@ -41,7 +42,7 @@ export function Stopwatch() {
       }
    }, [])
 
-   const sound = useSound("/sound/tap.wav")
+   const [play] = useSound(tap)
 
    const { insertSummaryToQueryData } = useInsertSummary()
    const insertFn = useServerFn(summary.insert)
@@ -50,7 +51,7 @@ export function Stopwatch() {
       onMutate: async (input) => {
          setStartTime(null)
          timer.stop()
-         sound.play()
+         play()
 
          await queryClient.cancelQueries(summaryListQuery({ projectId }))
 
@@ -84,7 +85,7 @@ export function Stopwatch() {
    const start = () => {
       timer.start()
       useTimerStore.setState({ isRunning: true })
-      sound.play()
+      play()
    }
 
    const stop = () => {
