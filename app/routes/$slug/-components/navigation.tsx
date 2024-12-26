@@ -36,7 +36,6 @@ export function Navigation() {
                      activeProps={{
                         className:
                            "opacity-100 before:block md:before:top-[calc(var(--padding-block)/2)] before:-bottom-[1px]",
-                        "aria-current": "page",
                      }}
                      activeOptions={{
                         exact: true,
@@ -59,7 +58,6 @@ export function Navigation() {
                      activeProps={{
                         className:
                            "opacity-100 before:block md:before:bottom-[calc(var(--padding-block)/2)] before:-bottom-[1px]",
-                        "aria-current": "page",
                      }}
                      inactiveProps={{
                         className: "opacity-60 before:hidden",
