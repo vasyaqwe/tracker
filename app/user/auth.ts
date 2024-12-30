@@ -1,6 +1,7 @@
 import { database } from "@/db"
 import { publicEnv } from "@/env"
 import { project } from "@/project/schema"
+import { COOKIE_OPTIONS } from "@/user/constants"
 import { session, user } from "@/user/schema"
 import { sha256 } from "@oslojs/crypto/sha2"
 import {
@@ -16,6 +17,9 @@ import {
    getWebRequest,
    setCookie,
 } from "vinxi/http"
+
+const SESSION_COOKIE_NAME = "auth_session"
+const SESSION_EXPIRATION_SECONDS = 30 * 24 * 60 * 60
 
 export const github = () => {
    const env = getEvent().context.cloudflare.env
@@ -42,21 +46,20 @@ export const createSession = async (userId: string) => {
    })
 
    const token = generateSessionToken()
-
    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
-   const newSession = {
-      id: sessionId,
-      userId: userId,
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
-      ownedProjects,
-   }
 
-   await db.insert(session).values(newSession).returning()
+   await db
+      .insert(session)
+      .values({
+         id: sessionId,
+         userId: userId,
+         expiresAt: new Date(Date.now() + 1000 * SESSION_EXPIRATION_SECONDS),
+         ownedProjects,
+      })
+      .returning()
 
-   setSessionTokenCookie(token, newSession.expiresAt)
+   setSessionTokenCookie(token)
 }
-
-export const SESSION_COOKIE_NAME = "auth_session"
 
 export const getSessionToken = () => getCookie(SESSION_COOKIE_NAME)
 
@@ -84,10 +87,6 @@ export const auth = async () => {
 
    const { session, user } = await validateSessionToken(sessionToken)
 
-   if (session !== null && Date.now() >= session.expiresAt.getTime()) {
-      await createSession(user.id)
-   }
-
    if (!session) {
       deleteSessionTokenCookie()
    }
@@ -100,23 +99,17 @@ export const auth = async () => {
 
 export type Auth = Awaited<ReturnType<typeof auth>>
 
-export const setSessionTokenCookie = (token: string, expiresAt: Date) => {
+export const setSessionTokenCookie = (token: string) => {
    setCookie(SESSION_COOKIE_NAME, token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: import.meta.env.PROD,
-      expires: expiresAt,
-      path: "/",
+      ...COOKIE_OPTIONS,
+      maxAge: SESSION_EXPIRATION_SECONDS,
    })
 }
 
 export const deleteSessionTokenCookie = () => {
    setCookie(SESSION_COOKIE_NAME, "", {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: import.meta.env.PROD,
+      ...COOKIE_OPTIONS,
       maxAge: 0,
-      path: "/",
    })
 }
 
@@ -147,11 +140,14 @@ export const validateSessionToken = async (token: string) => {
       return { session: null, user: null }
    }
 
+   // if less than 15 days left, extend the session
    if (
       Date.now() >=
-      foundSession.expiresAt.getTime() - 1000 * 60 * 60 * 24 * 15
+      foundSession.expiresAt.getTime() - 1000 * 15 * 24 * 60 * 60
    ) {
-      foundSession.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+      foundSession.expiresAt = new Date(
+         Date.now() + 1000 * SESSION_EXPIRATION_SECONDS,
+      )
       await db
          .update(session)
          .set({

@@ -1,9 +1,9 @@
 import type { CookieSerializeOptions } from "vinxi/http"
 
 export const COOKIE_OPTIONS = {
-   path: "/",
-   secure: import.meta.env.MODE === "production",
    httpOnly: true,
-   maxAge: 60 * 10,
    sameSite: "lax",
+   secure: import.meta.env.PROD,
+   path: "/",
+   maxAge: 600,
 } satisfies CookieSerializeOptions

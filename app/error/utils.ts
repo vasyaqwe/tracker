@@ -1,3 +1,4 @@
+import { logger } from "@/lib/logger"
 import type { ZodIssue } from "zod"
 import type { ErrorCode } from "./schema"
 
@@ -63,7 +64,7 @@ export const parseZodErrorIssues = (issues: ZodIssue[]): string => {
 }
 
 export function handleAuthError(error: unknown, request: Request) {
-   console.error(error)
+   logger.error(error)
 
    const redirectUrl = new URL("/login", request.url)
    redirectUrl.searchParams.set("error", "true")

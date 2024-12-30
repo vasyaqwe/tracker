@@ -1,5 +1,6 @@
 import { database } from "@/db"
 import { handleAuthError } from "@/error/utils"
+import { logger } from "@/lib/logger"
 import { createSession, github } from "@/user/auth"
 import { oauthAccount, user } from "@/user/schema"
 import { createAPIFileRoute } from "@tanstack/start/api"
@@ -18,7 +19,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
 
       try {
          if (!code || !state || !storedState || state !== storedState) {
-            console.error(`Invalid state or code in GitHub OAuth callback`)
+            logger.error(`Invalid state or code in GitHub OAuth callback`)
             throw new Error("Error")
          }
 
