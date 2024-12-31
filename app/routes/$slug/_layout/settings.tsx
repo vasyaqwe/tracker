@@ -17,7 +17,7 @@ import {
 } from "@tanstack/react-query"
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
-import { useState } from "react"
+import * as React from "react"
 import { toast } from "sonner"
 import { match } from "ts-pattern"
 
@@ -48,7 +48,7 @@ function Component() {
    })
 
    const projects = useSuspenseQuery(projectListQuery())
-   const [confirmDeletion, setConfirmDeletion] = useState("")
+   const [confirmDeletion, setConfirmDeletion] = React.useState("")
    const deleteFn = useServerFn(projectFns.deleteFn)
    const deleteProject = useMutation({
       mutationFn: deleteFn,

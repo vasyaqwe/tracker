@@ -1,13 +1,13 @@
 import { toast } from "@/ui/components/toast"
 import { useSearch } from "@tanstack/react-router"
-import { useEffect } from "react"
+import * as React from "react"
 
 let mounted = false
 
 export function useMountError(errorMessage = "Error, please try again") {
    const search = useSearch({ strict: false })
 
-   useEffect(() => {
+   React.useEffect(() => {
       if (mounted || !("error" in search) || !search.error) return
 
       const message =

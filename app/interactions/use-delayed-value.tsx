@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react"
+import * as React from "react"
 
 export function useDelayedValue<T>(value: T, delayTime: number): T {
-   const [delayedValue, setDelayedValue] = useState<T>(value)
+   const [delayedValue, setDelayedValue] = React.useState<T>(value)
 
-   useEffect(() => {
+   React.useEffect(() => {
       let timeoutId: NodeJS.Timeout
 
       // Only delay if the new value is 0 and previous value was non-zero

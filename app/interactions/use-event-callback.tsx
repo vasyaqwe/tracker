@@ -1,5 +1,5 @@
 import { useIsomorphicLayoutEffect } from "@/interactions/use-isomorphic-layout-effect"
-import { useCallback, useRef } from "react"
+import * as React from "react"
 
 export function useEventCallback<Args extends unknown[], R>(
    fn: (...args: Args) => R,
@@ -10,7 +10,7 @@ export function useEventCallback<Args extends unknown[], R>(
 export function useEventCallback<Args extends unknown[], R>(
    fn: ((...args: Args) => R) | undefined,
 ): ((...args: Args) => R) | undefined {
-   const ref = useRef<typeof fn>(() => {
+   const ref = React.useRef<typeof fn>(() => {
       throw new Error("Cannot call an event handler while rendering.")
    })
 
@@ -18,7 +18,8 @@ export function useEventCallback<Args extends unknown[], R>(
       ref.current = fn
    }, [fn])
 
-   return useCallback((...args: Args) => ref.current?.(...args), [ref]) as (
-      ...args: Args
-   ) => R
+   return React.useCallback(
+      (...args: Args) => ref.current?.(...args),
+      [ref],
+   ) as (...args: Args) => R
 }

@@ -1,7 +1,7 @@
-import { useEffect } from "react"
+import * as React from "react"
 
 export function useBlocker(shouldShow: boolean) {
-   useEffect(() => {
+   React.useEffect(() => {
       const handleBeforeUnload = (event: BeforeUnloadEvent) => {
          if (shouldShow) {
             event.preventDefault()

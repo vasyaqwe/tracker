@@ -10,7 +10,7 @@ import { Link } from "@tanstack/react-router"
 import { createFileRoute } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
-import { useState } from "react"
+import * as React from "react"
 import { z } from "zod"
 
 const searchSchema = z.object({
@@ -29,7 +29,7 @@ export function LoginComponent() {
    useMountError("Login failed, please try again")
    const _search = Route.useSearch()
 
-   const [isCodeSent, _setIsCodeSent] = useState(false)
+   const [isCodeSent, _setIsCodeSent] = React.useState(false)
 
    const loginWithGithubFn = useServerFn(userFns.logInWithGithub)
    const _loginWithGithub = useMutation({

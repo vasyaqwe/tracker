@@ -12,11 +12,11 @@ import {
    createRootRouteWithContext,
 } from "@tanstack/react-router"
 import { Meta, Scripts } from "@tanstack/start"
-import { lazy } from "react"
+import * as React from "react"
 
 const _TanStackRouterDevtools = import.meta.env.PROD
    ? () => null
-   : lazy(() =>
+   : React.lazy(() =>
         import("@tanstack/router-devtools").then((res) => ({
            default: res.TanStackRouterDevtools,
            // For Embedded Mode

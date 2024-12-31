@@ -1,12 +1,11 @@
 import { useIsomorphicLayoutEffect } from "@/interactions/use-isomorphic-layout-effect"
-import { useEffect, useRef } from "react"
-import type { RefObject } from "react"
+import * as React from "react"
 
 // MediaQueryList Event based useEventListener interface
 function useEventListener<K extends keyof MediaQueryListEventMap>(
    eventName: K,
    handler: (event: MediaQueryListEventMap[K]) => void,
-   element: RefObject<MediaQueryList>,
+   element: React.RefObject<MediaQueryList>,
    options?: boolean | AddEventListenerOptions,
 ): void
 
@@ -29,7 +28,7 @@ function useEventListener<
    handler:
       | ((event: HTMLElementEventMap[K]) => void)
       | ((event: SVGElementEventMap[K]) => void),
-   element: RefObject<T>,
+   element: React.RefObject<T>,
    options?: boolean | AddEventListenerOptions,
 ): void
 
@@ -37,7 +36,7 @@ function useEventListener<
 function useEventListener<K extends keyof DocumentEventMap>(
    eventName: K,
    handler: (event: DocumentEventMap[K]) => void,
-   element: RefObject<Document>,
+   element: React.RefObject<Document>,
    options?: boolean | AddEventListenerOptions,
 ): void
 
@@ -86,17 +85,17 @@ function useEventListener<
          | MediaQueryListEventMap[KM]
          | Event,
    ) => void,
-   element?: RefObject<T>,
+   element?: React.RefObject<T>,
    options?: boolean | AddEventListenerOptions,
 ) {
    // Create a ref that stores handler
-   const savedHandler = useRef(handler)
+   const savedHandler = React.useRef(handler)
 
    useIsomorphicLayoutEffect(() => {
       savedHandler.current = handler
    }, [handler])
 
-   useEffect(() => {
+   React.useEffect(() => {
       // Define the listening target
       const targetElement: T | Window = element?.current ?? window
 

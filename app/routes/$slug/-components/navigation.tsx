@@ -15,7 +15,6 @@ import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { Link, useNavigate, useParams } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
 import Avatar from "boring-avatars"
-import type { ComponentProps } from "react"
 
 export function Navigation() {
    const { slug } = useParams({ from: "/$slug/_layout" })
@@ -77,7 +76,7 @@ export function Navigation() {
    )
 }
 
-function Menus({ className, ...props }: ComponentProps<"div">) {
+function Menus({ className, ...props }: React.ComponentProps<"div">) {
    const { slug } = useParams({ from: "/$slug/_layout" })
    const navigate = useNavigate()
    const { project, user } = useAuth()

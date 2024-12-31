@@ -20,7 +20,7 @@ import {
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
-import { useState } from "react"
+import * as React from "react"
 import type { Selection } from "react-aria-components"
 
 export const Route = createFileRoute("/$slug/_layout/")({
@@ -36,8 +36,8 @@ export const Route = createFileRoute("/$slug/_layout/")({
 
 function Component() {
    const { projectId } = useAuth()
-   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set())
-   const [lastSelectedKeys, setLastSelectedKeys] = useState<Selection>(
+   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set())
+   const [lastSelectedKeys, setLastSelectedKeys] = React.useState<Selection>(
       new Set(),
    )
 
@@ -58,7 +58,7 @@ function Component() {
       500,
    )
 
-   const [getInvoiceOpen, setGetInvoiceOpen] = useState(false)
+   const [getInvoiceOpen, setGetInvoiceOpen] = React.useState(false)
    const generateInvoiceFn = useServerFn(invoice.generate)
    const generateInvoice = useMutation({
       mutationFn: generateInvoiceFn,
@@ -84,7 +84,8 @@ function Component() {
       },
    })
 
-   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
+   const [deleteConfirmationOpen, setDeleteConfirmationOpen] =
+      React.useState(false)
    const { deleteSummaries } = useDeleteSummaries({
       onMutate: () => {
          setDeleteConfirmationOpen(false)

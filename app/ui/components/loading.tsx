@@ -1,6 +1,5 @@
 import { cn } from "@/ui/utils"
 import { type VariantProps, cva } from "class-variance-authority"
-import type * as React from "react"
 
 const loadingVariants = cva("relative block opacity-75", {
    variants: {

@@ -1,5 +1,3 @@
-import type * as React from "react"
-
 import {
    FieldGroup,
    type FieldProps,

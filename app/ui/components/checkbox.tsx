@@ -1,7 +1,6 @@
 import { Icons } from "@/ui/components/icons"
 import { cn, cr, ctr } from "@/ui/utils"
 import { cva } from "class-variance-authority"
-import type * as React from "react"
 import {
    CheckboxGroup as CheckboxGroupPrimitive,
    type CheckboxGroupProps as CheckboxGroupPrimitiveProps,

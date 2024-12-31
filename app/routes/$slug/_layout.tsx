@@ -11,7 +11,7 @@ import {
    redirect,
 } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/start"
-import { useEffect } from "react"
+import * as React from "react"
 import { getRequestHeader } from "vinxi/http"
 import { Navigation } from "./-components/navigation"
 
@@ -56,7 +56,7 @@ export const Route = createFileRoute("/$slug/_layout")({
 })
 
 function Component() {
-   useEffect(() => {
+   React.useEffect(() => {
       if (typeof window === "undefined") return
 
       const checkDevice = (event: MediaQueryList | MediaQueryListEvent) => {

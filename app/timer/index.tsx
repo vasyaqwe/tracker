@@ -1,6 +1,6 @@
 import { cn } from "@/ui/utils"
 import { useAuth } from "@/user/hooks"
-import { type HTMLAttributes, useEffect, useState } from "react"
+import * as React from "react"
 import { Subs } from "react-sub-unsub"
 import type { Timer } from "react-use-precision-timer"
 
@@ -12,11 +12,11 @@ export function TimerRenderer({
    ...props
 }: {
    timer: Timer
-} & HTMLAttributes<HTMLSpanElement>) {
-   const [, setRenderTime] = useState(Date.now())
+} & React.ComponentProps<"span">) {
+   const [, setRenderTime] = React.useState(Date.now())
    const { projectId } = useAuth()
 
-   useEffect(() => {
+   React.useEffect(() => {
       return () => {
          const startTime = timer.getElapsedRunningTime().toString()
          localStorage.setItem(
@@ -26,7 +26,7 @@ export function TimerRenderer({
       }
    }, [timer.getElapsedRunningTime(), projectId])
 
-   useEffect(() => {
+   React.useEffect(() => {
       const subs = new Subs()
       subs.setInterval(
          () => setRenderTime(new Date().getTime()),

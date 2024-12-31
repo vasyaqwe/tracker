@@ -1,6 +1,5 @@
 import { cn, cr } from "@/ui/utils"
 import { cva } from "class-variance-authority"
-import type * as React from "react"
 import type {
    DialogTriggerProps,
    ModalOverlayProps,

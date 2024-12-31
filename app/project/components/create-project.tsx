@@ -10,7 +10,7 @@ import { cn } from "@/ui/utils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
-import { useState } from "react"
+import * as React from "react"
 import { toast } from "sonner"
 import { match } from "ts-pattern"
 import * as project from "../functions"
@@ -24,7 +24,7 @@ const makeSlug = (name: string) =>
 export function CreateProject({
    isFirstProject = true,
 }: { isFirstProject?: boolean }) {
-   const [name, setName] = useState("")
+   const [name, setName] = React.useState("")
    const navigate = useNavigate()
    const queryClient = useQueryClient()
 

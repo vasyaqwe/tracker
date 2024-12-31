@@ -1,7 +1,6 @@
 import { useEventCallback } from "@/interactions/use-event-callback"
 import { useEventListener } from "@/interactions/use-event-listener"
-import { useCallback, useEffect, useState } from "react"
-import type { Dispatch, SetStateAction } from "react"
+import * as React from "react"
 
 declare global {
    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
@@ -22,10 +21,10 @@ export function useLocalStorage<T>(
    key: string,
    initialValue: T | (() => T),
    options: UseLocalStorageOptions<T> = {},
-): [T, Dispatch<SetStateAction<T>>, () => void] {
+): [T, React.Dispatch<React.SetStateAction<T>>, () => void] {
    const { initializeWithValue = true } = options
 
-   const serializer = useCallback<(value: T) => string>(
+   const serializer = React.useCallback<(value: T) => string>(
       (value) => {
          if (options.serializer) {
             return options.serializer(value)
@@ -36,7 +35,7 @@ export function useLocalStorage<T>(
       [options],
    )
 
-   const deserializer = useCallback<(value: string) => T>(
+   const deserializer = React.useCallback<(value: string) => T>(
       (value) => {
          if (options.deserializer) {
             return options.deserializer(value)
@@ -64,7 +63,7 @@ export function useLocalStorage<T>(
 
    // Get from local storage then
    // parse stored json or return initialValue
-   const readValue = useCallback((): T => {
+   const readValue = React.useCallback((): T => {
       const initialValueToUse =
          initialValue instanceof Function ? initialValue() : initialValue
 
@@ -82,7 +81,7 @@ export function useLocalStorage<T>(
       }
    }, [initialValue, key, deserializer])
 
-   const [storedValue, setStoredValue] = useState(() => {
+   const [storedValue, setStoredValue] = React.useState(() => {
       if (initializeWithValue) {
          return readValue()
       }
@@ -143,11 +142,11 @@ export function useLocalStorage<T>(
       window.dispatchEvent(new StorageEvent("local-storage", { key }))
    })
 
-   useEffect(() => {
+   React.useEffect(() => {
       setStoredValue(readValue())
    }, [key])
 
-   const handleStorageChange = useCallback(
+   const handleStorageChange = React.useCallback(
       (event: StorageEvent | CustomEvent) => {
          if (
             (event as StorageEvent).key &&

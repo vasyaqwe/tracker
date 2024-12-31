@@ -12,7 +12,7 @@ import { useAuth } from "@/user/hooks"
 import { calculateAmountEarned, millisToMinutes } from "@/utils/format"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/start"
-import { useEffect } from "react"
+import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useTimer } from "react-use-precision-timer"
 import { toast } from "sonner"
@@ -35,7 +35,7 @@ export function Stopwatch() {
    const isRunning = useTimerStore().isRunning
    useBlocker(isRunning)
 
-   useEffect(() => {
+   React.useEffect(() => {
       if (startTime) {
          timer.start(Date.now() - +startTime)
          useTimerStore.setState({ isRunning: true })

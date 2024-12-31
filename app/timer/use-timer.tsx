@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import * as React from "react"
 import { useTimer } from "react-use-precision-timer"
 
 export function useCountdownTimer({
@@ -10,12 +10,12 @@ export function useCountdownTimer({
    autoStart?: boolean
    onTimeUp?: () => void
 }) {
-   const [timeLeft, setTimeLeft] = useState(initialTime * 1000)
-   const [isTimeUp, setIsTimeUp] = useState(false)
-   const [isRunning, setIsRunning] = useState(autoStart)
+   const [timeLeft, setTimeLeft] = React.useState(initialTime * 1000)
+   const [isTimeUp, setIsTimeUp] = React.useState(false)
+   const [isRunning, setIsRunning] = React.useState(autoStart)
    const timer = useTimer({ delay: 100 })
 
-   const updateTimer = useCallback(() => {
+   const updateTimer = React.useCallback(() => {
       const newTime = initialTime * 1000 - timer.getElapsedRunningTime()
       setTimeLeft(newTime > 0 ? newTime : 0)
       const isTimeUp = newTime <= 0
@@ -26,7 +26,7 @@ export function useCountdownTimer({
       }
    }, [initialTime, timer])
 
-   useEffect(() => {
+   React.useEffect(() => {
       let intervalId: ReturnType<typeof setInterval> | null = null
 
       if (isRunning) {
@@ -43,19 +43,19 @@ export function useCountdownTimer({
       }
    }, [isRunning, timer, updateTimer])
 
-   const start = useCallback(() => {
+   const start = React.useCallback(() => {
       if (!isRunning) {
          setIsRunning(true)
       }
    }, [isRunning])
 
-   const pause = useCallback(() => {
+   const pause = React.useCallback(() => {
       if (isRunning) {
          setIsRunning(false)
       }
    }, [isRunning])
 
-   const reset = useCallback(() => {
+   const reset = React.useCallback(() => {
       timer.stop()
       setTimeLeft(initialTime * 1000)
       setIsRunning(autoStart)
