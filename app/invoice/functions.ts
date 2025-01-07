@@ -1,4 +1,4 @@
-import { authMiddleware } from "@/utils/middleware"
+import { authMiddleware } from "@/user/middleware"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
 import { getEvent, setHeaders } from "vinxi/http"

@@ -160,7 +160,7 @@ function Close({ className, ...props }: ButtonProps) {
    return (
       <Button
          className={className}
-         onPress={() => state.close()}
+         onPress={() => state?.close()}
          {...props}
       />
    )

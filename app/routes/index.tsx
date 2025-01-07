@@ -51,7 +51,8 @@ function Homepage({
                </Link>
             ) : (
                <Link
-                  to={projects.length === 0 ? "/new" : `/${projects[0]?.slug}`}
+                  to={projects.length === 0 ? "/new" : `/$slug`}
+                  params={{ slug: projects[0]?.slug }}
                   className={cn(buttonVariants({ intent: "outline" }))}
                >
                   Open app
@@ -71,8 +72,9 @@ function Homepage({
                         ? "/login"
                         : projects.length === 0
                           ? "/new"
-                          : `/${projects[0]?.slug}`
+                          : `/$slug`
                   }
+                  params={{ slug: projects[0]?.slug }}
                   className={cn(buttonVariants(), "mt-5 min-w-[70px]")}
                >
                   Try it

@@ -3,7 +3,7 @@
       /* Base Options: */
       "esModuleInterop": true,
       "skipLibCheck": true,
-      "target": "esnext",
+      "target": "ESNext",
       "allowJs": true,
       "resolveJsonModule": true,
       "moduleDetection": "force",
@@ -15,12 +15,10 @@
       "checkJs": true,
 
       /* Bundled projects */
-      "lib": ["dom", "dom.iterable", "esnext"],
-      "noEmit": true,
+      "lib": ["DOM", "DOM.Iterable", "ESNext"],
       "module": "ESNext",
       "moduleResolution": "Bundler",
       "jsx": "react-jsx",
-      "plugins": [{ "name": "next" }],
       "incremental": true,
 
       /* Path Aliases */

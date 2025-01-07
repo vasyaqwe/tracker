@@ -6,8 +6,8 @@ import {
    invalidateSession,
 } from "@/user/auth"
 import { COOKIE_OPTIONS } from "@/user/constants"
+import { authMiddleware } from "@/user/middleware"
 import { updateUserParams, user } from "@/user/schema"
-import { authMiddleware, baseMiddleware } from "@/utils/middleware"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
 import { generateCodeVerifier, generateState } from "arctic"
@@ -31,9 +31,8 @@ export const update = createServerFn({ method: "POST" })
          .where(eq(user.id, context.user.id))
    })
 
-export const logInWithGithub = createServerFn({ method: "POST" })
-   .middleware([baseMiddleware])
-   .handler(async () => {
+export const logInWithGithub = createServerFn({ method: "POST" }).handler(
+   async () => {
       const state = generateState()
       const url = await github().createAuthorizationURL(state, {
          scopes: ["user:email"],
@@ -44,11 +43,11 @@ export const logInWithGithub = createServerFn({ method: "POST" })
       setHeader("Location", url.toString())
 
       return url.toString()
-   })
+   },
+)
 
-export const logInWithGoogle = createServerFn({ method: "POST" })
-   .middleware([baseMiddleware])
-   .handler(async () => {
+export const logInWithGoogle = createServerFn({ method: "POST" }).handler(
+   async () => {
       const state = generateState()
       const codeVerifier = generateCodeVerifier()
       const url = await google().createAuthorizationURL(state, codeVerifier, {
@@ -61,17 +60,16 @@ export const logInWithGoogle = createServerFn({ method: "POST" })
       setHeader("Location", url.toString())
 
       return url.toString()
-   })
+   },
+)
 
-export const logout = createServerFn({ method: "POST" })
-   .middleware([baseMiddleware])
-   .handler(async () => {
-      return match(getSessionToken())
-         .with(undefined, () => "OK")
-         .otherwise(async (sessionId) => {
-            await invalidateSession(sessionId)
-            deleteSessionTokenCookie()
+export const logout = createServerFn({ method: "POST" }).handler(async () => {
+   return match(getSessionToken())
+      .with(undefined, () => "OK")
+      .otherwise(async (sessionId) => {
+         await invalidateSession(sessionId)
+         deleteSessionTokenCookie()
 
-            return "OK"
-         })
-   })
+         return "OK"
+      })
+})

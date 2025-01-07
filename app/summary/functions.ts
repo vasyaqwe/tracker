@@ -1,5 +1,5 @@
+import { projectOwnerMiddleware } from "@/project/middleware"
 import { insertSummaryParams, summary } from "@/summary/schema"
-import { projectOwnerMiddleware } from "@/utils/middleware"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
 import { and, desc, eq, gte, inArray, lt, sql } from "drizzle-orm"

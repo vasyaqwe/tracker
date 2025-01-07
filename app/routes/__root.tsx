@@ -2,7 +2,6 @@ import "@/ui/styles.css"
 import ogImage from "@/assets/og.png"
 import { publicEnv } from "@/env"
 import { Toaster } from "@/ui/components/toast"
-import toastStyles from "@/ui/components/toast/styles.css?url"
 import styles from "@/ui/styles.css?url"
 import { cn } from "@/ui/utils"
 import type { QueryClient } from "@tanstack/react-query"
@@ -64,7 +63,6 @@ export const Route = createRootRouteWithContext<{
          ],
          links: [
             { rel: "stylesheet", href: styles },
-            { rel: "stylesheet", href: toastStyles },
             { rel: "icon", href: "/favicon.ico" },
             // { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
             // { rel: "manifest", href: "/site.webmanifest" },

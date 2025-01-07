@@ -5,8 +5,8 @@ import {
    project,
    updateProjectParams,
 } from "@/project/schema"
+import { authMiddleware } from "@/user/middleware"
 import { session } from "@/user/schema"
-import { authMiddleware } from "@/utils/middleware"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
 import { and, desc, eq } from "drizzle-orm"

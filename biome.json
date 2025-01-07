@@ -14,7 +14,7 @@
          ".vinxi",
          "routeTree.gen.ts",
          "migrations/meta",
-         "toast/styles.css"
+         "package.json"
       ]
    },
    "css": {

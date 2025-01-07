@@ -1,5 +1,11 @@
 import { useDelayedValue } from "@/interactions/use-delayed-value"
 import * as invoice from "@/invoice/functions"
+import {
+   formatCurrency,
+   formatDate,
+   formatDateIntl,
+   formatTime,
+} from "@/misc/format"
 import { useDeleteSummaries } from "@/summary/hooks/use-delete-summary"
 import { summaryListQuery } from "@/summary/queries"
 import { Button, buttonVariants } from "@/ui/components/button"
@@ -11,12 +17,6 @@ import { TextField } from "@/ui/components/text-field"
 import { TransitionHeight } from "@/ui/components/transition-height"
 import { cn } from "@/ui/utils"
 import { useAuth } from "@/user/hooks"
-import {
-   formatCurrency,
-   formatDate,
-   formatDateIntl,
-   formatTime,
-} from "@/utils/format"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
@@ -25,10 +25,11 @@ import type { Selection } from "react-aria-components"
 
 export const Route = createFileRoute("/$slug/_layout/")({
    component: Component,
-   loader: ({ context }) =>
+   loader: ({ context }) => {
       context.queryClient.ensureQueryData(
          summaryListQuery({ projectId: context.projectId }),
-      ),
+      )
+   },
    head: () => ({
       meta: [{ title: "Home" }],
    }),
