@@ -1,13 +1,13 @@
 import { projectListQuery } from "@/project/queries"
 import { Route as homeRoute } from "@/routes/$slug/_layout/index"
 import { Route as settingsRoute } from "@/routes/$slug/_layout/settings"
-import { useTimerStore } from "@/timer/store"
+import { isTimerRunningAtom } from "@/timer/store"
 import { buttonVariants } from "@/ui/components/button"
 import { Icons } from "@/ui/components/icons"
 import { Logo } from "@/ui/components/logo"
 import { Menu } from "@/ui/components/menu"
 import { useIsClient } from "@/ui/hooks/use-is-client"
-import { useUIStore } from "@/ui/store"
+import { isMobileAtom } from "@/ui/store"
 import { cn } from "@/ui/utils"
 import * as userFns from "@/user/functions"
 import { useAuth } from "@/user/hooks"
@@ -15,6 +15,7 @@ import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { Link, useNavigate, useParams } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
 import Avatar from "boring-avatars"
+import { useAtomValue } from "jotai"
 
 export function Navigation() {
    const { slug } = useParams({ from: "/$slug/_layout" })
@@ -91,11 +92,11 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
       },
    })
 
-   const isMobile = useUIStore().isMobile
-
    const { isClient } = useIsClient()
 
-   const isRunning = useTimerStore().isRunning
+   const isMobile = useAtomValue(isMobileAtom)
+
+   const isTimerRunning = useAtomValue(isTimerRunningAtom)
 
    return (
       <div
@@ -140,7 +141,7 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
                <Menu.Section className="max-h-[188px] overflow-y-auto">
                   {projects.data.map((project) => (
                      <Menu.Checkbox
-                        isDisabled={isRunning}
+                        isDisabled={isTimerRunning}
                         onAction={() =>
                            navigate({
                               to: "/$slug",
@@ -166,7 +167,7 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
                </Menu.Section>
                <Menu.Separator />
                <Menu.Item
-                  isDisabled={isRunning}
+                  isDisabled={isTimerRunning}
                   onAction={() => navigate({ to: "/new" })}
                >
                   <Icons.plus />
@@ -201,7 +202,7 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
                   <span className="line-clamp-1 break-all">{user.name}</span>
                </Menu.Header>
                <Menu.Item
-                  isDisabled={isRunning}
+                  isDisabled={isTimerRunning}
                   isDanger
                   onAction={() => logout.mutate({})}
                >

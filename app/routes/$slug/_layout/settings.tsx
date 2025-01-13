@@ -1,13 +1,13 @@
 import * as projectFns from "@/project/functions"
 import { projectBySlugQuery, projectListQuery } from "@/project/queries"
-import { useTimerStore } from "@/timer/store"
+import { isTimerRunningAtom } from "@/timer/store"
 import { Button, buttonVariants } from "@/ui/components/button"
 import { Card } from "@/ui/components/card"
 import { Loading } from "@/ui/components/loading"
 import { Modal } from "@/ui/components/modal"
 import { NumberField } from "@/ui/components/number-field"
 import { TextField } from "@/ui/components/text-field"
-import { useUIStore } from "@/ui/store"
+import { isMobileAtom } from "@/ui/store"
 import { cn } from "@/ui/utils"
 import { useAuth } from "@/user/hooks"
 import {
@@ -17,6 +17,7 @@ import {
 } from "@tanstack/react-query"
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
+import { useAtomValue } from "jotai"
 import * as React from "react"
 import { toast } from "sonner"
 import { match } from "ts-pattern"
@@ -32,7 +33,6 @@ function Component() {
    const queryClient = useQueryClient()
    const { slug } = useParams({ from: "/$slug/_layout" })
    const { project } = useAuth()
-   const isMobile = useUIStore().isMobile
    const navigate = useNavigate()
 
    const updateFn = useServerFn(projectFns.update)
@@ -74,7 +74,8 @@ function Component() {
       },
    })
 
-   const isRunning = useTimerStore().isRunning
+   const isTimerRunning = useAtomValue(isTimerRunningAtom)
+   const isMobile = useAtomValue(isMobileAtom)
 
    return (
       <div>
@@ -118,7 +119,7 @@ function Component() {
                <NumberField
                   className="max-w-[300px]"
                   label="Hourly rate"
-                  isDisabled={isRunning}
+                  isDisabled={isTimerRunning}
                   minValue={1}
                   maxValue={1000}
                   name="rate"
@@ -154,7 +155,10 @@ function Component() {
                >
                   Delete project
                </Modal.Trigger>
-               <Modal.Content role="alertdialog">
+               <Modal.Content
+                  size={"sm"}
+                  role="alertdialog"
+               >
                   <Modal.Header>
                      <Modal.Title>Delete this project?</Modal.Title>
                      <Modal.Description>

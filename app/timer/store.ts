@@ -1,12 +1,3 @@
-import { createSelectors } from "@/misc/utils"
-import { create } from "zustand"
+import { atom } from "jotai"
 
-type StoreState = {
-   isRunning: boolean
-}
-
-const store = create<StoreState>()(() => ({
-   isRunning: false,
-}))
-
-export const useTimerStore = createSelectors(store)
+export const isTimerRunningAtom = atom(false)

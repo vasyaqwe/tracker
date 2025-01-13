@@ -2,7 +2,7 @@ import { projectBySlugQuery, projectListQuery } from "@/project/queries"
 import { Stopwatch } from "@/routes/$slug/-components/stopwatch"
 import { Logo } from "@/ui/components/logo"
 import { MOBILE_BREAKPOINT } from "@/ui/constants"
-import { useUIStore } from "@/ui/store"
+import { isMobileAtom } from "@/ui/store"
 import { userMeQuery } from "@/user/queries"
 import {
    Outlet,
@@ -11,6 +11,7 @@ import {
    redirect,
 } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/start"
+import { useSetAtom } from "jotai"
 import * as React from "react"
 import { getRequestHeader } from "vinxi/http"
 import { Navigation } from "./-components/navigation"
@@ -56,11 +57,13 @@ export const Route = createFileRoute("/$slug/_layout")({
 })
 
 function Component() {
+   const setIsMobile = useSetAtom(isMobileAtom)
+
    React.useEffect(() => {
       if (typeof window === "undefined") return
 
       const checkDevice = (event: MediaQueryList | MediaQueryListEvent) => {
-         useUIStore.setState({ isMobile: event.matches })
+         setIsMobile(event.matches)
       }
 
       const mediaQueryList = window.matchMedia(

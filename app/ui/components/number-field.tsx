@@ -1,6 +1,7 @@
 import { Icons } from "@/ui/components/icons"
-import { useUIStore } from "@/ui/store"
+import { isMobileAtom } from "@/ui/store"
 import { cn, ctr } from "@/ui/utils"
+import { useAtomValue } from "jotai"
 import {
    Button,
    type ButtonProps,
@@ -25,7 +26,7 @@ function NumberField({
    errorMessage,
    ...props
 }: NumberFieldProps) {
-   const isMobile = useUIStore().isMobile
+   const isMobile = useAtomValue(isMobileAtom)
 
    return (
       <NumberFieldPrimitive

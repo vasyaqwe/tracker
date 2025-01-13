@@ -1,6 +1,7 @@
 import { Icons } from "@/ui/components/icons"
-import { useUIStore } from "@/ui/store"
+import { isMobileAtom } from "@/ui/store"
 import { cn } from "@/ui/utils"
+import { useAtomValue } from "jotai"
 import * as React from "react"
 import type {
    ButtonProps as ButtonPrimitiveProps,
@@ -102,7 +103,10 @@ function Title({ className, ...props }: HeadingProps) {
 function Description({ className, ...props }: React.ComponentProps<"div">) {
    return (
       <p
-         className={cn("mt-0.5 block text-foreground/70 text-sm", className)}
+         className={cn(
+            "mt-0.5 block text-balance text-foreground/70 text-sm",
+            className,
+         )}
          {...props}
       />
    )
@@ -173,7 +177,7 @@ type CloseButtonIndicatorProps = {
 }
 
 function CloseIndicator({ className, ...props }: CloseButtonIndicatorProps) {
-   const isMobile = useUIStore().isMobile
+   const isMobile = useAtomValue(isMobileAtom)
    const buttonRef = React.useRef<HTMLButtonElement>(null)
 
    React.useEffect(() => {

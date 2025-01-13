@@ -7,12 +7,13 @@ import * as summary from "@/summary/functions"
 import { useInsertSummary } from "@/summary/hooks/use-insert-summary"
 import { summaryListQuery } from "@/summary/queries"
 import { TimerRenderer } from "@/timer"
-import { useTimerStore } from "@/timer/store"
+import { isTimerRunningAtom } from "@/timer/store"
 import { Button } from "@/ui/components/button"
 import { useIsClient } from "@/ui/hooks/use-is-client"
 import { useAuth } from "@/user/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/start"
+import { useAtom } from "jotai"
 import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useTimer } from "react-use-precision-timer"
@@ -32,13 +33,13 @@ export function Stopwatch() {
       delay: 0,
    })
 
-   const isRunning = useTimerStore().isRunning
-   useBlocker(isRunning)
+   const [isTimerRunning, setIsTimerRunning] = useAtom(isTimerRunningAtom)
+   useBlocker(isTimerRunning)
 
    React.useEffect(() => {
       if (startTime) {
          timer.start(Date.now() - +startTime)
-         useTimerStore.setState({ isRunning: true })
+         setIsTimerRunning(true)
       }
    }, [])
 
@@ -77,14 +78,14 @@ export function Stopwatch() {
          toast.error("Failed to create summary")
       },
       onSettled: () => {
-         useTimerStore.setState({ isRunning: false })
+         setIsTimerRunning(false)
          queryClient.invalidateQueries(summaryListQuery({ projectId }))
       },
    })
 
    const start = () => {
       timer.start()
-      useTimerStore.setState({ isRunning: true })
+      setIsTimerRunning(true)
       play()
    }
 
@@ -95,7 +96,7 @@ export function Stopwatch() {
       match(durationMinutes)
          .with(0, () => {
             setStartTime(null)
-            useTimerStore.setState({ isRunning: false })
+            setIsTimerRunning(false)
             timer.stop()
          })
          .otherwise(() => {
@@ -112,14 +113,14 @@ export function Stopwatch() {
          })
    }
 
-   useHotkeys("c", () => (timer.isRunning() ? stop() : start()))
+   useHotkeys("c", () => (isTimerRunning ? stop() : start()))
 
    const { isClient } = useIsClient()
    if (!isClient) return null
 
    return (
       <div className="-translate-x-1/2 fixed bottom-5 left-1/2 flex animate-slide-up items-center rounded-full bg-popover py-[5px] pr-[5px] pl-5 text-popover-foreground">
-         {timer.isRunning() ? (
+         {isTimerRunning ? (
             <>
                <TimerRenderer
                   timer={timer}
