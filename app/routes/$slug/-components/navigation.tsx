@@ -95,7 +95,6 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
    const { isClient } = useIsClient()
 
    const isMobile = useAtomValue(isMobileAtom)
-
    const isTimerRunning = useAtomValue(isTimerRunningAtom)
 
    return (
@@ -112,7 +111,14 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
             >
                {isClient ? (
                   <Avatar
-                     name={project.id}
+                     colors={[
+                        "#5b1d99",
+                        "#0074b4",
+                        "#00b34c",
+                        "#ffd41f",
+                        "#fc6e3d",
+                     ]}
+                     name={project.name}
                      className="size-[22px] shrink-0 animate-fade-in opacity-0"
                   />
                ) : (
@@ -153,7 +159,14 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
                      >
                         {isClient ? (
                            <Avatar
-                              name={project.id}
+                              colors={[
+                                 "#5b1d99",
+                                 "#0074b4",
+                                 "#00b34c",
+                                 "#ffd41f",
+                                 "#fc6e3d",
+                              ]}
+                              name={project.name}
                               className="size-6 shrink-0"
                            />
                         ) : (
