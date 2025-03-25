@@ -22,7 +22,7 @@ export const generate = createServerFn({ method: "GET" })
    )
    .handler(async ({ context, data }) => {
       const res = await fetch(
-         "https://hobby-server-production.up.railway.app/invoice/generate",
+         "https://vasyaqwe-production.up.railway.app/invoice/generate",
          {
             method: "POST",
             headers: {

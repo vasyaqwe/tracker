@@ -1,6 +1,5 @@
 import { database } from "@/db"
 import { handleAuthError } from "@/error/utils"
-import { logger } from "@/lib/logger"
 import { project } from "@/project/schema"
 import { createSession, google } from "@/user/auth"
 import { oauthAccount, user } from "@/user/schema"
@@ -27,7 +26,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
             state !== storedState ||
             !codeVerifier
          ) {
-            logger.error(`Invalid state or code in Google OAuth callback`)
+            console.error(`Invalid state or code in Google OAuth callback`)
             throw new Error("Error")
          }
          const tokens = await google().validateAuthorizationCode(
