@@ -47,7 +47,7 @@ const publicEnv = createEnv({
       VITE_BASE_URL:
          process.env.NODE_ENV === "development"
             ? "http://localhost:3000"
-            : "https://tracker-bfs.pages.dev",
+            : "https://tracker.vasyaqwe.com",
    },
    emptyStringAsUndefined: true,
 })
