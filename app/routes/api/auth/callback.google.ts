@@ -75,34 +75,58 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
             })
          }
 
-         const result = await db.transaction(async (tx) => {
-            const [newUser] = await tx
-               .insert(user)
-               .values({
-                  email: googleUserProfile.email,
-                  name: googleUserProfile.name,
-                  avatarUrl: googleUserProfile.picture,
+         const createdUser = await db.transaction(async (tx) => {
+            const existingUser = await tx
+               .select()
+               .from(user)
+               .where(eq(user.email, googleUserProfile.email))
+               .get()
+
+            let userId: string | undefined
+
+            if (existingUser) {
+               userId = existingUser.id
+            } else {
+               const createdUser = await tx
+                  .insert(user)
+                  .values({
+                     email: googleUserProfile.email,
+                     name: googleUserProfile.name,
+                     avatarUrl: googleUserProfile.picture,
+                  })
+                  .returning({ id: user.id })
+                  .get()
+
+               if (!createdUser) throw new Error("Failed to create user")
+               userId = createdUser.id
+            }
+
+            const existingOAuth = await tx
+               .select()
+               .from(oauthAccount)
+               .where(
+                  and(
+                     eq(oauthAccount.providerId, "google"),
+                     eq(oauthAccount.providerUserId, googleUserProfile.id),
+                  ),
+               )
+               .get()
+
+            if (!existingOAuth)
+               await tx.insert(oauthAccount).values({
+                  providerId: "google",
+                  providerUserId: googleUserProfile.id,
+                  userId: userId,
                })
-               .returning({
-                  id: user.id,
-               })
 
-            if (!newUser) throw new Error("Failed to create user")
-
-            await tx.insert(oauthAccount).values({
-               providerId: "google",
-               providerUserId: googleUserProfile.id,
-               userId: newUser.id,
-            })
-
-            return { newUser }
+            return { id: userId }
          })
 
-         if (!result.newUser) throw new Error("Failed to create user")
+         if (!createdUser.id) throw new Error("Failed to create user")
 
-         await createSession(result.newUser.id)
+         await createSession(createdUser.id)
          const projects = await db.query.project.findMany({
-            where: eq(project.ownerId, result.newUser.id),
+            where: eq(project.ownerId, createdUser.id),
             columns: {
                slug: true,
             },
