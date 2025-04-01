@@ -1,4 +1,4 @@
-import { projectBySlugQuery, projectListQuery } from "@/project/queries"
+import { projectListQuery, projectOneQuery } from "@/project/queries"
 import { Stopwatch } from "@/routes/$slug/-components/stopwatch"
 import { Logo } from "@/ui/components/logo"
 import { MOBILE_BREAKPOINT } from "@/ui/constants"
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/$slug/_layout")({
             throw redirect({ to: "/login" })
          }),
          context.queryClient
-            .ensureQueryData(projectBySlugQuery({ slug: params.slug }))
+            .ensureQueryData(projectOneQuery({ slug: params.slug }))
             .catch(() => {
                throw redirect({ to: "/login" })
             }),

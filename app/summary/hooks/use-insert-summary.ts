@@ -1,6 +1,6 @@
-import type * as summary from "@/summary/functions"
+import { useAuth } from "@/auth/hooks"
+import type { summaryList } from "@/summary/functions"
 import { summaryListQuery } from "@/summary/queries"
-import { useAuth } from "@/user/hooks"
 import { useQueryClient } from "@tanstack/react-query"
 import { match } from "ts-pattern"
 
@@ -11,7 +11,7 @@ export function useInsertSummary() {
    const insertSummaryToQueryData = ({
       input,
    }: {
-      input: Awaited<ReturnType<typeof summary.list>>[number]
+      input: Awaited<ReturnType<typeof summaryList>>[number]
    }) => {
       queryClient.setQueryData(
          summaryListQuery({ projectId }).queryKey,

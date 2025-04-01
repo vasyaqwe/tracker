@@ -1,8 +1,10 @@
-import { database } from "@/db"
+import { googleClient } from "@/auth"
+import { oauthAccount } from "@/auth/schema"
+import { createAuthSession } from "@/auth/utils"
+import { databaseClient } from "@/database"
 import { handleAuthError } from "@/error/utils"
 import { project } from "@/project/schema"
-import { createSession, google } from "@/user/auth"
-import { oauthAccount, user } from "@/user/schema"
+import { user } from "@/user/schema"
 import { createAPIFileRoute } from "@tanstack/start/api"
 import { and, eq } from "drizzle-orm"
 import { parseCookies } from "vinxi/http"
@@ -16,7 +18,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
       const storedState = cookies.google_oauth_state
       const codeVerifier = cookies.google_oauth_code_verifier
 
-      const db = database()
+      const db = databaseClient()
 
       try {
          if (
@@ -29,7 +31,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
             console.error(`Invalid state or code in Google OAuth callback`)
             throw new Error("Error")
          }
-         const tokens = await google().validateAuthorizationCode(
+         const tokens = await googleClient().validateAuthorizationCode(
             code,
             codeVerifier,
          )
@@ -59,7 +61,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
          })
 
          if (existingAccount) {
-            await createSession(existingAccount.userId)
+            await createAuthSession(existingAccount.userId)
             const projects = await db.query.project.findMany({
                where: eq(project.ownerId, existingAccount.userId),
                columns: {
@@ -124,7 +126,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
 
          if (!createdUser.id) throw new Error("Failed to create user")
 
-         await createSession(createdUser.id)
+         await createAuthSession(createdUser.id)
          const projects = await db.query.project.findMany({
             where: eq(project.ownerId, createdUser.id),
             columns: {

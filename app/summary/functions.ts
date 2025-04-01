@@ -1,11 +1,12 @@
 import { projectOwnerMiddleware } from "@/project/middleware"
-import { insertSummaryParams, summary } from "@/summary/schema"
+import { summary } from "@/summary/schema"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
 import { and, desc, eq, gte, inArray, lt, sql } from "drizzle-orm"
+import { createInsertSchema } from "drizzle-zod"
 import { z } from "zod"
 
-export const list = createServerFn({ method: "GET" })
+export const summaryList = createServerFn({ method: "GET" })
    .middleware([projectOwnerMiddleware])
    .validator(zodValidator(z.object({ projectId: z.string() })))
    .handler(async ({ context, data }) => {
@@ -21,9 +22,17 @@ export const list = createServerFn({ method: "GET" })
       })
    })
 
-export const insert = createServerFn({ method: "POST" })
+export const insertSummary = createServerFn({ method: "POST" })
    .middleware([projectOwnerMiddleware])
-   .validator(zodValidator(insertSummaryParams))
+   .validator(
+      zodValidator(
+         createInsertSchema(summary).omit({
+            id: true,
+            createdAt: true,
+            updatedAt: true,
+         }),
+      ),
+   )
    .handler(async ({ context, data }) => {
       const existingSummary = await context.db
          .select({ id: summary.id })
@@ -62,7 +71,7 @@ export const insert = createServerFn({ method: "POST" })
       })
    })
 
-export const deleteFn = createServerFn({ method: "POST" })
+export const deleteSummary = createServerFn({ method: "POST" })
    .middleware([projectOwnerMiddleware])
    .validator(
       zodValidator(

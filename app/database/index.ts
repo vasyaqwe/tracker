@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/libsql"
 import { getEvent } from "vinxi/http"
 import * as schema from "./schema"
 
-export const database = () => {
+export const databaseClient = () => {
    const env = getEvent().context.cloudflare.env
 
    return drizzle({
@@ -16,5 +16,3 @@ export const database = () => {
       schema,
    })
 }
-
-export type Database = ReturnType<typeof database>

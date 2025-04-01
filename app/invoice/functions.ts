@@ -1,10 +1,10 @@
-import { authMiddleware } from "@/user/middleware"
+import { authMiddleware } from "@/auth/middleware"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
 import { getEvent, setHeaders } from "vinxi/http"
 import { z } from "zod"
 
-export const generate = createServerFn({ method: "GET" })
+export const createInvoice = createServerFn({ method: "GET" })
    .middleware([authMiddleware])
    .validator(
       zodValidator(

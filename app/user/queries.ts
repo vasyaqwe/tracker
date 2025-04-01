@@ -1,10 +1,10 @@
+import { userMe } from "@/user/functions"
 import { queryOptions } from "@tanstack/react-query"
-import * as user from "./functions"
 
 export const userMeQuery = () =>
    queryOptions({
-      queryKey: ["user_me"],
-      queryFn: () => user.me(),
+      queryKey: ["userMe"],
+      queryFn: () => userMe(),
       staleTime: Infinity,
       retry: false,
    })

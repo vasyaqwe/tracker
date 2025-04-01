@@ -1,5 +1,5 @@
+import { useAuth } from "@/auth/hooks"
 import { cn } from "@/ui/utils"
-import { useAuth } from "@/user/hooks"
 import * as React from "react"
 import { Subs } from "react-sub-unsub"
 import type { Timer } from "react-use-precision-timer"

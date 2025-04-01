@@ -1,3 +1,5 @@
+import { logout } from "@/auth/functions"
+import { useAuth } from "@/auth/hooks"
 import { projectListQuery } from "@/project/queries"
 import { Route as homeRoute } from "@/routes/$slug/_layout/index"
 import { Route as settingsRoute } from "@/routes/$slug/_layout/settings"
@@ -9,8 +11,6 @@ import { Menu } from "@/ui/components/menu"
 import { useIsClient } from "@/ui/hooks/use-is-client"
 import { isMobileAtom } from "@/ui/store"
 import { cn } from "@/ui/utils"
-import * as userFns from "@/user/functions"
-import { useAuth } from "@/user/hooks"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { Link, useNavigate, useParams } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
@@ -84,8 +84,8 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
 
    const projects = useSuspenseQuery(projectListQuery())
 
-   const logoutFn = useServerFn(userFns.logout)
-   const logout = useMutation({
+   const logoutFn = useServerFn(logout)
+   const logoutMutation = useMutation({
       mutationFn: logoutFn,
       onSuccess: () => {
          navigate({ to: "/login" })
@@ -217,7 +217,7 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
                <Menu.Item
                   isDisabled={isTimerRunning}
                   isDanger
-                  onAction={() => logout.mutate({})}
+                  onAction={() => logoutMutation.mutate({})}
                >
                   <svg
                      className="size-5 opacity-75"

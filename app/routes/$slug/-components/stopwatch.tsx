@@ -1,16 +1,17 @@
 import tap from "@/assets/sound/tap.wav"
+import { useAuth } from "@/auth/hooks"
+import { millisToMinutes } from "@/date"
 import { useBlocker } from "@/interactions/use-blocker"
 import { useLocalStorage } from "@/interactions/use-local-storage"
 import { useSound } from "@/interactions/use-sound"
-import { calculateAmountEarned, millisToMinutes } from "@/misc/format"
-import * as summary from "@/summary/functions"
+import { insertSummary } from "@/summary/functions"
 import { useInsertSummary } from "@/summary/hooks/use-insert-summary"
 import { summaryListQuery } from "@/summary/queries"
+import { calculateAmountEarned } from "@/summary/utils"
 import { TimerRenderer } from "@/timer"
 import { isTimerRunningAtom } from "@/timer/store"
 import { Button } from "@/ui/components/button"
 import { useIsClient } from "@/ui/hooks/use-is-client"
-import { useAuth } from "@/user/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/start"
 import { useAtom } from "jotai"
@@ -46,7 +47,7 @@ export function Stopwatch() {
    const [play] = useSound(tap)
 
    const { insertSummaryToQueryData } = useInsertSummary()
-   const insertFn = useServerFn(summary.insert)
+   const insertFn = useServerFn(insertSummary)
    const insert = useMutation({
       mutationFn: insertFn,
       onMutate: async (input) => {

@@ -1,18 +1,15 @@
+import { authMiddleware } from "@/auth/middleware"
+import { session } from "@/auth/schema"
 import { ServerFnError } from "@/error"
 import { RESERVED_SLUGS } from "@/project/constants"
-import {
-   insertProjectParams,
-   project,
-   updateProjectParams,
-} from "@/project/schema"
-import { authMiddleware } from "@/user/middleware"
-import { session } from "@/user/schema"
+import { project } from "@/project/schema"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
 import { and, desc, eq } from "drizzle-orm"
+import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
 
-export const list = createServerFn({ method: "GET" })
+export const projectList = createServerFn({ method: "GET" })
    .middleware([authMiddleware])
    .handler(async ({ context }) => {
       return await context.db.query.project.findMany({
@@ -26,7 +23,7 @@ export const list = createServerFn({ method: "GET" })
       })
    })
 
-export const bySlug = createServerFn({ method: "GET" })
+export const projectOne = createServerFn({ method: "GET" })
    .middleware([authMiddleware])
    .validator(zodValidator(z.object({ slug: z.string() })))
    .handler(async ({ context, data }) => {
@@ -48,9 +45,21 @@ export const bySlug = createServerFn({ method: "GET" })
       return foundProject
    })
 
-export const insert = createServerFn({ method: "POST" })
+export const insertProject = createServerFn({ method: "POST" })
    .middleware([authMiddleware])
-   .validator(zodValidator(insertProjectParams))
+   .validator(
+      zodValidator(
+         createInsertSchema(project, {
+            name: z.string().min(1).max(32),
+            rate: z.number().min(1).max(1000),
+         }).omit({
+            id: true,
+            createdAt: true,
+            updatedAt: true,
+            ownerId: true,
+         }),
+      ),
+   )
    .handler(async ({ context, data }) => {
       if (RESERVED_SLUGS.includes(data.name.trim().toLowerCase()))
          throw new ServerFnError({
@@ -106,9 +115,23 @@ export const insert = createServerFn({ method: "POST" })
       return createdProject.id
    })
 
-export const update = createServerFn({ method: "POST" })
+export const updateProject = createServerFn({ method: "POST" })
    .middleware([authMiddleware])
-   .validator(zodValidator(updateProjectParams))
+   .validator(
+      zodValidator(
+         createSelectSchema(project, {
+            name: z.string().min(1).max(32),
+            rate: z.number().min(1).max(1000),
+         })
+            .omit({
+               slug: true,
+            })
+            .partial()
+            .extend({
+               id: z.string(),
+            }),
+      ),
+   )
    .handler(async ({ context, data }) => {
       await context.db
          .update(project)
@@ -118,7 +141,7 @@ export const update = createServerFn({ method: "POST" })
          )
    })
 
-export const deleteFn = createServerFn({ method: "POST" })
+export const deleteProject = createServerFn({ method: "POST" })
    .middleware([authMiddleware])
    .validator(zodValidator(z.object({ id: z.string() })))
    .handler(async ({ context, data }) => {

@@ -1,5 +1,6 @@
-import * as projectFns from "@/project/functions"
-import { projectBySlugQuery, projectListQuery } from "@/project/queries"
+import { useAuth } from "@/auth/hooks"
+import { deleteProject, updateProject } from "@/project/functions"
+import { projectListQuery, projectOneQuery } from "@/project/queries"
 import { isTimerRunningAtom } from "@/timer/store"
 import { Button, buttonVariants } from "@/ui/components/button"
 import { Card } from "@/ui/components/card"
@@ -9,7 +10,6 @@ import { NumberField } from "@/ui/components/number-field"
 import { TextField } from "@/ui/components/text-field"
 import { isMobileAtom } from "@/ui/store"
 import { cn } from "@/ui/utils"
-import { useAuth } from "@/user/hooks"
 import {
    useMutation,
    useQueryClient,
@@ -35,12 +35,12 @@ function Component() {
    const { project } = useAuth()
    const navigate = useNavigate()
 
-   const updateFn = useServerFn(projectFns.update)
-   const updateProject = useMutation({
+   const updateFn = useServerFn(updateProject)
+   const update = useMutation({
       mutationFn: updateFn,
       onSettled: () => {
          queryClient.invalidateQueries(projectListQuery())
-         queryClient.invalidateQueries(projectBySlugQuery({ slug }))
+         queryClient.invalidateQueries(projectOneQuery({ slug }))
       },
       onSuccess: () => {
          toast.success("Saved")
@@ -49,8 +49,8 @@ function Component() {
 
    const projects = useSuspenseQuery(projectListQuery())
    const [confirmDeletion, setConfirmDeletion] = React.useState("")
-   const deleteFn = useServerFn(projectFns.deleteFn)
-   const deleteProject = useMutation({
+   const deleteFn = useServerFn(deleteProject)
+   const deleteMutation = useMutation({
       mutationFn: deleteFn,
       onSuccess: () => {
          queryClient.invalidateQueries(projectListQuery())
@@ -97,7 +97,7 @@ function Component() {
                   )
                      return toast.success("Saved")
 
-                  updateProject.mutate({
+                  update.mutate({
                      data: {
                         id: project.id,
                         name: formData.name,
@@ -130,7 +130,7 @@ function Component() {
                />
                <Button
                   type="submit"
-                  isDisabled={updateProject.isPending}
+                  isDisabled={update.isPending}
                   className="mt-3"
                >
                   Save
@@ -170,7 +170,7 @@ function Component() {
                      <form
                         onSubmit={(e) => {
                            e.preventDefault()
-                           deleteProject.mutate({
+                           deleteMutation.mutate({
                               data: { id: project.id },
                            })
                         }}
@@ -202,12 +202,13 @@ function Component() {
                         type="submit"
                         isDisabled={
                            confirmDeletion.trim() !== project.name ||
-                           deleteProject.isPending ||
-                           deleteProject.isSuccess
+                           deleteMutation.isPending ||
+                           deleteMutation.isSuccess
                         }
                         intent={"destructive"}
                      >
-                        {deleteProject.isPending || deleteProject.isSuccess ? (
+                        {deleteMutation.isPending ||
+                        deleteMutation.isSuccess ? (
                            <>
                               <Loading />
                               Deleting..

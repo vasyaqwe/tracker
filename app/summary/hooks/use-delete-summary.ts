@@ -1,6 +1,6 @@
-import * as summary from "@/summary/functions"
+import { useAuth } from "@/auth/hooks"
+import { deleteSummary } from "@/summary/functions"
 import { summaryListQuery } from "@/summary/queries"
-import { useAuth } from "@/user/hooks"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/start"
 import { toast } from "sonner"
@@ -19,7 +19,7 @@ export function useDeleteSummaries({
       )
    }
 
-   const deleteFn = useServerFn(summary.deleteFn)
+   const deleteFn = useServerFn(deleteSummary)
    const deleteSummaries = useMutation({
       mutationFn: deleteFn,
       onMutate: async ({ data: { ids } }) => {

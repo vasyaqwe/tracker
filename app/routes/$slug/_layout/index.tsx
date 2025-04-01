@@ -1,11 +1,8 @@
+import { useAuth } from "@/auth/hooks"
+import { formatCurrency } from "@/currency"
+import { formatDate, formatDateIntl, formatTime } from "@/date"
 import { useDelayedValue } from "@/interactions/use-delayed-value"
-import * as invoice from "@/invoice/functions"
-import {
-   formatCurrency,
-   formatDate,
-   formatDateIntl,
-   formatTime,
-} from "@/misc/format"
+import { createInvoice } from "@/invoice/functions"
 import { useDeleteSummaries } from "@/summary/hooks/use-delete-summary"
 import { summaryListQuery } from "@/summary/queries"
 import { Button, buttonVariants } from "@/ui/components/button"
@@ -16,7 +13,6 @@ import { Table } from "@/ui/components/table"
 import { TextField } from "@/ui/components/text-field"
 import { TransitionHeight } from "@/ui/components/transition-height"
 import { cn } from "@/ui/utils"
-import { useAuth } from "@/user/hooks"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 import { useServerFn } from "@tanstack/start"
@@ -57,7 +53,7 @@ function Component() {
    )
 
    const [getInvoiceOpen, setGetInvoiceOpen] = React.useState(false)
-   const generateInvoiceFn = useServerFn(invoice.generate)
+   const generateInvoiceFn = useServerFn(createInvoice)
    const generateInvoice = useMutation({
       mutationFn: generateInvoiceFn,
       onSuccess: async (data) => {

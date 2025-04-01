@@ -1,8 +1,8 @@
+import { summaryList } from "@/summary/functions"
 import { queryOptions } from "@tanstack/react-query"
-import * as summary from "./functions"
 
 export const summaryListQuery = ({ projectId }: { projectId: string }) =>
    queryOptions({
-      queryKey: ["summary_list", projectId],
-      queryFn: () => summary.list({ data: { projectId } }),
+      queryKey: ["summaryList", projectId],
+      queryFn: () => summaryList({ data: { projectId } }),
    })

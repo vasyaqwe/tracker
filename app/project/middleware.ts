@@ -1,5 +1,5 @@
+import { authMiddleware } from "@/auth/middleware"
 import { ServerFnError } from "@/error"
-import { authMiddleware } from "@/user/middleware"
 import { createMiddleware } from "@tanstack/start"
 
 export const projectOwnerMiddleware = createMiddleware()

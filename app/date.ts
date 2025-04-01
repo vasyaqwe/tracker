@@ -80,11 +80,7 @@ export const formatDate = (input: number) => {
    return formatDateIntl(input)
 }
 
-export const millisToMinutes = (millis: number) => {
-   const minutes = Math.floor(millis / 60000)
-
-   return minutes
-}
+export const millisToMinutes = (millis: number) => Math.floor(millis / 60000)
 
 export const formatTime = (
    minutes: number,
@@ -106,57 +102,4 @@ export const formatTime = (
    const hoursResult = remainingHours === 0 ? "" : hoursDisplay
 
    return `${hoursResult} ${minutesResult}`
-}
-
-export const calculateAmountEarned = (
-   durationMs: number,
-   hourlyRate: number,
-) => {
-   const hours = durationMs / 3600000
-   return hours * hourlyRate
-}
-
-export const remainingTimeUntil = (expiresAt: Date) => {
-   const currentTime = Date.now()
-   const remainingTime = expiresAt.getTime() - currentTime
-   return formatRemainingTime(remainingTime)
-}
-
-export const formatRemainingTime = (milliseconds: number) => {
-   const totalSeconds = Math.floor(milliseconds / 1000)
-   const days = Math.floor(totalSeconds / (3600 * 24))
-   const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600)
-   const minutes = Math.floor((totalSeconds % 3600) / 60)
-
-   if (days > 0) return `${days} day${days > 1 ? "s" : ""}`
-   if (hours > 0) return `${hours} hour${hours > 1 ? "s" : ""}`
-   if (minutes > 0) return `${minutes} minute${minutes > 1 ? "s" : ""}`
-
-   return "less than a minute"
-}
-
-export const formatNumber = (value: number) => {
-   const formatter = new Intl.NumberFormat("en-US", {
-      maximumFractionDigits: 1,
-   })
-
-   if (value >= 1_000_000) {
-      return `${formatter.format(value / 1_000_000)}M`
-   }
-   if (value >= 1_000) {
-      return `${formatter.format(value / 1_000)}K`
-   }
-   return formatter.format(value)
-}
-
-export const formatCurrency = (
-   price: number,
-   options: Intl.NumberFormatOptions = {},
-) => {
-   return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: options.currency ?? "USD",
-      notation: options.notation ?? "compact",
-      ...options,
-   }).format(Number(price))
 }

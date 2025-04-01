@@ -1,5 +1,6 @@
 import { publicEnv } from "@/env"
 import { RESERVED_SLUGS } from "@/project/constants"
+import { insertProject } from "@/project/functions"
 import { projectListQuery } from "@/project/queries"
 import { Button } from "@/ui/components/button"
 import { Loading } from "@/ui/components/loading"
@@ -13,7 +14,6 @@ import { useServerFn } from "@tanstack/start"
 import * as React from "react"
 import { toast } from "sonner"
 import { match } from "ts-pattern"
-import * as project from "../functions"
 
 const makeSlug = (name: string) =>
    name
@@ -28,7 +28,7 @@ export function CreateProject({
    const navigate = useNavigate()
    const queryClient = useQueryClient()
 
-   const insertFn = useServerFn(project.insert)
+   const insertFn = useServerFn(insertProject)
    const insert = useMutation({
       mutationFn: insertFn,
       onSuccess: () => {

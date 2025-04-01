@@ -1,15 +1,15 @@
+import { projectList, projectOne } from "@/project/functions"
 import { queryOptions } from "@tanstack/react-query"
-import * as project from "./functions"
 
-export const projectBySlugQuery = ({ slug }: { slug: string }) =>
+export const projectOneQuery = ({ slug }: { slug: string }) =>
    queryOptions({
-      queryKey: ["project_by_slug", slug],
-      queryFn: () => project.bySlug({ data: { slug } }),
+      queryKey: ["projectOne", slug],
+      queryFn: () => projectOne({ data: { slug } }),
       staleTime: Infinity,
    })
 
 export const projectListQuery = () =>
    queryOptions({
-      queryKey: ["project_list"],
-      queryFn: () => project.list(),
+      queryKey: ["projectList"],
+      queryFn: () => projectList(),
    })

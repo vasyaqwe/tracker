@@ -1,7 +1,9 @@
-import { database } from "@/db"
+import { githubClient } from "@/auth"
+import { createAuthSession } from "@/auth/utils"
+import { databaseClient } from "@/database"
+import { oauthAccount } from "@/database/schema"
 import { handleAuthError } from "@/error/utils"
-import { createSession, github } from "@/user/auth"
-import { oauthAccount, user } from "@/user/schema"
+import { user } from "@/user/schema"
 import { createAPIFileRoute } from "@tanstack/start/api"
 import { and, eq } from "drizzle-orm"
 import { parseCookies } from "vinxi/http"
@@ -14,7 +16,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
       const cookies = parseCookies()
       const storedState = cookies.github_oauth_state
 
-      const db = database()
+      const db = databaseClient()
 
       try {
          if (!code || !state || !storedState || state !== storedState) {
@@ -22,7 +24,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
             throw new Error("Error")
          }
 
-         const tokens = await github().validateAuthorizationCode(code)
+         const tokens = await githubClient().validateAuthorizationCode(code)
          const userProfile = await fetch("https://api.github.com/user", {
             headers: {
                Authorization: `Bearer ${tokens.accessToken}`,
@@ -48,7 +50,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
          })
 
          if (existingAccount) {
-            await createSession(existingAccount.userId)
+            await createAuthSession(existingAccount.userId)
 
             return new Response(null, {
                status: 302,
@@ -142,7 +144,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
 
          if (!createdUser.id) throw new Error("Error")
 
-         await createSession(createdUser.id)
+         await createAuthSession(createdUser.id)
 
          return new Response(null, {
             status: 302,

@@ -1,17 +1,16 @@
 import baseX from "base-x"
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core"
 export const b58 = baseX(
    "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz",
 )
 
-const prefixes = {
+export const ID_PREFIXES = {
    user: "user",
    verification_code: "code",
    project: "proj",
    summary: "sum",
 } as const
 
-const generateId = (prefix: keyof typeof prefixes) => {
+export const createId = (prefix: keyof typeof ID_PREFIXES) => {
    const buf = crypto.getRandomValues(new Uint8Array(20))
 
    /**
@@ -28,32 +27,13 @@ const generateId = (prefix: keyof typeof prefixes) => {
    buf[2] = (t >>> 8) & 255
    buf[3] = t & 255
 
-   return `${prefixes[prefix]}_${b58.encode(buf)}` as const
+   return `${ID_PREFIXES[prefix]}_${b58.encode(buf)}` as const
 }
 
-export const generateCode = () => {
+export const createCode = () => {
    const buf = crypto.getRandomValues(new Uint8Array(9))
 
    const encoded = b58.encode(buf)
 
    return encoded.slice(0, 12)
 }
-
-const tableId = (prefix: keyof typeof prefixes) =>
-   text("id", { length: 256 })
-      .primaryKey()
-      .$defaultFn(() => generateId(prefix))
-
-const createTable = sqliteTable
-
-const lifecycleDates = {
-   createdAt: integer()
-      .$defaultFn(() => Date.now())
-      .notNull(),
-   updatedAt: integer()
-      .notNull()
-      .$defaultFn(() => Date.now())
-      .$onUpdateFn(() => Date.now()),
-}
-
-export { createTable, lifecycleDates, generateId, tableId }
