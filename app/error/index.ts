@@ -1,4 +1,4 @@
-import type { ErrorCode } from "@/error/schema"
+import type { ErrorCode } from "@/error/types"
 import { z } from "zod"
 
 export class ServerFnError extends Error {

@@ -5,7 +5,6 @@ import {
 import { session } from "@/auth/schema"
 import { COOKIE_OPTIONS } from "@/cookie/constants"
 import { databaseClient } from "@/database"
-import { project } from "@/project/schema"
 import { user } from "@/user/schema"
 import { sha256 } from "@oslojs/crypto/sha2"
 import {
@@ -15,13 +14,6 @@ import {
 import { eq } from "drizzle-orm"
 import { getCookie, setCookie } from "vinxi/http"
 
-const setSessionTokenCookie = (token: string) => {
-   setCookie(SESSION_COOKIE_NAME, token, {
-      ...COOKIE_OPTIONS,
-      maxAge: SESSION_EXPIRATION_SECONDS,
-   })
-}
-
 const createSessionToken = () => {
    const bytes = new Uint8Array(20)
    crypto.getRandomValues(bytes)
@@ -29,11 +21,27 @@ const createSessionToken = () => {
    return token
 }
 
+const setSessionTokenCookie = (token: string) => {
+   setCookie(SESSION_COOKIE_NAME, token, {
+      ...COOKIE_OPTIONS,
+      maxAge: SESSION_EXPIRATION_SECONDS,
+   })
+}
+
+export const getSessionTokenCookie = () => getCookie(SESSION_COOKIE_NAME)
+
+export const deleteSessionTokenCookie = () => {
+   setCookie(SESSION_COOKIE_NAME, "", {
+      ...COOKIE_OPTIONS,
+      maxAge: 0,
+   })
+}
+
 export const createAuthSession = async (userId: string) => {
    const db = databaseClient()
 
    const ownedProjects = await db.query.project.findMany({
-      where: eq(project.ownerId, userId),
+      where: { ownerId: userId },
       columns: {
          id: true,
       },
@@ -46,22 +54,13 @@ export const createAuthSession = async (userId: string) => {
       .insert(session)
       .values({
          id: sessionId,
-         userId: userId,
+         userId,
          expiresAt: new Date(Date.now() + 1000 * SESSION_EXPIRATION_SECONDS),
          ownedProjects,
       })
       .returning()
 
    setSessionTokenCookie(token)
-}
-
-export const getSessionTokenCookie = () => getCookie(SESSION_COOKIE_NAME)
-
-export const deleteSessionTokenCookie = () => {
-   setCookie(SESSION_COOKIE_NAME, "", {
-      ...COOKIE_OPTIONS,
-      maxAge: 0,
-   })
 }
 
 export const validateSessionToken = async (token: string) => {

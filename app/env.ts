@@ -1,6 +1,6 @@
 import { createEnv } from "@t3-oss/env-core"
 import { z } from "zod"
-import { getCloudflareProxyEnv, isInCloudflareCI } from "./lib/cloudflare"
+import { getCloudflareProxyEnv, isInCloudflareCI } from "./cloudflare"
 
 const PUBLIC_ENV_PREFIX = "VITE_" as const
 

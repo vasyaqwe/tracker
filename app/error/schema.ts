@@ -13,5 +13,3 @@ export const errorCodeSchema = z.enum([
    "METHOD_NOT_ALLOWED",
    "UNPROCESSABLE_ENTITY",
 ])
-
-export type ErrorCode = z.infer<typeof errorCodeSchema>

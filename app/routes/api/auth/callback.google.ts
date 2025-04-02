@@ -3,7 +3,6 @@ import { oauthAccount } from "@/auth/schema"
 import { createAuthSession } from "@/auth/utils"
 import { databaseClient } from "@/database"
 import { handleAuthError } from "@/error/utils"
-import { project } from "@/project/schema"
 import { user } from "@/user/schema"
 import { createAPIFileRoute } from "@tanstack/start/api"
 import { and, eq } from "drizzle-orm"
@@ -53,17 +52,18 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
          }
 
          const existingAccount = await db.query.oauthAccount.findFirst({
-            where: (fields) =>
-               and(
-                  eq(fields.providerId, "google"),
-                  eq(fields.providerUserId, googleUserProfile.id),
-               ),
+            where: {
+               providerId: "google",
+               providerUserId: googleUserProfile.id,
+            },
          })
 
          if (existingAccount) {
             await createAuthSession(existingAccount.userId)
             const projects = await db.query.project.findMany({
-               where: eq(project.ownerId, existingAccount.userId),
+               where: {
+                  ownerId: existingAccount.userId,
+               },
                columns: {
                   slug: true,
                },
@@ -128,7 +128,9 @@ export const Route = createAPIFileRoute("/api/auth/callback/google")({
 
          await createAuthSession(createdUser.id)
          const projects = await db.query.project.findMany({
-            where: eq(project.ownerId, createdUser.id),
+            where: {
+               ownerId: createdUser.id,
+            },
             columns: {
                slug: true,
             },

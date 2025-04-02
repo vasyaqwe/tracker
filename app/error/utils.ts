@@ -1,5 +1,5 @@
 import type { ZodIssue } from "zod"
-import type { ErrorCode } from "./schema"
+import type { ErrorCode } from "./types"
 
 export const statusToCode = (status: number): ErrorCode => {
    switch (status) {

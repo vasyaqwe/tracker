@@ -1,8 +1,10 @@
 import { authMiddleware } from "@/auth/middleware"
-import { updateUserParams, user } from "@/user/schema"
+import { user } from "@/user/schema"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
 import { eq } from "drizzle-orm"
+import { createSelectSchema } from "drizzle-zod"
+import { z } from "zod"
 
 export const userMe = createServerFn({ method: "GET" })
    .middleware([authMiddleware])
@@ -12,7 +14,13 @@ export const userMe = createServerFn({ method: "GET" })
 
 export const updateUser = createServerFn({ method: "POST" })
    .middleware([authMiddleware])
-   .validator(zodValidator(updateUserParams))
+   .validator(
+      zodValidator(
+         createSelectSchema(user, {
+            name: z.string().min(1).max(32),
+         }).partial(),
+      ),
+   )
    .handler(async ({ context, data }) => {
       await context.db
          .update(user)

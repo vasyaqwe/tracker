@@ -42,11 +42,10 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
 
          //  email can be null if user has made it private.
          const existingAccount = await db.query.oauthAccount.findFirst({
-            where: (fields) =>
-               and(
-                  eq(fields.providerId, "github"),
-                  eq(fields.providerUserId, githubUserProfile.id.toString()),
-               ),
+            where: {
+               providerId: "github",
+               providerUserId: githubUserProfile.id.toString(),
+            },
          })
 
          if (existingAccount) {
@@ -82,7 +81,6 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
                (email: { primary: boolean }) => email.primary,
             )
 
-            // TODO verify the email if not verified
             if (primaryEmail) {
                githubUserProfile.email = primaryEmail.email
                githubUserProfile.verified = primaryEmail.verified

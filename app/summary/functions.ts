@@ -2,7 +2,7 @@ import { projectOwnerMiddleware } from "@/project/middleware"
 import { summary } from "@/summary/schema"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
-import { and, desc, eq, gte, inArray, lt, sql } from "drizzle-orm"
+import { and, eq, gte, inArray, lt, sql } from "drizzle-orm"
 import { createInsertSchema } from "drizzle-zod"
 import { z } from "zod"
 
@@ -11,14 +11,16 @@ export const summaryList = createServerFn({ method: "GET" })
    .validator(zodValidator(z.object({ projectId: z.string() })))
    .handler(async ({ context, data }) => {
       return await context.db.query.summary.findMany({
-         where: eq(summary.projectId, data.projectId),
+         where: {
+            projectId: data.projectId,
+         },
          columns: {
             id: true,
             amountEarned: true,
             durationMinutes: true,
             createdAt: true,
          },
-         orderBy: (data) => desc(data.createdAt),
+         orderBy: { createdAt: "desc" },
       })
    })
 

@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/libsql"
 import { getEvent } from "vinxi/http"
-import * as schema from "./schema"
+import { relations } from "./relations"
 
 export const databaseClient = () => {
    const env = getEvent().context.cloudflare.env
@@ -13,6 +13,6 @@ export const databaseClient = () => {
               authToken: env.DATABASE_AUTH_TOKEN,
            },
       casing: "snake_case",
-      schema,
+      relations,
    })
 }

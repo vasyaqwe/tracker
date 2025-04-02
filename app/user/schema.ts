@@ -1,9 +1,5 @@
-import { oauthAccount } from "@/auth/schema"
 import { table, tableId, timestamps } from "@/database/utils"
-import { relations } from "drizzle-orm"
 import { text, uniqueIndex } from "drizzle-orm/sqlite-core"
-import { createSelectSchema } from "drizzle-zod"
-import { z } from "zod"
 
 export const user = table(
    "user",
@@ -20,11 +16,3 @@ export const user = table(
       }
    },
 )
-
-export const userRelations = relations(user, ({ many }) => ({
-   oauthAccount: many(oauthAccount),
-}))
-
-export const updateUserParams = createSelectSchema(user, {
-   name: z.string().min(1).max(32),
-}).partial()

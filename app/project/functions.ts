@@ -5,7 +5,7 @@ import { RESERVED_SLUGS } from "@/project/constants"
 import { project } from "@/project/schema"
 import { createServerFn } from "@tanstack/start"
 import { zodValidator } from "@tanstack/zod-adapter"
-import { and, desc, eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
 
@@ -13,13 +13,15 @@ export const projectList = createServerFn({ method: "GET" })
    .middleware([authMiddleware])
    .handler(async ({ context }) => {
       return await context.db.query.project.findMany({
-         where: eq(project.ownerId, context.user.id),
+         where: {
+            ownerId: context.user.id,
+         },
          columns: {
             id: true,
             slug: true,
             name: true,
          },
-         orderBy: (data) => desc(data.createdAt),
+         orderBy: { createdAt: "desc" },
       })
    })
 
@@ -28,10 +30,10 @@ export const projectOne = createServerFn({ method: "GET" })
    .validator(zodValidator(z.object({ slug: z.string() })))
    .handler(async ({ context, data }) => {
       const foundProject = await context.db.query.project.findFirst({
-         where: and(
-            eq(project.slug, data.slug),
-            eq(project.ownerId, context.user.id),
-         ),
+         where: {
+            slug: data.slug,
+            ownerId: context.user.id,
+         },
          columns: {
             id: true,
             slug: true,
@@ -68,10 +70,10 @@ export const insertProject = createServerFn({ method: "POST" })
          })
 
       const existingProject = await context.db.query.project.findFirst({
-         where: and(
-            eq(project.slug, data.slug),
-            eq(project.ownerId, context.user.id),
-         ),
+         where: {
+            slug: data.slug,
+            ownerId: context.user.id,
+         },
       })
 
       if (existingProject)

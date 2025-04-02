@@ -2,8 +2,8 @@ import { join } from "node:path"
 import { defineConfig } from "@tanstack/start/config"
 import type { App } from "vinxi"
 import tsConfigPaths from "vite-tsconfig-paths"
+import { getCloudflareProxyEnv, isInCloudflareCI } from "./app/cloudflare"
 import { parseEnv } from "./app/env"
-import { getCloudflareProxyEnv, isInCloudflareCI } from "./app/lib/cloudflare"
 
 await parseEnv()
 
