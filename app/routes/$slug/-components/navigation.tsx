@@ -18,7 +18,7 @@ import Avatar from "boring-avatars"
 import { useAtomValue } from "jotai"
 
 export function Navigation() {
-   const { slug } = useParams({ from: "/$slug/_layout" })
+   const params = useParams({ from: "/$slug/_layout" })
 
    return (
       <div className="flex shrink-0 flex-col md:sticky md:top-9 md:h-[var(--sidebar-height)] md:w-56">
@@ -32,7 +32,7 @@ export function Navigation() {
                <li>
                   <Link
                      preload={"render"}
-                     params={{ slug }}
+                     params={params}
                      activeProps={{
                         className:
                            "opacity-100 before:block md:before:top-[calc(var(--padding-block)/2)] before:-bottom-[1px]",
@@ -54,7 +54,7 @@ export function Navigation() {
                <li>
                   <Link
                      preload={"render"}
-                     params={{ slug }}
+                     params={params}
                      activeProps={{
                         className:
                            "opacity-100 before:block md:before:bottom-[calc(var(--padding-block)/2)] before:-bottom-[1px]",
@@ -78,9 +78,9 @@ export function Navigation() {
 }
 
 function Menus({ className, ...props }: React.ComponentProps<"div">) {
-   const { slug } = useParams({ from: "/$slug/_layout" })
+   const params = useParams({ from: "/$slug/_layout" })
    const navigate = useNavigate()
-   const { project, user } = useAuth()
+   const auth = useAuth()
 
    const projects = useSuspenseQuery(projectListQuery())
 
@@ -92,7 +92,7 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
       },
    })
 
-   const { isClient } = useIsClient()
+   const isClient = useIsClient()
 
    const isMobile = useAtomValue(isMobileAtom)
    const isTimerRunning = useAtomValue(isTimerRunningAtom)
@@ -118,13 +118,15 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
                         "#ffd41f",
                         "#fc6e3d",
                      ]}
-                     name={project.name}
+                     name={auth.project.name}
                      className="size-[22px] shrink-0 animate-fade-in opacity-0"
                   />
                ) : (
                   <div className="size-[22px] shrink-0" />
                )}
-               <span className="line-clamp-1 break-all">{project.name}</span>
+               <span className="line-clamp-1 break-all">
+                  {auth.project.name}
+               </span>
                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -155,7 +157,7 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
                            })
                         }
                         key={project.id}
-                        isSelected={slug === project.slug}
+                        isSelected={params.slug === project.slug}
                      >
                         {isClient ? (
                            <Avatar
@@ -193,26 +195,28 @@ function Menus({ className, ...props }: React.ComponentProps<"div">) {
                className={cn(
                   buttonVariants({ intent: "outline", size: "icon" }),
                   "shrink-0 rounded-full font-medium uppercase",
-                  user.avatarUrl
+                  auth.user.avatarUrl
                      ? "!px-0 !border-none size-7 transition-opacity duration-200 aria-expanded:opacity-80 hover:opacity-80"
                      : "",
                )}
             >
-               {user.avatarUrl ? (
+               {auth.user.avatarUrl ? (
                   <img
                      className="size-full rounded-full object-cover"
-                     src={user.avatarUrl}
+                     src={auth.user.avatarUrl}
                      alt=""
                   />
                ) : (
-                  Array.from(user.name)[0]
+                  Array.from(auth.user.name)[0]
                )}
             </Menu.Trigger>
             <Menu.Content
                placement={!isMobile ? "bottom left" : "bottom right"}
             >
                <Menu.Header>
-                  <span className="line-clamp-1 break-all">{user.name}</span>
+                  <span className="line-clamp-1 break-all">
+                     {auth.user.name}
+                  </span>
                </Menu.Header>
                <Menu.Item
                   isDisabled={isTimerRunning}

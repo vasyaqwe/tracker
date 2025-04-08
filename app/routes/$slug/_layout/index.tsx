@@ -29,13 +29,15 @@ export const Route = createFileRoute("/$slug/_layout/")({
 })
 
 function Component() {
-   const { projectId } = useAuth()
+   const auth = useAuth()
    const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set())
    const [lastSelectedKeys, setLastSelectedKeys] = React.useState<Selection>(
       new Set(),
    )
 
-   const summaries = useSuspenseQuery(summaryListQuery({ projectId }))
+   const summaries = useSuspenseQuery(
+      summaryListQuery({ projectId: auth.project.id }),
+   )
 
    const selectedIds = Array.from(selectedKeys)
    const selectedItems =
@@ -80,7 +82,7 @@ function Component() {
 
    const [deleteConfirmationOpen, setDeleteConfirmationOpen] =
       React.useState(false)
-   const { deleteSummaries } = useDeleteSummaries({
+   const deleteSummaries = useDeleteSummaries({
       onMutate: () => {
          setDeleteConfirmationOpen(false)
          setLastSelectedKeys(selectedKeys)
@@ -317,7 +319,7 @@ function Component() {
                                              ids: selectedItems.map(
                                                 (item) => item.id,
                                              ),
-                                             projectId,
+                                             projectId: auth.project.id,
                                           },
                                        })
                                     }
@@ -331,7 +333,7 @@ function Component() {
                   </Card>
                </TransitionHeight>
                <Table
-                  key={projectId}
+                  key={auth.project.id}
                   aria-label="Summaries"
                   selectionMode="multiple"
                   selectedKeys={selectedKeys}

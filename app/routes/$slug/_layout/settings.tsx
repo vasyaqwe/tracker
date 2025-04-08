@@ -31,8 +31,8 @@ export const Route = createFileRoute("/$slug/_layout/settings")({
 
 function Component() {
    const queryClient = useQueryClient()
-   const { slug } = useParams({ from: "/$slug/_layout" })
-   const { project } = useAuth()
+   const params = useParams({ from: "/$slug/_layout" })
+   const auth = useAuth()
    const navigate = useNavigate()
 
    const updateFn = useServerFn(updateProject)
@@ -40,7 +40,7 @@ function Component() {
       mutationFn: updateFn,
       onSettled: () => {
          queryClient.invalidateQueries(projectListQuery())
-         queryClient.invalidateQueries(projectOneQuery({ slug }))
+         queryClient.invalidateQueries(projectOneQuery(params))
       },
       onSuccess: () => {
          toast.success("Saved")
@@ -56,7 +56,7 @@ function Component() {
          queryClient.invalidateQueries(projectListQuery())
          toast.success("Project deleted")
          const existingProjects = projects.data?.filter(
-            (m) => m.id !== project.id,
+            (m) => m.id !== auth.project.id,
          )
 
          match(existingProjects?.[0]?.slug)
@@ -65,10 +65,10 @@ function Component() {
                   to: "/new",
                }),
             )
-            .otherwise((slug) =>
+            .otherwise((_slug) =>
                navigate({
                   to: "/$slug",
-                  params: { slug },
+                  params,
                }),
             )
       },
@@ -92,14 +92,14 @@ function Component() {
                   }
 
                   if (
-                     formData.name === project.name &&
-                     formData.rate === project.rate.toString()
+                     formData.name === auth.project.name &&
+                     formData.rate === auth.project.rate.toString()
                   )
                      return toast.success("Saved")
 
                   update.mutate({
                      data: {
-                        id: project.id,
+                        id: auth.project.id,
                         name: formData.name,
                         rate: +formData.rate,
                      },
@@ -109,7 +109,7 @@ function Component() {
                <TextField
                   className="mb-3 max-w-[300px]"
                   label="Name"
-                  defaultValue={project.name}
+                  defaultValue={auth.project.name}
                   name="name"
                   id="name"
                   placeholder="Project name"
@@ -126,7 +126,7 @@ function Component() {
                   id="rate"
                   placeholder="$"
                   isRequired
-                  defaultValue={project.rate}
+                  defaultValue={auth.project.rate}
                />
                <Button
                   type="submit"
@@ -171,7 +171,7 @@ function Component() {
                         onSubmit={(e) => {
                            e.preventDefault()
                            deleteMutation.mutate({
-                              data: { id: project.id },
+                              data: { id: auth.project.id },
                            })
                         }}
                         id={"delete_project"}
@@ -182,7 +182,7 @@ function Component() {
                            autoFocus={!isMobile}
                            id="confirmation"
                            name="confirmation"
-                           placeholder={project.name}
+                           placeholder={auth.project.name}
                            value={confirmDeletion}
                            onChange={(value) => setConfirmDeletion(value)}
                         />
@@ -201,7 +201,7 @@ function Component() {
                         form={"delete_project"}
                         type="submit"
                         isDisabled={
-                           confirmDeletion.trim() !== project.name ||
+                           confirmDeletion.trim() !== auth.project.name ||
                            deleteMutation.isPending ||
                            deleteMutation.isSuccess
                         }

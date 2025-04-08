@@ -1,20 +1,22 @@
 import { useAuth } from "@/auth/hooks"
-import type { summaryList } from "@/summary/functions"
+import { insertSummary, type summaryList } from "@/summary/functions"
 import { summaryListQuery } from "@/summary/queries"
-import { useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useServerFn } from "@tanstack/start"
+import { toast } from "sonner"
 import { match } from "ts-pattern"
 
 export function useInsertSummary() {
    const queryClient = useQueryClient()
-   const { projectId } = useAuth()
+   const auth = useAuth()
 
-   const insertSummaryToQueryData = ({
+   const mutateQueryData = ({
       input,
    }: {
       input: Awaited<ReturnType<typeof summaryList>>[number]
    }) => {
       queryClient.setQueryData(
-         summaryListQuery({ projectId }).queryKey,
+         summaryListQuery({ projectId: auth.project.id }).queryKey,
          (oldData) =>
             match(oldData)
                .with(undefined, (data) => data)
@@ -48,7 +50,44 @@ export function useInsertSummary() {
       )
    }
 
+   const insertFn = useServerFn(insertSummary)
+   const mutation = useMutation({
+      mutationFn: insertFn,
+      onMutate: async (input) => {
+         await queryClient.cancelQueries(
+            summaryListQuery({ projectId: auth.project.id }),
+         )
+
+         const data = queryClient.getQueryData(
+            summaryListQuery({ projectId: auth.project.id }).queryKey,
+         )
+
+         mutateQueryData({
+            input: {
+               ...input.data,
+               id: crypto.randomUUID(),
+               createdAt: Date.now(),
+            },
+         })
+
+         return { data }
+      },
+      onError: (_err, _data, context) => {
+         queryClient.setQueryData(
+            summaryListQuery({ projectId: auth.project.id }).queryKey,
+            context?.data,
+         )
+         toast.error("Failed to create summary")
+      },
+      onSettled: () => {
+         queryClient.invalidateQueries(
+            summaryListQuery({ projectId: auth.project.id }),
+         )
+      },
+   })
+
    return {
-      insertSummaryToQueryData,
+      mutateQueryData,
+      ...mutation,
    }
 }

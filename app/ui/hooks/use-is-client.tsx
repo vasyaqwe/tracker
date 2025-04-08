@@ -7,5 +7,5 @@ export function useIsClient() {
       setIsClient(true)
    }, [])
 
-   return { isClient }
+   return isClient
 }

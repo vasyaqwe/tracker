@@ -15,6 +15,5 @@ export function useAuth() {
    return {
       user: user.data,
       project: project.data,
-      projectId: project?.data.id,
    }
 }

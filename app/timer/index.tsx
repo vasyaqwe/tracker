@@ -14,17 +14,17 @@ export function TimerRenderer({
    timer: Timer
 } & React.ComponentProps<"span">) {
    const [, setRenderTime] = React.useState(Date.now())
-   const { projectId } = useAuth()
+   const auth = useAuth()
 
    React.useEffect(() => {
       return () => {
          const startTime = timer.getElapsedRunningTime().toString()
          localStorage.setItem(
-            `${projectId}_start_time`,
+            `${auth.project.id}_start_time`,
             startTime === "0" ? "null" : startTime,
          )
       }
-   }, [timer.getElapsedRunningTime(), projectId])
+   }, [timer.getElapsedRunningTime(), auth.project.id])
 
    React.useEffect(() => {
       const subs = new Subs()

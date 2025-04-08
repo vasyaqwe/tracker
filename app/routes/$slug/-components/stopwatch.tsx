@@ -4,29 +4,23 @@ import { millisToMinutes } from "@/date"
 import { useBlocker } from "@/interactions/use-blocker"
 import { useLocalStorage } from "@/interactions/use-local-storage"
 import { useSound } from "@/interactions/use-sound"
-import { insertSummary } from "@/summary/functions"
 import { useInsertSummary } from "@/summary/hooks/use-insert-summary"
-import { summaryListQuery } from "@/summary/queries"
 import { calculateAmountEarned } from "@/summary/utils"
 import { TimerRenderer } from "@/timer"
 import { isTimerRunningAtom } from "@/timer/store"
 import { Button } from "@/ui/components/button"
 import { useIsClient } from "@/ui/hooks/use-is-client"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useServerFn } from "@tanstack/start"
 import { useAtom } from "jotai"
 import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useTimer } from "react-use-precision-timer"
-import { toast } from "sonner"
 import { match } from "ts-pattern"
 
 export function Stopwatch() {
-   const queryClient = useQueryClient()
-   const { projectId, project } = useAuth()
+   const auth = useAuth()
 
    const [startTime, setStartTime] = useLocalStorage<string | null>(
-      `${projectId}_start_time`,
+      `${auth.project.id}_start_time`,
       null,
    )
 
@@ -46,43 +40,7 @@ export function Stopwatch() {
 
    const [play] = useSound(tap)
 
-   const { insertSummaryToQueryData } = useInsertSummary()
-   const insertFn = useServerFn(insertSummary)
-   const insert = useMutation({
-      mutationFn: insertFn,
-      onMutate: async (input) => {
-         setStartTime(null)
-         timer.stop()
-         play()
-
-         await queryClient.cancelQueries(summaryListQuery({ projectId }))
-
-         const data = queryClient.getQueryData(
-            summaryListQuery({ projectId }).queryKey,
-         )
-
-         insertSummaryToQueryData({
-            input: {
-               ...input.data,
-               id: crypto.randomUUID(),
-               createdAt: Date.now(),
-            },
-         })
-
-         return { data }
-      },
-      onError: (_err, _data, context) => {
-         queryClient.setQueryData(
-            summaryListQuery({ projectId }).queryKey,
-            context?.data,
-         )
-         toast.error("Failed to create summary")
-      },
-      onSettled: () => {
-         setIsTimerRunning(false)
-         queryClient.invalidateQueries(summaryListQuery({ projectId }))
-      },
-   })
+   const insertSummary = useInsertSummary()
 
    const start = () => {
       timer.start()
@@ -101,13 +59,17 @@ export function Stopwatch() {
             timer.stop()
          })
          .otherwise(() => {
-            insert.mutate({
+            setStartTime(null)
+            timer.stop()
+            play()
+            setIsTimerRunning(false)
+            insertSummary.mutate({
                data: {
                   amountEarned: calculateAmountEarned(
                      elapsedMs,
-                     project.rate,
+                     auth.project.rate,
                   ).toFixed(2),
-                  projectId,
+                  projectId: auth.project.id,
                   durationMinutes,
                },
             })
@@ -116,7 +78,7 @@ export function Stopwatch() {
 
    useHotkeys("c", () => (isTimerRunning ? stop() : start()))
 
-   const { isClient } = useIsClient()
+   const isClient = useIsClient()
    if (!isClient) return null
 
    return (

@@ -10,28 +10,30 @@ export function useDeleteSummaries({
    onError,
 }: { onMutate?: () => void; onError?: () => void } = {}) {
    const queryClient = useQueryClient()
-   const { projectId } = useAuth()
+   const auth = useAuth()
 
-   const deleteSummariesFromQueryData = ({ ids }: { ids: string[] }) => {
+   const mutateQueryData = ({ ids }: { ids: string[] }) => {
       queryClient.setQueryData(
-         summaryListQuery({ projectId }).queryKey,
+         summaryListQuery({ projectId: auth.project.id }).queryKey,
          (oldData) => oldData?.filter((summary) => !ids.includes(summary.id)),
       )
    }
 
    const deleteFn = useServerFn(deleteSummary)
-   const deleteSummaries = useMutation({
+   const mutation = useMutation({
       mutationFn: deleteFn,
       onMutate: async ({ data: { ids } }) => {
          onMutate?.()
 
-         await queryClient.cancelQueries(summaryListQuery({ projectId }))
-
-         const data = queryClient.getQueryData(
-            summaryListQuery({ projectId }).queryKey,
+         await queryClient.cancelQueries(
+            summaryListQuery({ projectId: auth.project.id }),
          )
 
-         deleteSummariesFromQueryData({ ids })
+         const data = queryClient.getQueryData(
+            summaryListQuery({ projectId: auth.project.id }).queryKey,
+         )
+
+         mutateQueryData({ ids })
 
          return { data }
       },
@@ -39,18 +41,20 @@ export function useDeleteSummaries({
          onError?.()
 
          queryClient.setQueryData(
-            summaryListQuery({ projectId }).queryKey,
+            summaryListQuery({ projectId: auth.project.id }).queryKey,
             context?.data,
          )
          toast.error("Failed to delete summaries")
       },
       onSettled: (_, _error, _data) => {
-         queryClient.invalidateQueries(summaryListQuery({ projectId }))
+         queryClient.invalidateQueries(
+            summaryListQuery({ projectId: auth.project.id }),
+         )
       },
    })
 
    return {
-      deleteSummaries,
-      deleteSummariesFromQueryData,
+      ...mutation,
+      mutateQueryData,
    }
 }
