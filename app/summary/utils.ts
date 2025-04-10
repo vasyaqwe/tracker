@@ -1,11 +1,3 @@
-export const calculateAmountEarned = (
-   durationMs: number,
-   hourlyRate: number,
-) => {
-   const hours = durationMs / 3600000
-   return hours * hourlyRate
-}
-
 export const remainingTimeUntil = (expiresAt: Date) => {
    const currentTime = Date.now()
    const remainingTime = expiresAt.getTime() - currentTime

@@ -5,7 +5,6 @@ import { useBlocker } from "@/interactions/use-blocker"
 import { useLocalStorage } from "@/interactions/use-local-storage"
 import { useSound } from "@/interactions/use-sound"
 import { useInsertSummary } from "@/summary/hooks/use-insert-summary"
-import { calculateAmountEarned } from "@/summary/utils"
 import { TimerRenderer } from "@/timer"
 import { isTimerRunningAtom } from "@/timer/store"
 import { Button } from "@/ui/components/button"
@@ -62,13 +61,14 @@ export function Stopwatch() {
             setStartTime(null)
             timer.stop()
             play()
+            console.log(((durationMinutes / 60) * auth.project.rate).toString())
             setIsTimerRunning(false)
             insertSummary.mutate({
                data: {
-                  amountEarned: calculateAmountEarned(
-                     elapsedMs,
-                     auth.project.rate,
-                  ).toFixed(2),
+                  amountEarned: (
+                     (durationMinutes / 60) *
+                     auth.project.rate
+                  ).toString(),
                   projectId: auth.project.id,
                   durationMinutes,
                },
