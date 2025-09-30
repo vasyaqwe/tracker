@@ -64,7 +64,7 @@ function Homepage({
                <h1 className="font-medium text-4xl">A tiny time tracker</h1>
                <p className="mt-5 font-medium text-foreground/70 text-lg">
                   Simple & efficient time tracking app. <br /> Create projects,
-                  track earnings & hours, and generate invoices.
+                  track earnings & hours.
                </p>
                <Link
                   to={
