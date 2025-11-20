@@ -1,14 +1,16 @@
 import { useAuth } from "@/auth/hooks"
 import { formatCurrency } from "@/currency"
-import { formatDate, formatTime } from "@/date"
+import { formatDate, formatDateIntl, formatTime } from "@/date"
 import { useDelayedValue } from "@/interactions/use-delayed-value"
 import { createInvoice } from "@/invoice/functions"
 import { useDeleteSummaries } from "@/summary/hooks/use-delete-summary"
 import { summaryListQuery } from "@/summary/queries"
 import { Button, buttonVariants } from "@/ui/components/button"
 import { Card } from "@/ui/components/card"
+import { Loading } from "@/ui/components/loading"
 import { Modal } from "@/ui/components/modal"
 import { Table } from "@/ui/components/table"
+import { TextField } from "@/ui/components/text-field"
 import { TransitionHeight } from "@/ui/components/transition-height"
 import { cn } from "@/ui/utils"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
@@ -52,9 +54,9 @@ function Component() {
       500,
    )
 
-   const [_getInvoiceOpen, setGetInvoiceOpen] = React.useState(false)
+   const [getInvoiceOpen, setGetInvoiceOpen] = React.useState(false)
    const generateInvoiceFn = useServerFn(createInvoice)
-   const _generateInvoice = useMutation({
+   const generateInvoice = useMutation({
       mutationFn: generateInvoiceFn,
       onSuccess: async (data) => {
          setGetInvoiceOpen(false)
@@ -129,7 +131,7 @@ function Component() {
                         {formatTime(selectedDuration)}
                      </p>
                      <div className="flex items-center gap-1">
-                        {/* <Modal
+                        <Modal
                            isOpen={getInvoiceOpen}
                            onOpenChange={(open) => {
                               setGetInvoiceOpen(open)
@@ -254,7 +256,7 @@ function Component() {
                                  </Button>
                               </Modal.Footer>
                            </Modal.Content>
-                        </Modal> */}
+                        </Modal>
                         <Modal
                            isOpen={deleteConfirmationOpen}
                            onOpenChange={setDeleteConfirmationOpen}

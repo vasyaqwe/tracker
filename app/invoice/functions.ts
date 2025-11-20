@@ -21,24 +21,27 @@ export const createInvoice = createServerFn({ method: "GET" })
       ),
    )
    .handler(async ({ context, data }) => {
-      const res = await fetch("https://api.vasyaqwe.com/invoice/generate", {
-         method: "POST",
-         headers: {
-            "Content-Type": "application/json",
+      const res = await fetch(
+         "https://vasyaqwe-production.up.railway.app/invoice/generate",
+         {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+               user: {
+                  name: context.user.name,
+                  email: context.user.email,
+               },
+               customer: {
+                  name: data.customer.name,
+                  email: data.customer.email,
+               },
+               amount: data.amount,
+               selectedItems: data.selectedItems,
+            }),
          },
-         body: JSON.stringify({
-            user: {
-               name: context.user.name,
-               email: context.user.email,
-            },
-            customer: {
-               name: data.customer.name,
-               email: data.customer.email,
-            },
-            amount: data.amount,
-            selectedItems: data.selectedItems,
-         }),
-      })
+      )
       const result = (await res.json()) as {
          base64Pdf: string
          fileName: string
