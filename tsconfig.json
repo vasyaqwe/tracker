@@ -1,32 +1,25 @@
 {
+   "$schema": "https://json.schemastore.org/tsconfig",
    "compilerOptions": {
-      /* Base Options: */
       "esModuleInterop": true,
       "skipLibCheck": true,
       "target": "ESNext",
-      "resolveJsonModule": true,
+      "lib": ["ESNext", "DOM", "DOM.iterable"],
       "moduleDetection": "force",
       "isolatedModules": true,
-
-      /* Strictness */
       "strict": true,
       "noUncheckedIndexedAccess": true,
-      "checkJs": true,
-
-      /* Bundled projects */
-      "lib": ["DOM", "DOM.Iterable", "ESNext"],
-      "module": "ESNext",
+      "noImplicitOverride": true,
       "moduleResolution": "Bundler",
-      "jsx": "react-jsx",
+      "module": "ESNext",
+      "sourceMap": true,
       "incremental": true,
-
-      /* Path Aliases */
-      "baseUrl": ".",
+      "jsx": "react-jsx",
+      "types": ["node"],
       "paths": {
-         "@/*": ["./app/*"]
-      },
-      "types": ["vite/client"]
+         "@/*": ["./src/*"]
+      }
    },
-   "include": ["**/*.ts", "**/*.tsx", "**/*.cjs"],
-   "exclude": ["node_modules"]
+   "include": ["src"],
+   "exclude": ["node_modules", ".tanstack", "_generated"]
 }

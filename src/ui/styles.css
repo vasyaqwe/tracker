@@ -1,0 +1,192 @@
+@import "tailwindcss";
+@import "tailwix";
+@plugin "tailwindcss-motion";
+@import "./components/dotmatrix/styles.css";
+@import "./typography.css";
+
+@theme default {
+   --color-surface-1: var(--color-gray-1);
+   --color-surface-2: var(--color-gray-2);
+   --color-surface-3: var(--color-gray-3);
+   --color-surface-4: var(--color-gray-4);
+   --color-surface-5: var(--color-gray-5);
+   --color-surface-6: var(--color-gray-6);
+   --color-surface-7: var(--color-gray-7);
+   --color-surface-8: var(--color-gray-8);
+   --color-surface-9: var(--color-gray-9);
+   --color-surface-10: var(--color-gray-10);
+   --color-surface-11: var(--color-gray-11);
+   --color-surface-12: var(--color-gray-12);
+
+   --color-primary-1: var(--color-surface-1);
+   --color-primary-2: var(--color-surface-2);
+   --color-primary-3: var(--color-surface-3);
+   --color-primary-4: var(--color-surface-4);
+   --color-primary-5: var(--color-surface-5);
+   --color-primary-6: var(--color-surface-6);
+   --color-primary-7: var(--color-surface-7);
+   --color-primary-8: var(--color-surface-8);
+   --color-primary-9: var(--color-surface-9);
+   --color-primary-10: var(--color-surface-10);
+   --color-primary-11: var(--color-surface-11);
+   --color-primary-12: var(--color-surface-12);
+
+   --color-background: #ffffff;
+   --color-foreground: var(--color-surface-12);
+   --color-neutral: rgb(32, 32, 32, 0.1); /* surface-12 */
+   --color-muted: var(--color-surface-11);
+   --color-destructive: var(--color-red-10);
+   --color-success: var(--color-green-10);
+
+   --shadow-elevated:
+      0 0 0 0.5px lch(32% 32 32 / 0.15), 0 3px 6px -2px lch(0% 0 0 / 0.02),
+      0 1px 1px lch(0% 0 0 / 0.07);
+   --shadow-elevated-hover:
+      0 0 0 0.5px lch(32% 32 32 / 0.2), 0 4px 6px -2px lch(0% 0 0 / 0.03),
+      0 1px 1px lch(0% 0 0 / 0.1);
+
+   --font-primary:
+      "geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+      Arial, sans-serif;
+
+   --popup-padding: 0.275rem;
+   --popup-radius: 0.7rem;
+
+   --width-prose: 60rem;
+   --breakpoint-xs: 390px;
+
+   --ease-out-fast: cubic-bezier(0.45, 1.005, 0, 1.005);
+   --ease-in-slow: cubic-bezier(0.375, 0.015, 0.545, 0.455);
+   --ease-smooth: cubic-bezier(0.32, 0.72, 0, 1);
+   --ease-bounce: cubic-bezier(0.375, 0.015, 0.545, 0.455);
+
+   --default-transition-duration: 50ms;
+}
+
+@font-face {
+   font-family: "geist";
+   src: url("/font/geist.ttf") format("truetype");
+   font-weight: 400 600;
+   font-style: normal;
+   font-display: swap;
+}
+
+@utility touch-hitbox {
+   position: relative;
+   &:after {
+      content: "";
+      position: absolute;
+      display: block;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      min-height: 44px;
+      min-width: 44px;
+      z-index: 9999;
+   }
+}
+
+@layer base {
+   * {
+      @apply border-neutral;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-surface-6) transparent;
+   }
+
+   strong {
+      font-weight: 500;
+   }
+
+   input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+   }
+   input[type="number"]::-webkit-outer-spin-button,
+   input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      appearance: none;
+      margin: 0;
+   }
+
+   /* ios ignores box-shadow (and centers the value) on native-appearance date inputs */
+   input[type="date"] {
+      -webkit-appearance: none;
+      appearance: none;
+   }
+   input[type="date"]::-webkit-date-and-time-value {
+      text-align: inherit;
+   }
+   /* ios renders empty date inputs completely blank */
+   @supports (-webkit-touch-callout: none) {
+      input[type="date"][data-empty]::before {
+         content: attr(placeholder);
+         @apply text-foreground/50;
+      }
+   }
+
+   [data-slot="form"] label:has(~ input:not([required]))::after,
+   [data-slot="form"] label:has(~ textarea:not([required]))::after {
+      content: " (optional)";
+   }
+
+   html body div[hidden]:not([hidden="until-found"]) {
+      display: grid !important;
+      visibility: hidden;
+   }
+
+   /* sticky table header only when the table container itself scrolls vertically
+   (page-level scroll leaves it non-sticky, avoiding z-index issues) */
+   @container scroll-state((scrollable: top) or (scrollable: bottom)) {
+      [data-slot="table-header"] {
+         position: sticky;
+         top: 0;
+         z-index: 20;
+      }
+   }
+}
+
+@utility scrollbar-hidden {
+   -ms-overflow-style: none;
+   scrollbar-width: none;
+
+   &::-webkit-scrollbar {
+      display: none !important;
+   }
+}
+
+@utility not-touch-hitbox {
+   &::before {
+      display: none !important;
+   }
+}
+
+@utility line-clamp-1 {
+   overflow: hidden;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 1;
+   white-space: normal;
+   &:not(.text-center) {
+      text-align: left;
+   }
+   &:not(:has(svg)) {
+      word-break: break-all;
+   }
+}
+
+@utility line-clamp-2 {
+   overflow: hidden;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 2;
+   white-space: normal;
+   &:not(:has(svg)) {
+      word-break: break-word;
+   }
+}
+
+@utility line-clamp-none {
+   word-break: normal !important;
+}

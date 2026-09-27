@@ -1,5 +1,5 @@
 {
-   "$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
+   "$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
    "formatter": {
       "enabled": true,
       "formatWithErrors": false,
@@ -10,16 +10,28 @@
       "attributePosition": "multiline"
    },
    "files": {
-      "ignore": [
-         ".vinxi",
-         "routeTree.gen.ts",
-         "migrations/meta",
-         "package.json"
+      "includes": [
+         "**",
+         "!**/out",
+         "!**/dist",
+         "!**/.wrangler",
+         "!**/.tanstack",
+         "!**/routeTree.gen.ts",
+         "!**/convex/_generated",
+         "!**/package.json",
+         "!**/vite-env.d.ts",
+         "!**/worker-configuration.d.ts"
       ]
    },
    "css": {
+      "linter": {
+         "enabled": false
+      },
       "formatter": {
          "enabled": true
+      },
+      "parser": {
+         "tailwindDirectives": true
       }
    },
    "javascript": {
@@ -34,32 +46,45 @@
          "attributePosition": "multiline"
       }
    },
-   "organizeImports": {
-      "enabled": true
-   },
+   "assist": { "actions": { "source": { "organizeImports": "on" } } },
    "linter": {
       "enabled": true,
       "rules": {
-         "recommended": true,
+         "preset": "recommended",
          "security": {
             "noDangerouslySetInnerHtml": "off"
          },
          "style": {
             "useNumberNamespace": "off",
             "noUnusedTemplateLiteral": "off",
-            "useNodejsImportProtocol": "off"
+            "useNodejsImportProtocol": "off",
+            "noParameterAssign": "error",
+            "useAsConstAssertion": "error",
+            "useDefaultParameterLast": "error",
+            "useEnumInitializers": "error",
+            "useSelfClosingElements": "error",
+            "useSingleVarDeclarator": "error",
+            "noInferrableTypes": "error",
+            "noUselessElse": "error",
+            "noNonNullAssertion": "off"
          },
          "correctness": {
-            "noUnusedVariables": "error",
             "useExhaustiveDependencies": "off",
-            "noUnusedImports": "error"
+            "noUnusedVariables": "error",
+            "noUnusedImports": "error",
+            "useUniqueElementIds": "off"
          },
          "a11y": {
+            "noStaticElementInteractions": "off",
+            "useValidAriaRole": "off",
             "noAutofocus": "off",
             "useMediaCaption": "off",
             "noSvgWithoutTitle": "off",
             "useKeyWithClickEvents": "off",
-            "useButtonType": "off"
+            "useButtonType": "off",
+            "useSemanticElements": "off",
+            "useAriaPropsSupportedByRole": "off",
+            "noLabelWithoutControl": "off"
          },
          "suspicious": {
             "noArrayIndexKey": "off"
@@ -69,8 +94,8 @@
                "level": "info",
                "fix": "safe",
                "options": {
-                  "attributes": ["className", "tw"],
-                  "functions": ["clsx", "cva", "tw", "cn"]
+                  "attributes": ["className"],
+                  "functions": ["tv", "cn"]
                }
             }
          }
