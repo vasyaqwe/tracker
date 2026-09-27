@@ -1,6 +1,4 @@
 import { cva, type VariantProps } from "cva"
-import type { Dotm3x3_15 } from "@/ui/components/dotmatrix/dotm-3x3-15"
-import { DotmCircular2 } from "@/ui/components/dotmatrix/dotm-circular-2"
 import { cn } from "@/ui/utils"
 
 const spinner = cva({
@@ -68,15 +66,11 @@ export function Spinner({ className, size, kind, ...props }: Props) {
    )
 }
 
-export function PageSpinner({
-   className,
-   ...props
-}: React.ComponentProps<typeof Dotm3x3_15>) {
+export function PageSpinner({ className, ...props }: Props) {
    return (
-      <DotmCircular2
-         size={28}
-         dotSize={3.5}
-         className={cn("absolute inset-0 m-auto", className)}
+      <Spinner
+         kind="overlay"
+         className={cn("size-6", className)}
          {...props}
       />
    )
