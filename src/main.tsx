@@ -6,6 +6,7 @@ import { ConvexQueryCacheProvider } from "convex-helpers/react/cache"
 import * as React from "react"
 import ReactDOM from "react-dom/client"
 import { authClient } from "@/auth/client"
+import { env } from "@/env"
 import { ToastProvider } from "@/ui/components/toast"
 import { routeTree } from "./routeTree.gen"
 
@@ -23,7 +24,7 @@ declare module "@tanstack/react-router" {
    }
 }
 
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL, {
+const convex = new ConvexReactClient(env.CONVEX_CLOUD_URL, {
    expectAuth: true,
 })
 
