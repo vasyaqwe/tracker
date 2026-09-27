@@ -42,14 +42,7 @@ function RouteComponent() {
             </Button>
          )}
          <div className="mx-auto -mt-8 w-full max-w-xs px-4">
-            {isFirstProject ? (
-               <div className="flex items-center gap-2.5">
-                  <Logo className="size-9" />
-                  <h1 className="font-medium text-2xl">Welcome to Tracker,</h1>
-               </div>
-            ) : (
-               <Logo className="size-9" />
-            )}
+            <Logo className="size-9" />
             <h2 className="my-4 font-medium text-foreground/90 text-xl">
                Create {isFirstProject ? "your first" : "a new"} project
             </h2>
